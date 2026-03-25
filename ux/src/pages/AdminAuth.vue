@@ -53,7 +53,6 @@ q-page.admin-mail
         color='primary'
         icon='las la-plus'
         :label='t(`admin.auth.addStrategy`)'
-        v-if='flagsStore.experimental'
         )
         q-menu(auto-close, fit, max-width='300px')
           q-list(separator)

@@ -78,8 +78,18 @@ export default {
       const enabledStrategies = await WIKI.db.authentication.getStrategies({ enabledOnly: true })
       for (const stg of enabledStrategies) {
         try {
-          const strategy = (await import(`../modules/authentication/${stg.module}/authentication.mjs`)).default
-          strategy.init(passport, stg.id, stg.config)
+          let strategy
+          try {
+            strategy = (await import(`../modules/authentication/${stg.module}/authentication.mjs`)).default
+          } catch {
+            const mod = await import(`../modules/authentication/${stg.module}/authentication.js`)
+            strategy = mod.default || mod
+          }
+          strategy.init(passport, {
+            ...stg.config,
+            key: stg.id,
+            callbackURL: `${WIKI.config.host}/login/${stg.id}/callback`
+          })
 
           WIKI.auth.strategies[stg.id] = {
             ...strategy,
