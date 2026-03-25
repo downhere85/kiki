@@ -4,14 +4,14 @@
 
 extend type Query {
   pageHistoryById(
-    id: Int!
+    id: UUID!
     offsetPage: Int
     offsetSize: Int
   ): PageHistoryResult
 
   pageVersionById(
-    pageId: Int!
-    versionId: Int!
+    pageId: UUID!
+    versionId: UUID!
   ): PageVersion
 
   searchPages(
@@ -197,8 +197,8 @@ extend type Mutation {
   ): DefaultResponse
 
   restorePage(
-    pageId: Int!
-    versionId: Int!
+    pageId: UUID!
+    versionId: UUID!
   ): DefaultResponse
 
   purgePagesHistory (
@@ -271,9 +271,9 @@ type PageTag {
 }
 
 type PageHistory {
-  versionId: Int
+  versionId: UUID
   versionDate: Date
-  authorId: Int
+  authorId: UUID
   authorName: String
   actionType: String
   valueBefore: String
@@ -293,14 +293,14 @@ type PageVersion {
   isPrivate: Boolean
   isPublished: Boolean
   locale: String
-  pageId: Int
+  pageId: UUID
   path: String
   publishEndDate: Date
   publishStartDate: Date
   render: String
   tags: [String]
   title: String
-  versionId: Int
+  versionId: UUID
 }
 
 type PageHistoryResult {

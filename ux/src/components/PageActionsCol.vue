@@ -72,7 +72,7 @@
     icon='las la-history'
     :color='editorStore.isActive ? `white` : `grey`'
     aria-label='Page History'
-    @click='notImplemented'
+    @click='viewPageHistory'
     )
     q-tooltip(anchor='center left' self='center right') Page History
   q-btn.q-py-md(
@@ -202,6 +202,10 @@ function togglePageData () {
     sideDialogComponent: 'PageDataDialog',
     sideDialogShown: true
   })
+}
+
+function viewPageHistory () {
+  siteStore.$patch({ overlay: 'PageHistory', overlayOpts: { } })
 }
 
 function viewPageSource () {
