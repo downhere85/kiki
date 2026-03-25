@@ -86,19 +86,19 @@ q-layout.admin(view='hHh Lpr lff')
             q-item-section(avatar)
               q-icon(name='img:/_assets/icons/fluent-web.svg')
             q-item-section {{ t('admin.general.title') }}
+          q-item(:to='`/_admin/` + adminStore.currentSiteId + `/analytics`', v-ripple, active-class='bg-primary text-white')
+            q-item-section(avatar)
+              q-icon(name='img:/_assets/icons/fluent-bar-chart.svg')
+            q-item-section {{ t('admin.analytics.title') }}
           template(v-if='flagsStore.experimental')
-            q-item(:to='`/_admin/` + adminStore.currentSiteId + `/analytics`', v-ripple, active-class='bg-primary text-white', disabled)
-              q-item-section(avatar)
-                q-icon(name='img:/_assets/icons/fluent-bar-chart.svg')
-              q-item-section {{ t('admin.analytics.title') }}
             q-item(:to='`/_admin/` + adminStore.currentSiteId + `/approvals`', v-ripple, active-class='bg-primary text-white', disabled)
               q-item-section(avatar)
                 q-icon(name='img:/_assets/icons/fluent-inspection.svg')
               q-item-section {{ t('admin.approval.title') }}
-            q-item(:to='`/_admin/` + adminStore.currentSiteId + `/comments`', v-ripple, active-class='bg-primary text-white', disabled)
-              q-item-section(avatar)
-                q-icon(name='img:/_assets/icons/fluent-comments.svg')
-              q-item-section {{ t('admin.comments.title') }}
+          q-item(:to='`/_admin/` + adminStore.currentSiteId + `/comments`', v-ripple, active-class='bg-primary text-white')
+            q-item-section(avatar)
+              q-icon(name='img:/_assets/icons/fluent-comments.svg')
+            q-item-section {{ t('admin.comments.title') }}
           q-item(:to='`/_admin/` + adminStore.currentSiteId + `/blocks`', v-ripple, active-class='bg-primary text-white', v-if='userStore.can(`manage:sites`)')
             q-item-section(avatar)
               q-icon(name='img:/_assets/icons/fluent-rfid-tag.svg')
