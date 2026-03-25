@@ -333,6 +333,13 @@ function insertAssetClb (opts) {
   }, 500)
 }
 
+function insertContentClb (opts) {
+  insertAfter({ content: opts.content, newLine: true })
+  setTimeout(() => {
+    editor.focus()
+  }, 500)
+}
+
 function insertLink () {
   // Get selected text to use as link label
   const selection = editor.getSelection()
@@ -831,6 +838,7 @@ onMounted(async () => {
   })
 
   EVENT_BUS.on('insertAsset', insertAssetClb)
+  EVENT_BUS.on('insertContent', insertContentClb)
   EVENT_BUS.on('openEditorSettings', openEditorSettings)
   EVENT_BUS.on('reloadEditorContent', reloadEditorContent)
 
@@ -869,6 +877,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   EVENT_BUS.off('insertAsset', insertAssetClb)
+  EVENT_BUS.off('insertContent', insertContentClb)
   EVENT_BUS.off('openEditorSettings', openEditorSettings)
   EVENT_BUS.off('reloadEditorContent', reloadEditorContent)
   if (editor) {
