@@ -1,107 +1,54 @@
 <!-- eslint-disable -->
 <template lang="pug">
-q-card.icon-picker(flat, style='width: 400px')
-  q-tabs.text-primary(
-    v-model='state.currentTab'
-    no-caps
-    inline-label
-    )
-    q-tab(
-      name='icon'
-      icon='las la-icons'
-      label='Icon'
+q-card.icon-picker(flat, style='width: 500px; max-height: 520px;')
+  q-toolbar.bg-primary.text-white
+    q-icon.q-mr-sm(name='mdi-emoticon-outline')
+    .text-subtitle2 Icon Picker
+    q-space
+    q-btn(icon='las la-times', flat, dense, round, v-close-popup)
+  q-card-section.q-pb-none
+    q-input(
+      v-model='state.search'
+      outlined
+      dense
+      placeholder='Search icons...'
+      clearable
+      autofocus
       )
-    q-tab(
-      name='img'
-      icon='las la-image'
-      label='Image'
-      )
-  q-separator
-  q-tab-panels(
-    v-model='state.currentTab'
-    )
-    q-tab-panel(name='icon')
-      q-select(
-        :options='iconPacks'
-        v-model='state.selPack'
-        emit-value
-        map-options
-        outlined
-        dense
-        transition-show='jump-down'
-        transition-hide='jump-up'
-        )
-        template(v-slot:option='scope')
-          q-item(
-            v-bind='scope.itemProps'
-            v-on='scope.itemEvents'
-            :class='scope.selected ? `bg-primary text-white` : ``'
-            )
-            q-item-section(side)
-              q-icon(
-                name='las la-box'
-                :color='scope.selected ? `white` : `grey`'
-              )
-            q-item-section
-              q-item-label {{scope.opt.name}}
-              q-item-label(caption)
-                strong(:class='scope.selected ? `text-white` : `text-primary`') {{scope.opt.subset}}
-            q-item-section(side, v-if='scope.opt.subset')
-              q-chip(
-                color='primary'
-                text-color='white'
-                rounded
-                size='sm'
-              ) {{scope.opt.subset.toUpperCase()}}
-      q-input.q-mt-md(
-        v-model='state.selIcon'
-        outlined
-        label='Icon Name'
-        dense
-      )
-      .row.q-gutter-md.q-mt-none
-        .col-auto
-          q-avatar(
-            size='64px'
-            color='primary'
-            rounded
-            )
-            q-icon(
-              :name='iconName'
-              color='white'
-              size='64px'
-            )
-        .col
-          .text-caption Learn how to #[a(href='https://docs.requarks.io') use icons].
-          .text-caption.q-mt-sm View #[a(:href='iconPackRefWebsite', target='_blank') Icon Pack reference] for all possible options.
-    q-tab-panel(name='img')
-      .row.q-gutter-sm
-        q-btn.col(
-          label='Browse...'
-          color='secondary'
-          icon='las la-file-image'
-          unelevated
-          no-caps
-        )
-        q-btn.col(
-          label='Upload...'
-          color='secondary'
-          icon='las la-upload'
-          unelevated
-          no-caps
-        )
-      .q-mt-md.text-center
-        q-avatar(
-          size='64px'
-          rounded
+      template(#prepend)
+        q-icon(name='mdi-magnify')
+  q-card-section.q-pt-sm
+    .text-caption.text-grey-7.q-mb-sm {{ filteredIcons.length }} icons{{ state.search ? ' matching "' + state.search + '"' : '' }}
+    q-scroll-area(style='height: 300px;')
+      .icon-grid
+        q-btn.icon-grid-item(
+          v-for='icon in displayedIcons'
+          :key='icon'
+          flat
+          dense
+          padding='sm'
+          :class='state.selIcon === icon ? "bg-primary text-white" : ""'
+          @click='selectIcon(icon)'
           )
-          q-img(
-            transition='jump-down'
-            :ratio='1'
-            :src='state.imgPath'
+          q-icon(:name='"mdi-" + icon', size='24px')
+          q-tooltip {{ icon }}
+      .text-center.q-pa-md.text-grey-6(v-if='filteredIcons.length === 0')
+        | No icons found
+      .text-center.q-pa-sm(v-if='filteredIcons.length > displayLimit')
+        q-btn(
+          flat
+          dense
+          no-caps
+          color='primary'
+          :label='`Show more (${filteredIcons.length - displayLimit} remaining)`'
+          @click='displayLimit += 200'
           )
   q-separator
   q-card-actions
+    .flex.items-center.q-gutter-sm(v-if='state.selIcon')
+      q-avatar(size='32px', color='primary', rounded)
+        q-icon(:name='"mdi-" + state.selIcon', color='white', size='20px')
+      .text-caption.text-grey-7 {{ 'mdi-' + state.selIcon }}
     q-space
     q-btn(
       icon='las la-times'
@@ -115,14 +62,14 @@ q-card.icon-picker(flat, style='width: 400px')
       label='Apply'
       unelevated
       color='secondary'
+      :disable='!state.selIcon'
       @click='apply'
-      v-close-popup
     )
 </template>
 
 <script setup>
-import { find } from 'lodash-es'
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
+import mdiIconList from '@/helpers/mdiIcons.js'
 
 // PROPS
 
@@ -140,88 +87,64 @@ const emit = defineEmits(['update:modelValue'])
 // DATA
 
 const state = reactive({
-  currentTab: 'icon',
-  selPack: 'las',
-  selIcon: '',
-  imgPath: 'https://placeimg.com/64/64/nature'
+  search: '',
+  selIcon: ''
 })
 
-const iconPacks = [
-  { value: 'las', label: 'Line Awesome (solid)', name: 'Line Awesome', subset: 'solid', prefix: 'las la-', reference: 'https://icons8.com/line-awesome' },
-  { value: 'lab', label: 'Line Awesome (brands)', name: 'Line Awesome', subset: 'brands', prefix: 'lab la-', reference: 'https://icons8.com/line-awesome' },
-  { value: 'mdi', label: 'Material Design Icons', name: 'Material Design Icons', prefix: 'mdi-', reference: 'https://materialdesignicons.com' },
-  { value: 'fas', label: 'Font Awesome (solid)', name: 'Font Awesome', subset: 'solid', prefix: 'fas fa-', reference: 'https://fontawesome.com/icons' },
-  { value: 'far', label: 'Font Awesome (regular)', name: 'Font Awesome', subset: 'regular', prefix: 'far fa-', reference: 'https://fontawesome.com/icons' },
-  { value: 'fal', label: 'Font Awesome (light)', name: 'Font Awesome', subset: 'light', prefix: 'fal fa-', reference: 'https://fontawesome.com/icons' },
-  { value: 'fad', label: 'Font Awesome (duotone)', name: 'Font Awesome', subset: 'duotone', prefix: 'fad fa-', reference: 'https://fontawesome.com/icons' },
-  { value: 'fab', label: 'Font Awesome (brands)', name: 'Font Awesome', subset: 'brands', prefix: 'fab fa-', reference: 'https://fontawesome.com/icons' }
-]
+const displayLimit = ref(200)
 
 // COMPUTED
 
-const iconName = computed(() => {
-  return find(iconPacks, ['value', state.selPack]).prefix + state.selIcon
+const filteredIcons = computed(() => {
+  if (!state.search) return mdiIconList
+  const q = state.search.toLowerCase()
+  return mdiIconList.filter(icon => icon.includes(q))
 })
 
-const iconPackRefWebsite = computed(() => {
-  return find(iconPacks, ['value', state.selPack]).reference
+const displayedIcons = computed(() => {
+  return filteredIcons.value.slice(0, displayLimit.value)
 })
 
 // METHODS
 
+function selectIcon (icon) {
+  state.selIcon = icon
+}
+
 function apply () {
-  if (state.currentTab === 'img') {
-    emit('update:modelValue', `img:${state.imgPath}`)
-  } else {
-    emit('update:modelValue', state.iconName)
-  }
+  emit('update:modelValue', 'mdi-' + state.selIcon)
 }
 
 // MOUNTED
 
 onMounted(() => {
-  if (props.modelValue?.startsWith('img:')) {
-    state.currentTab = 'img'
-    state.imgPath = props.modelValue.substring(4)
-  } else {
-    state.currentTab = 'icon'
-    for (const pack of iconPacks) {
-      if (props.value?.startsWith(pack.prefix)) {
-        state.selPack = pack.value
-        state.selIcon = props.modelValue.substring(pack.prefix.length)
-        break
-      }
-    }
+  if (props.modelValue?.startsWith('mdi-')) {
+    state.selIcon = props.modelValue.substring(4)
   }
 })
 </script>
 
 <style lang="scss">
 .icon-picker {
-  a {
-    @at-root .body--light & {
-      color: $blue-7;
-    }
-    @at-root .body--dark & {
-      color: $blue-3;
-    }
+  .icon-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
   }
 
-  .q-tab-panels {
-    @at-root .body--light & {
-      background-color: $grey-1;
-    }
-    @at-root .body--dark & {
-      background-color: $dark-4;
-    }
-  }
+  .icon-grid-item {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 6px;
 
-  .q-input .q-field__control, .q-select .q-field__control {
-    @at-root .body--light & {
-      background-color: #FFF;
-    }
-    @at-root .body--dark & {
-      background-color: $dark-5;
+    &:hover {
+      @at-root .body--light & {
+        background-color: $grey-3;
+      }
+      @at-root .body--dark & {
+        background-color: $dark-5;
+      }
     }
   }
 }

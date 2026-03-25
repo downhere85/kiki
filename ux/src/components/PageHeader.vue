@@ -12,9 +12,8 @@
       )
       q-badge(color='grey' floating rounded)
         q-icon(name='las la-pen', size='xs', padding='xs xs')
-      q-menu(content-class='shadow-7')
-        .q-pa-lg: em [ TODO: Icon Picker Dialog ]
-        // icon-picker-dialog(v-model='pageStore.icon')
+      q-menu(content-class='shadow-7', ref='iconMenu')
+        icon-picker-dialog(:modelValue='pageStore.icon', @update:modelValue='onIconChange')
     q-icon.rounded-borders(
       v-else
       :name='pageStore.icon'
@@ -226,7 +225,17 @@ const route = useRoute()
 
 const { t } = useI18n()
 
+// REFS
+
+const iconMenu = ref(null)
+
 // METHODS
+
+function onIconChange (val) {
+  pageStore.icon = val
+  editorStore.$patch({ lastChangeTimestamp: new Date() })
+  iconMenu.value?.hide()
+}
 
 function openEditorSettings () {
   EVENT_BUS.emit('openEditorSettings')
