@@ -673,4 +673,19 @@
       height: auto;
     }
   }
+
+  // Mermaid diagrams
+  pre.mermaid,
+  div.mermaid {
+    text-align: center;
+    margin: 1rem 0;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+  }
 }

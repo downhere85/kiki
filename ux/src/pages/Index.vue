@@ -164,6 +164,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { DateTime } from 'luxon'
 
+import { renderMermaidDiagrams } from '@/helpers/mermaid'
 import { useCommonStore } from '@/stores/common'
 import { useEditorStore } from '@/stores/editor'
 import { useFlagsStore } from '@/stores/flags'
@@ -318,10 +319,13 @@ watch(() => route.path, async (newValue) => {
         isActive: false
       })
     }
-    // -> Load Blocks
+    // -> Load Blocks & Render Diagrams
     nextTick(() => {
-      for (const block of pageContents.value.querySelectorAll(':not(:defined)')) {
-        commonStore.loadBlocks([block.tagName.toLowerCase()])
+      if (pageContents.value) {
+        for (const block of pageContents.value.querySelectorAll(':not(:defined)')) {
+          commonStore.loadBlocks([block.tagName.toLowerCase()])
+        }
+        renderMermaidDiagrams(pageContents.value)
       }
     })
   } catch (err) {
