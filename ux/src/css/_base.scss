@@ -267,3 +267,115 @@ body::-webkit-scrollbar-thumb {
     opacity: .75;
   }
 }
+
+// ------------------------------------------------------------------
+// PRINT STYLES
+// ------------------------------------------------------------------
+
+@media print {
+  // Hide all UI chrome
+  .q-header,
+  .q-drawer,
+  .q-footer,
+  .q-page-sticky,
+  .page-header .acrylic-btn,
+  .page-header .q-badge,
+  .page-header-subtitle .q-btn,
+  .q-btn[aria-label="Edit"],
+  .q-btn[aria-label="Print"],
+  .q-btn[aria-label="Watch Page"],
+  .q-btn[aria-label="Bookmark Page"],
+  .q-btn[aria-label="Share"],
+  nav.breadcrumbs,
+  .sidebar,
+  footer,
+  .q-notification {
+    display: none !important;
+  }
+
+  // Reset layout for print
+  .q-page-container {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .q-page {
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  .q-layout {
+    min-height: auto !important;
+  }
+
+  // Page content styling
+  .page-header {
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5rem;
+
+    .page-header-title {
+      font-size: 24pt;
+    }
+
+    .q-icon.rounded-borders {
+      display: none;
+    }
+  }
+
+  // Content area takes full width
+  .page-contents {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    a {
+      color: #000 !important;
+      text-decoration: underline;
+    }
+
+    a[href]::after {
+      content: " (" attr(href) ")";
+      font-size: 0.8em;
+      color: #666;
+    }
+
+    a[href^="#"]::after,
+    a[href^="javascript"]::after {
+      content: "";
+    }
+
+    pre {
+      border: 1px solid #ccc;
+      padding: 8px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    img {
+      max-width: 100% !important;
+    }
+  }
+
+  // Hide TOC sidebar and tags in print
+  .page-col-sd {
+    display: none !important;
+  }
+
+  // Ensure content column takes full width
+  .page-col-content {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  // General print optimizations
+  body {
+    font-size: 12pt;
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  * {
+    box-shadow: none !important;
+  }
+}
