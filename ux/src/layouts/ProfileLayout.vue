@@ -111,12 +111,11 @@ const sidenav = [
     icon: 'las la-bell',
     disabled: true
   },
-  // {
-  //   key: 'pages',
-  //   label: 'My Pages',
-  //   icon: 'las la-file-alt',
-  //   disabled: true
-  // },
+  {
+    key: 'pages',
+    label: t('profile.pages'),
+    icon: 'las la-file-alt'
+  },
   {
     key: 'activity',
     label: t('profile.activity'),

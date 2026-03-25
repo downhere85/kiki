@@ -76,8 +76,8 @@ extend type Query {
     orderByDirection: PageOrderByDirection
     tags: [String!]
     locale: String
-    creatorId: Int
-    authorId: Int
+    creatorId: UUID
+    authorId: UUID
   ): [PageListItem]
 
   pageById(

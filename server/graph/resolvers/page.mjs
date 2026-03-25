@@ -164,15 +164,15 @@ export default {
           if (args.locale) {
             queryBuilder.where('locale', args.locale)
           }
-          if (args.creatorId && args.authorId && args.creatorId > 0 && args.authorId > 0) {
+          if (args.creatorId && args.authorId) {
             queryBuilder.where(function () {
               this.where('creatorId', args.creatorId).orWhere('authorId', args.authorId)
             })
           } else {
-            if (args.creatorId && args.creatorId > 0) {
+            if (args.creatorId) {
               queryBuilder.where('creatorId', args.creatorId)
             }
-            if (args.authorId && args.authorId > 0) {
+            if (args.authorId) {
               queryBuilder.where('authorId', args.authorId)
             }
           }
