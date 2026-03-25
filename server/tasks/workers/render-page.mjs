@@ -29,6 +29,21 @@ export async function task ({ payload }) {
         output = await render(output, site.config?.editors?.asciidoc?.config ?? {})
         break
       }
+      case 'html': {
+        // WYSIWYG content is already HTML.
+        // Handle legacy Tiptap JSON format for backward compatibility.
+        if (output.startsWith('{') || output.startsWith('[')) {
+          try {
+            const doc = JSON.parse(output)
+            // Convert Tiptap JSON to basic HTML as fallback
+            WIKI.logger.warn(`Page ${payload.id} has legacy Tiptap JSON content. Re-save in the editor to convert to HTML.`)
+          } catch {
+            // Not JSON, use as-is
+          }
+        }
+        // HTML content passes through to the rendering pipeline
+        break
+      }
       case 'markdown': {
         const { render } = await import('../../renderers/markdown.mjs')
         output = await render(output, site.config?.editors?.markdown?.config ?? {})

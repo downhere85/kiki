@@ -95,6 +95,8 @@ import { Color } from '@tiptap/extension-color'
 import FontFamily from '@tiptap/extension-font-family'
 import Highlight from '@tiptap/extension-highlight'
 import Image from '@tiptap/extension-image'
+import Link from '@tiptap/extension-link'
+import Underline from '@tiptap/extension-underline'
 import Mention from '@tiptap/extension-mention'
 import Placeholder from '@tiptap/extension-placeholder'
 import Table from '@tiptap/extension-table'
@@ -178,6 +180,13 @@ const menuBar = [
     title: 'Strike',
     action: () => editor.value.chain().focus().toggleStrike().run(),
     isActive: () => editor.value.isActive('strike')
+  },
+  {
+    key: 'underline',
+    icon: 'mdi-format-underline',
+    title: 'Underline',
+    action: () => editor.value.chain().focus().toggleUnderline().run(),
+    isActive: () => editor.value.isActive('underline')
   },
   {
     key: 'code',
@@ -493,7 +502,7 @@ const menuBar = [
     icon: 'mdi-link-variant',
     title: 'Link',
     action: () => {
-      // TODO: insert link
+      insertLink()
     }
   },
   {
@@ -681,7 +690,7 @@ function init () {
 
   // -> Initialize TipTap
   editor = useEditor({
-    content: pageStore.content && pageStore.content.startsWith('{') ? JSON.parse(pageStore.content) : `<p>${pageStore.content}</p>`,
+    content: parseEditorContent(pageStore.content),
     extensions: [
       StarterKit.configure({
         codeBlock: false,
@@ -701,9 +710,13 @@ function init () {
         multicolor: true
       }),
       Image,
-      Mention.configure({
-        // TODO: suggestions
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          rel: 'noopener noreferrer nofollow'
+        }
       }),
+      Underline,
       Placeholder.configure({
         placeholder: 'Enter some content here...'
       }),
@@ -723,11 +736,55 @@ function init () {
       editorStore.$patch({
         lastChangeTimestamp: DateTime.utc()
       })
+      const html = editor.getHTML()
       pageStore.$patch({
-        content: JSON.stringify(editor.getJSON()),
-        render: editor.getHTML()
+        content: html,
+        render: html
       })
     }
+  })
+}
+
+/**
+ * Parse content for the editor.
+ * Handles both legacy Tiptap JSON format and new HTML format.
+ */
+function parseEditorContent (content) {
+  if (!content) return '<p></p>'
+  // Legacy: content stored as Tiptap JSON document
+  if (content.startsWith('{') || content.startsWith('[')) {
+    try {
+      return JSON.parse(content)
+    } catch {
+      // Not valid JSON, treat as HTML
+    }
+  }
+  // New format: content is HTML
+  if (content.startsWith('<')) return content
+  // Fallback: wrap plain text in paragraph
+  return `<p>${content}</p>`
+}
+
+function insertLink () {
+  // Get existing link if cursor is on one
+  const previousUrl = editor.value.getAttributes('link').href || ''
+
+  $q.dialog({
+    title: 'Insert Link',
+    prompt: {
+      model: previousUrl,
+      type: 'url',
+      label: 'URL',
+      outlined: true
+    },
+    cancel: true
+  }).onOk(url => {
+    if (!url) {
+      // Remove link
+      editor.value.chain().focus().extendMarkRange('link').unsetLink().run()
+      return
+    }
+    editor.value.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   })
 }
 
