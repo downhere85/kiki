@@ -594,4 +594,83 @@
     border-radius: 5px;
     padding: 5px;
   }
+
+  // ---------------------------------
+  // TABLES (WYSIWYG output)
+  // ---------------------------------
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+
+    td,
+    th {
+      min-width: 1em;
+      border: 1px solid #ced4da;
+      padding: 8px 12px;
+      vertical-align: top;
+
+      @at-root .body--dark & {
+        border-color: quasar.$grey-8;
+      }
+    }
+
+    th {
+      font-weight: 600;
+      text-align: left;
+      background-color: #f1f3f5;
+
+      @at-root .body--dark & {
+        background-color: quasar.$grey-9;
+      }
+    }
+  }
+
+  // ---------------------------------
+  // WYSIWYG ELEMENTS
+  // ---------------------------------
+
+  // Task lists from Tiptap
+  ul[data-type="taskList"] {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 4px;
+
+      > label {
+        flex: 0 0 auto;
+        margin-right: 8px;
+        user-select: none;
+
+        input[type="checkbox"] {
+          cursor: default;
+        }
+      }
+
+      > div {
+        flex: 1 1 auto;
+      }
+    }
+  }
+
+  // Highlights from Tiptap
+  mark {
+    padding: 2px 4px;
+    border-radius: 2px;
+  }
+
+  // Diagrams
+  .diagram {
+    text-align: center;
+    margin: 1rem 0;
+
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+  }
 }
