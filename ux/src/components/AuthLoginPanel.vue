@@ -755,11 +755,26 @@ async function forgotPassword () {
     if (!isFormValid) {
       throw new Error(t('auth.errors.forgotPassword'))
     }
-    // TODO: Implement forgot password
-    $q.notify({
-      type: 'negative',
-      message: 'Not implemented yet.'
+    await APOLLO_CLIENT.mutate({
+      mutation: gql`
+        mutation forgotPassword ($email: String!) {
+          forgotPassword(email: $email) {
+            operation {
+              succeeded
+              message
+            }
+          }
+        }
+      `,
+      variables: {
+        email: state.username
+      }
     })
+    $q.notify({
+      type: 'positive',
+      message: t('auth.forgotPasswordSuccess')
+    })
+    switchTo('login')
   } catch (err) {
     $q.notify({
       type: 'negative',
