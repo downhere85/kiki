@@ -99,7 +99,7 @@
         transition-show='jump-left'
         )
         q-list(padding, style='min-width: 225px;')
-          q-item(clickable, disabled, v-if='userStore.can(`manage:pages`)')
+          q-item(clickable, v-if='userStore.can(`manage:pages`)', @click='convertPage')
             q-item-section.items-center(avatar)
               q-icon(color='deep-orange-9', name='las la-atom', size='sm')
             q-item-section
@@ -152,6 +152,7 @@ import { useQuasar } from 'quasar'
 import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import gql from 'graphql-tag'
 
 import { useEditorStore } from '@/stores/editor'
 import { useFlagsStore } from '@/stores/flags'
@@ -201,6 +202,58 @@ function togglePageData () {
   siteStore.$patch({
     sideDialogComponent: 'PageDataDialog',
     sideDialogShown: true
+  })
+}
+
+function convertPage () {
+  const editors = [
+    { label: 'Markdown', value: 'markdown' },
+    { label: 'Visual Editor (WYSIWYG)', value: 'wysiwyg' },
+    { label: 'AsciiDoc', value: 'asciidoc' }
+  ].filter(e => e.value !== pageStore.editor)
+
+  $q.dialog({
+    title: 'Convert Page',
+    message: `Current editor: ${pageStore.editor}. Select the target editor format:`,
+    options: {
+      type: 'radio',
+      model: editors[0]?.value,
+      items: editors
+    },
+    cancel: true,
+    persistent: false
+  }).onOk(async (editor) => {
+    try {
+      const resp = await APOLLO_CLIENT.mutate({
+        mutation: gql`
+          mutation convertPage ($id: UUID!, $editor: String!) {
+            convertPage(id: $id, editor: $editor) {
+              operation {
+                succeeded
+                message
+              }
+            }
+          }
+        `,
+        variables: {
+          id: pageStore.id,
+          editor
+        }
+      })
+      const result = resp.data?.convertPage?.operation
+      if (result?.succeeded) {
+        $q.notify({ type: 'positive', message: 'Page converted successfully.' })
+        await pageStore.pageLoad({ id: pageStore.id })
+      } else {
+        throw new Error(result?.message || 'Conversion failed')
+      }
+    } catch (err) {
+      $q.notify({
+        type: 'negative',
+        message: 'Failed to convert page.',
+        caption: err.message
+      })
+    }
   })
 }
 
