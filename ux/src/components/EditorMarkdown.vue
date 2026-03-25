@@ -78,20 +78,20 @@
         icon='mdi-chart-multiline'
         padding='sm sm'
         flat
-        @click='notImplemented'
+        @click='insertDiagram'
         )
         q-tooltip(anchor='center right' self='center left') {{ t('editor.markup.insertDiagram') }}
       q-btn(
         icon='mdi-book-plus'
         padding='sm sm'
         flat
-        @click='notImplemented'
+        @click='insertFootnote'
         )
         q-tooltip(anchor='center right' self='center left') {{ t('editor.markup.insertFootnote') }}
       q-btn(
         icon='mdi-cookie-plus'
         padding='sm sm'
-        @click='notImplemented'
+        @click='insertEmoji'
         flat
         )
         q-tooltip(anchor='center right' self='center left') {{ t('editor.markup.insertEmoji') }}
@@ -395,6 +395,72 @@ function insertCodeBlock () {
 function insertTable () {
   siteStore.$patch({
     overlay: 'TableEditor'
+  })
+}
+
+function insertDiagram () {
+  const diagramTypes = [
+    { label: 'Mermaid - Flowchart', value: 'mermaid', template: 'graph TD\n    A[Start] --> B{Decision}\n    B -->|Yes| C[OK]\n    B -->|No| D[End]' },
+    { label: 'Mermaid - Sequence', value: 'mermaid-seq', template: 'sequenceDiagram\n    Alice->>Bob: Hello Bob\n    Bob-->>Alice: Hi Alice' },
+    { label: 'Mermaid - Gantt', value: 'mermaid-gantt', template: 'gantt\n    title Project\n    section Phase 1\n    Task 1: a1, 2024-01-01, 30d\n    Task 2: after a1, 20d' },
+    { label: 'PlantUML', value: 'plantuml', template: '@startuml\nAlice -> Bob: Hello\nBob --> Alice: Hi\n@enduml' }
+  ]
+
+  $q.dialog({
+    title: t('editor.markup.insertDiagram'),
+    options: {
+      type: 'radio',
+      model: 'mermaid',
+      items: diagramTypes.map(d => ({ label: d.label, value: d.value }))
+    },
+    cancel: true
+  }).onOk(val => {
+    const diagram = diagramTypes.find(d => d.value === val)
+    if (!diagram) return
+    const lang = val.startsWith('mermaid') ? 'mermaid' : 'plantuml'
+    insertAfter({ content: '```' + lang + '\n' + diagram.template + '\n```', newLine: true })
+  })
+}
+
+function insertFootnote () {
+  $q.dialog({
+    title: t('editor.markup.insertFootnote'),
+    prompt: {
+      model: '',
+      type: 'text',
+      label: 'Footnote text',
+      outlined: true
+    },
+    cancel: true
+  }).onOk(text => {
+    if (!text) return
+    const id = Date.now().toString(36)
+    insertAtCursor({ content: `[^${id}]` })
+    // Append footnote definition at end of document
+    const lineCount = editor.getModel().getLineCount()
+    const lastLineLength = editor.getModel().getLineContent(lineCount).length
+    editor.executeEdits('', [{
+      range: new Range(lineCount, lastLineLength + 1, lineCount, lastLineLength + 1),
+      text: `\n\n[^${id}]: ${text}`,
+      forceMoveMarkers: false
+    }])
+    editor.focus()
+  })
+}
+
+function insertEmoji () {
+  $q.dialog({
+    title: t('editor.markup.insertEmoji'),
+    prompt: {
+      model: '',
+      type: 'text',
+      label: 'Emoji name (e.g. smile, rocket, heart)',
+      outlined: true
+    },
+    cancel: true
+  }).onOk(name => {
+    if (!name) return
+    insertAtCursor({ content: `:${name.trim()}:` })
   })
 }
 
