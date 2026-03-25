@@ -84,6 +84,7 @@ q-page.column
                   .column.text-left.q-pr-md
                     .text-body2: strong {{rel.label}}
                     .text-caption {{rel.caption}}
+          page-comments(v-if='pageStore.allowComments')
     .page-sidebar(
       v-if='showSidebar'
       :style='siteStore.theme.tocPosition === `left` ? `order: 1;` : `order: 2;`'
@@ -174,6 +175,7 @@ import { useUserStore } from '@/stores/user'
 
 import LoadingGeneric from '@/components/LoadingGeneric.vue'
 import PageActionsCol from '@/components/PageActionsCol.vue'
+import PageComments from '@/components/PageComments.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import PageTags from '@/components/PageTags.vue'
 import SideDialog from '@/components/SideDialog.vue'
