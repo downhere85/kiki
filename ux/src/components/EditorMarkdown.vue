@@ -455,6 +455,7 @@ function insertBlock () {
 
 function insertDiagram () {
   const diagramTypes = [
+    { label: 'Draw.io (Visual Editor)', value: 'drawio', template: '' },
     { label: 'Mermaid - Flowchart', value: 'mermaid', template: 'graph TD\n    A[Start] --> B{Decision}\n    B -->|Yes| C[OK]\n    B -->|No| D[End]' },
     { label: 'Mermaid - Sequence', value: 'mermaid-seq', template: 'sequenceDiagram\n    Alice->>Bob: Hello Bob\n    Bob-->>Alice: Hi Alice' },
     { label: 'Mermaid - Gantt', value: 'mermaid-gantt', template: 'gantt\n    title Project\n    section Phase 1\n    Task 1: a1, 2024-01-01, 30d\n    Task 2: after a1, 20d' },
@@ -465,15 +466,39 @@ function insertDiagram () {
     title: t('editor.markup.insertDiagram'),
     options: {
       type: 'radio',
-      model: 'mermaid',
+      model: 'drawio',
       items: diagramTypes.map(d => ({ label: d.label, value: d.value }))
     },
     cancel: true
   }).onOk(val => {
+    if (val === 'drawio') {
+      openDrawio()
+      return
+    }
     const diagram = diagramTypes.find(d => d.value === val)
     if (!diagram) return
     const lang = val.startsWith('mermaid') ? 'mermaid' : 'plantuml'
     insertAfter({ content: '```' + lang + '\n' + diagram.template + '\n```', newLine: true })
+  })
+}
+
+function openDrawio () {
+  $q.dialog({
+    component: defineAsyncComponent(() => import('./DrawioDialog.vue'))
+  }).onOk(result => {
+    if (result?.svg) {
+      // Insert SVG as HTML in a diagram block
+      insertAfter({
+        content: `<div class="diagram">\n${result.svg}\n</div>`,
+        newLine: true
+      })
+    } else if (result?.xml) {
+      // Fallback: insert as a code block with draw.io XML
+      insertAfter({
+        content: '```drawio\n' + result.xml + '\n```',
+        newLine: true
+      })
+    }
   })
 }
 
