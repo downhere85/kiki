@@ -53,6 +53,22 @@ q-toolbar(
     ref='searchPanel'
     v-if='searchPanelIsShown'
     )
+    template(v-if='state.suggestions.length > 0')
+      .searchpanel-header Quick Results
+      q-list(dense)
+        q-item(
+          v-for='item of state.suggestions'
+          :key='item.id'
+          clickable
+          @mousedown.prevent='goToPage(item)'
+          dense
+          )
+          q-item-section(avatar)
+            q-icon(name='las la-file-alt', size='xs', color='grey')
+          q-item-section
+            q-item-label {{ item.title }}
+            q-item-label(caption) /{{ item.path }}
+      q-separator.q-my-sm
     template(v-if='siteStore.tagsLoaded && siteStore.tags.length > 0')
       .searchpanel-header
         span Popular Tags
@@ -87,7 +103,8 @@ import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { orderBy } from 'lodash-es'
+import { orderBy, debounce } from 'lodash-es'
+import gql from 'graphql-tag'
 
 import { useSiteStore } from '@/stores/site'
 
@@ -111,7 +128,8 @@ const { t } = useI18n()
 // DATA
 
 const state = reactive({
-  searchIsFocused: false
+  searchIsFocused: false,
+  suggestions: []
 })
 
 const searchPanel = ref(null)
@@ -133,6 +151,37 @@ watch(searchPanelIsShown, (newValue) => {
   if (newValue) {
     siteStore.fetchTags()
   }
+})
+
+const fetchSuggestions = debounce(async (query) => {
+  if (!query || query.length < 2) {
+    state.suggestions = []
+    return
+  }
+  try {
+    const resp = await APOLLO_CLIENT.query({
+      query: gql`
+        query searchSuggestions ($query: String!) {
+          searchPages(query: $query, limit: 5) {
+            results {
+              id
+              title
+              path
+            }
+          }
+        }
+      `,
+      variables: { query },
+      fetchPolicy: 'network-only'
+    })
+    state.suggestions = resp.data?.searchPages?.results ?? []
+  } catch {
+    state.suggestions = []
+  }
+}, 300)
+
+watch(() => siteStore.search, (val) => {
+  fetchSuggestions(val)
 })
 
 // METHODS
@@ -160,6 +209,13 @@ function checkSearchFocus (ev) {
   if (!searchPanel.value?.contains(ev.relatedTarget)) {
     state.searchIsFocused = false
   }
+}
+
+function goToPage (item) {
+  state.searchIsFocused = false
+  state.suggestions = []
+  siteStore.search = ''
+  router.push(`/${item.path}`)
 }
 
 function addTag (tag) {

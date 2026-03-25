@@ -64,14 +64,14 @@
         icon='mdi-tab-plus'
         padding='sm sm'
         flat
-        @click='notImplemented'
+        @click='insertTabset'
         )
         q-tooltip(anchor='center right' self='center left') {{ t('editor.markup.insertTabset') }}
       q-btn(
         icon='mdi-toy-brick-plus'
         padding='sm sm'
         flat
-        @click='notImplemented'
+        @click='insertBlock'
         )
         q-tooltip(anchor='center right' self='center left') {{ t('editor.markup.insertBlock') }}
       q-btn(
@@ -402,6 +402,54 @@ function insertCodeBlock () {
 function insertTable () {
   siteStore.$patch({
     overlay: 'TableEditor'
+  })
+}
+
+function insertTabset () {
+  $q.dialog({
+    title: t('editor.markup.insertTabset'),
+    prompt: {
+      model: 'Tab 1, Tab 2, Tab 3',
+      type: 'text',
+      label: 'Tab names (comma-separated)',
+      outlined: true
+    },
+    cancel: true
+  }).onOk(input => {
+    if (!input) return
+    const tabs = input.split(',').map(t => t.trim()).filter(Boolean)
+    if (tabs.length < 1) return
+    const lines = ['# Tabs {.tabset}', '']
+    for (const tab of tabs) {
+      lines.push(`## ${tab}`, '', `Content for ${tab}`, '')
+    }
+    insertAfter({ content: lines.join('\n'), newLine: true })
+  })
+}
+
+function insertBlock () {
+  const blocks = [
+    { label: 'Info', value: 'info', icon: 'ℹ️' },
+    { label: 'Warning', value: 'warning', icon: '⚠️' },
+    { label: 'Success', value: 'success', icon: '✅' },
+    { label: 'Danger', value: 'danger', icon: '🚫' }
+  ]
+
+  $q.dialog({
+    title: t('editor.markup.insertBlock'),
+    options: {
+      type: 'radio',
+      model: 'info',
+      items: blocks.map(b => ({ label: `${b.icon} ${b.label}`, value: b.value }))
+    },
+    cancel: true
+  }).onOk(type => {
+    const block = blocks.find(b => b.value === type)
+    if (!block) return
+    insertAfter({
+      content: `> **${block.label}**\n> Your content here\n{.is-${type}}`,
+      newLine: true
+    })
   })
 }
 
