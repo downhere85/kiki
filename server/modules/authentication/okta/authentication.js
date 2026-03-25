@@ -4,21 +4,23 @@
 // Okta Account
 // ------------------------------------
 
-const OktaStrategy = require('passport-okta-oauth').Strategy
+const OpenIDConnectStrategy = require('passport-openidconnect').Strategy
 const _ = require('lodash')
 
 module.exports = {
   init (passport, conf) {
+    const issuer = conf.issuer || `${conf.audience}/oauth2/default`
     passport.use(conf.key,
-      new OktaStrategy({
-        audience: conf.audience,
+      new OpenIDConnectStrategy({
+        issuer,
+        authorizationURL: conf.authorizationURL || `${issuer}/v1/authorize`,
+        tokenURL: conf.tokenURL || `${issuer}/v1/token`,
+        userInfoURL: conf.userInfoURL || `${issuer}/v1/userinfo`,
         clientID: conf.clientId,
         clientSecret: conf.clientSecret,
-        idp: conf.idp,
         callbackURL: conf.callbackURL,
-        response_type: 'code',
         passReqToCallback: true
-      }, async (req, accessToken, refreshToken, profile, cb) => {
+      }, async (req, iss, sub, profile, cb) => {
         try {
           const user = await WIKI.db.users.processProfile({
             providerKey: req.params.strategy,
@@ -33,5 +35,12 @@ module.exports = {
         }
       })
     )
+  },
+  logout (conf) {
+    if (!conf.logoutURL) {
+      return '/'
+    } else {
+      return conf.logoutURL
+    }
   }
 }

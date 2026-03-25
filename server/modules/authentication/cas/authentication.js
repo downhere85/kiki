@@ -4,7 +4,7 @@
 // CAS Account
 // ------------------------------------
 
-const CASStrategy = require('passport-cas').Strategy
+const CASStrategy = require('@coursetable/passport-cas').Strategy
 
 module.exports = {
   init (passport, conf) {

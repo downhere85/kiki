@@ -1,6 +1,6 @@
 import express from 'express'
-import ExpressBrute from 'express-brute'
-import BruteKnex from '../helpers/brute-knex.mjs'
+import rateLimit from 'express-rate-limit'
+import KnexRateLimitStore from '../helpers/rate-limit-knex.mjs'
 import { find, isEmpty, set } from 'lodash-es'
 import path from 'node:path'
 import { DateTime } from 'luxon'
@@ -8,15 +8,17 @@ import { DateTime } from 'luxon'
 export default function () {
   const router = express.Router()
 
-  const bruteforce = new ExpressBrute(new BruteKnex({
-    createTable: true,
-    knex: WIKI.db.knex
-  }), {
-    freeRetries: 5,
-    minWait: 5 * 60 * 1000, // 5 minutes
-    maxWait: 60 * 60 * 1000, // 1 hour
-    failCallback: (req, res, next) => {
-      res.status(401).send('Too many failed attempts. Try again later.')
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // 5 attempts per window
+    standardHeaders: true,
+    legacyHeaders: false,
+    store: new KnexRateLimitStore({
+      knex: WIKI.db.knex,
+      createTable: true
+    }),
+    handler: (req, res) => {
+      res.status(429).send('Too many failed attempts. Try again later.')
     }
   })
 
@@ -106,11 +108,11 @@ export default function () {
   /**
    * Verify
    */
-  router.get('/verify/:token', bruteforce.prevent, async (req, res, next) => {
+  router.get('/verify/:token', limiter, async (req, res, next) => {
     try {
       const usr = await WIKI.db.userKeys.validateToken({ kind: 'verify', token: req.params.token })
       await WIKI.db.users.query().patch({ isVerified: true }).where('id', usr.id)
-      req.brute.reset()
+      await limiter.resetKey(req.ip)
       if (WIKI.config.auth.enforce2FA) {
         res.redirect('/login')
       } else {
@@ -126,13 +128,13 @@ export default function () {
   /**
    * Reset Password
    */
-  router.get('/login-reset/:token', bruteforce.prevent, async (req, res, next) => {
+  router.get('/login-reset/:token', limiter, async (req, res, next) => {
     try {
       const usr = await WIKI.db.userKeys.validateToken({ kind: 'resetPwd', token: req.params.token })
       if (!usr) {
         throw new Error('Invalid Token')
       }
-      req.brute.reset()
+      await limiter.resetKey(req.ip)
 
       const changePwdContinuationToken = await WIKI.db.userKeys.generateToken({
         userId: usr.id,

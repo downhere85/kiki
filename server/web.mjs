@@ -84,6 +84,13 @@ export async function init () {
       res.set('Strict-Transport-Security', `max-age=${WIKI.config.security.securityHSTSDuration}; includeSubDomains`)
     }
 
+    // -> Content Security Policy
+    if (WIKI.config.security.enforceCsp) {
+      const directives = WIKI.config.security.cspDirectives ||
+        "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' ws: wss:"
+      res.set('Content-Security-Policy', directives)
+    }
+
     // -> Prevent Open Redirect from user provided URL
     if (WIKI.config.security.securityOpenRedirect) {
       // Strips out all repeating / character in the provided URL
