@@ -21,7 +21,7 @@ q-layout(view='hHh Lpr lff')
         icon='las la-sitemap'
         color='white'
         aria-label='Browse'
-        @click='notImplemented'
+        @click='browsePages'
         )
         q-tooltip(anchor='center right' self='center left') Browse
       q-separator.q-my-sm(inset, dark)
@@ -74,7 +74,7 @@ q-layout(view='hHh Lpr lff')
           label='Browse'
           aria-label='Browse'
           size='sm'
-          @click='notImplemented'
+          @click='browsePages'
           )
       nav-sidebar
       q-bar.sidebar-footerbtns.text-white(
@@ -186,6 +186,10 @@ const isSidebarMini = computed(() => {
 })
 
 // METHODS
+
+function browsePages () {
+  siteStore.$patch({ overlay: 'BrowsePages' })
+}
 
 function notImplemented () {
   $q.notify({
