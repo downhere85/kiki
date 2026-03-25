@@ -9,7 +9,7 @@
         icon='mdi-link-variant-plus'
         padding='sm sm'
         flat
-        @click='notImplemented'
+        @click='insertLink'
         )
         q-tooltip(anchor='center right' self='center left') {{ t('editor.markup.insertLink') }}
       q-btn(
@@ -50,7 +50,7 @@
         icon='mdi-code-json'
         padding='sm sm'
         flat
-        @click='notImplemented'
+        @click='insertCodeBlock'
         )
         q-tooltip(anchor='center right' self='center left') {{ t('editor.markup.insertCodeBlock') }}
       q-btn(
@@ -331,6 +331,65 @@ function insertAssetClb (opts) {
   setTimeout(() => {
     editor.focus()
   }, 500)
+}
+
+function insertLink () {
+  // Get selected text to use as link label
+  const selection = editor.getSelection()
+  const selectedText = editor.getModel().getValueInRange(selection) || ''
+
+  $q.dialog({
+    title: t('editor.markup.insertLink'),
+    message: t('editor.markup.insertLinkHint'),
+    prompt: {
+      model: '',
+      type: 'text',
+      label: 'URL',
+      outlined: true
+    },
+    cancel: true,
+    persistent: false
+  }).onOk(url => {
+    if (!url) return
+    const label = selectedText || url
+    if (selectedText) {
+      // Replace selection with link
+      editor.executeEdits('', [{
+        range: selection,
+        text: `[${label}](${url})`,
+        forceMoveMarkers: true
+      }])
+    } else {
+      insertAtCursor({ content: `[${label}](${url})` })
+    }
+  })
+}
+
+function insertCodeBlock () {
+  const languages = [
+    'javascript', 'typescript', 'python', 'bash', 'html', 'css', 'json',
+    'yaml', 'sql', 'go', 'rust', 'java', 'c', 'cpp', 'csharp', 'php',
+    'ruby', 'swift', 'kotlin', 'markdown', 'xml', 'dockerfile', 'plaintext'
+  ]
+
+  $q.dialog({
+    title: t('editor.markup.insertCodeBlock'),
+    message: t('editor.markup.insertCodeBlockHint'),
+    options: {
+      type: 'radio',
+      model: 'javascript',
+      inline: false,
+      items: languages.map(l => ({ label: l, value: l }))
+    },
+    cancel: true,
+    persistent: false
+  }).onOk(lang => {
+    insertAfter({ content: '```' + (lang || '') + '\n\n```', newLine: true })
+    // Move cursor into the code block
+    const pos = editor.getPosition()
+    editor.setPosition({ lineNumber: pos.lineNumber - 1, column: 1 })
+    editor.focus()
+  })
 }
 
 function insertTable () {
