@@ -161,8 +161,8 @@ const fetchSuggestions = debounce(async (query) => {
   try {
     const resp = await APOLLO_CLIENT.query({
       query: gql`
-        query searchSuggestions ($query: String!) {
-          searchPages(query: $query, limit: 5) {
+        query searchSuggestions ($query: String!, $siteId: UUID!) {
+          searchPages(query: $query, siteId: $siteId, limit: 5) {
             results {
               id
               title
@@ -171,7 +171,7 @@ const fetchSuggestions = debounce(async (query) => {
           }
         }
       `,
-      variables: { query },
+      variables: { query, siteId: siteStore.id },
       fetchPolicy: 'network-only'
     })
     state.suggestions = resp.data?.searchPages?.results ?? []
