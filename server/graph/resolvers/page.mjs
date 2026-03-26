@@ -152,11 +152,8 @@ export default {
         'contentType',
         'createdAt',
         'updatedAt'
+        'tags'
       ])
-        .withGraphJoined('tags')
-        .modifyGraph('tags', builder => {
-          builder.select('tag')
-        })
         .modify(queryBuilder => {
           if (args.limit) {
             queryBuilder.limit(args.limit)
@@ -177,7 +174,7 @@ export default {
             }
           }
           if (args.tags && args.tags.length > 0) {
-            queryBuilder.whereIn('tags.tag', args.tags.map(t => _.trim(t).toLowerCase()))
+            queryBuilder.where('tags', '@>', args.tags.map(t => _.trim(t).toLowerCase()))
           }
           const orderDir = args.orderByDirection === 'DESC' ? 'desc' : 'asc'
           switch (args.orderBy) {
@@ -205,7 +202,7 @@ export default {
         })
       }).map(r => ({
         ...r,
-        tags: _.map(r.tags, 'tag')
+        tags: r.tags ?? []
       }))
       if (args.tags && args.tags.length > 0) {
         results = _.filter(results, r => _.every(args.tags, t => _.includes(r.tags, t)))

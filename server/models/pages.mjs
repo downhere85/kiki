@@ -61,18 +61,8 @@ export class Page extends Model {
 
   static get relationMappings () {
     return {
-      // tags: {
-      //   relation: Model.ManyToManyRelation,
-      //   modelClass: Tag,
-      //   join: {
-      //     from: 'pages.id',
-      //     through: {
-      //       from: 'pageTags.pageId',
-      //       to: 'pageTags.tagId'
-      //     },
-      //     to: 'tags.id'
-      //   }
-      // },
+      // tags are stored as text[] column on pages table directly
+      // no join table needed
       links: {
         relation: Model.HasManyRelation,
         modelClass: PageLink,
