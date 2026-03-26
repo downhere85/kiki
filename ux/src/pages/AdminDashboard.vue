@@ -116,7 +116,6 @@ q-page.admin-dashboard
             color='primary'
             icon='las la-chart-area'
             :label='t(`admin.analytics.title`)'
-            :disable='!flagsStore.experimental'
             :to='`/_admin/` + adminStore.currentSiteId + `/analytics`'
             )
     //- .col-12.col-lg-9
@@ -144,12 +143,61 @@ q-page.admin-dashboard
             :label='t(`admin.system.title`)'
             to='/_admin/system'
             )
+
+    //- PAGE INSIGHTS
+    .col-12.q-mt-md
+      q-card
+        q-card-section
+          .text-h6.text-primary
+            q-icon.q-mr-sm(name='las la-chart-bar')
+            | Page Insights
+        q-separator
+        q-tabs(v-model='state.insightsTab', dense, align='left', active-color='primary', indicator-color='primary')
+          q-tab(name='popular', label='Most Viewed')
+          q-tab(name='rated', label='Top Rated')
+          q-tab(name='lowrated', label='Low Rated')
+        q-separator
+        q-tab-panels(v-model='state.insightsTab', animated)
+          q-tab-panel(name='popular')
+            q-table(
+              :rows='state.pagesByViews'
+              :columns='viewColumns'
+              row-key='id'
+              flat
+              dense
+              :loading='state.insightsLoading'
+              :pagination='{ rowsPerPage: 10 }'
+              )
+          q-tab-panel(name='rated')
+            q-table(
+              :rows='topRatedPages'
+              :columns='ratingColumns'
+              row-key='id'
+              flat
+              dense
+              :loading='state.insightsLoading'
+              :pagination='{ rowsPerPage: 10 }'
+              )
+          q-tab-panel(name='lowrated')
+            q-table(
+              :rows='lowRatedPages'
+              :columns='ratingColumns'
+              row-key='id'
+              flat
+              dense
+              :loading='state.insightsLoading'
+              :pagination='{ rowsPerPage: 10 }'
+              )
+              template(#no-data)
+                .text-grey No pages with low ratings yet.
 </template>
 
 <script setup>
 import { useMeta, useQuasar } from 'quasar'
+import { computed, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import gql from 'graphql-tag'
 
 import { useAdminStore } from '../stores/admin'
 import { useFlagsStore } from '@/stores/flags'
@@ -214,6 +262,71 @@ function checkForUpdates () {
     component: CheckUpdateDialog
   })
 }
+
+// PAGE INSIGHTS
+
+const state = reactive({
+  insightsTab: 'popular',
+  insightsLoading: false,
+  pagesByViews: [],
+  allPages: []
+})
+
+const viewColumns = [
+  { name: 'title', label: 'Page', field: 'title', align: 'left', sortable: true },
+  { name: 'path', label: 'Path', field: 'path', align: 'left', sortable: true },
+  { name: 'viewCount', label: 'Views', field: 'viewCount', align: 'center', sortable: true },
+  { name: 'avgRating', label: 'Avg Rating', field: 'avgRating', align: 'center', sortable: true, format: v => v > 0 ? `${v} / 5` : '-' }
+]
+
+const ratingColumns = [
+  { name: 'title', label: 'Page', field: 'title', align: 'left', sortable: true },
+  { name: 'path', label: 'Path', field: 'path', align: 'left', sortable: true },
+  { name: 'avgRating', label: 'Avg Rating', field: 'avgRating', align: 'center', sortable: true, format: v => v > 0 ? `${v} / 5` : '-' },
+  { name: 'ratingCount', label: 'Votes', field: 'ratingCount', align: 'center', sortable: true },
+  { name: 'viewCount', label: 'Views', field: 'viewCount', align: 'center', sortable: true }
+]
+
+const topRatedPages = computed(() => {
+  return [...state.allPages].filter(p => p.ratingCount > 0).sort((a, b) => b.avgRating - a.avgRating)
+})
+
+const lowRatedPages = computed(() => {
+  return [...state.allPages].filter(p => p.ratingCount > 0 && p.avgRating <= 2.5).sort((a, b) => a.avgRating - b.avgRating)
+})
+
+async function fetchPageInsights () {
+  state.insightsLoading = true
+  try {
+    const resp = await APOLLO_CLIENT.query({
+      query: gql`
+        query pageAnalytics {
+          pageAnalytics(limit: 50, orderBy: VIEWS) {
+            id
+            path
+            title
+            viewCount
+            ratingScore
+            ratingCount
+            avgRating
+            updatedAt
+          }
+        }
+      `,
+      fetchPolicy: 'network-only'
+    })
+    const pages = resp.data?.pageAnalytics ?? []
+    state.pagesByViews = [...pages].sort((a, b) => b.viewCount - a.viewCount)
+    state.allPages = pages
+  } catch (err) {
+    $q.notify({ type: 'negative', message: 'Failed to load page insights.', caption: err.message })
+  }
+  state.insightsLoading = false
+}
+
+onMounted(() => {
+  fetchPageInsights()
+})
 
 </script>
 

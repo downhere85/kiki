@@ -163,6 +163,7 @@ import { computed, defineAsyncComponent, nextTick, onMounted, reactive, ref, wat
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { DateTime } from 'luxon'
+import gql from 'graphql-tag'
 
 import { renderMermaidDiagrams } from '@/helpers/mermaid'
 import { useCommonStore } from '@/stores/common'
@@ -271,6 +272,44 @@ function findTocNode (nodes, key) {
   return null
 }
 
+// -> Submit rating when user clicks stars
+watch(() => state.currentRating, async (newVal, oldVal) => {
+  if (newVal !== oldVal && pageStore.id) {
+    try {
+      await APOLLO_CLIENT.mutate({
+        mutation: gql`
+          mutation ratePage ($id: UUID!, $rating: Int!) {
+            ratePage(id: $id, rating: $rating) {
+              operation { succeeded message }
+            }
+          }
+        `,
+        variables: { id: pageStore.id, rating: newVal }
+      })
+      $q.notify({ type: 'positive', message: `Rated ${newVal} stars. Thanks!` })
+    } catch {
+      $q.notify({ type: 'negative', message: 'Failed to submit rating.' })
+    }
+  }
+})
+
+// -> Track page view (aggregate only, no user data)
+async function trackPageView () {
+  if (!pageStore.id) return
+  try {
+    await APOLLO_CLIENT.mutate({
+      mutation: gql`
+        mutation trackPageView ($id: UUID!) {
+          trackPageView(id: $id) {
+            operation { succeeded }
+          }
+        }
+      `,
+      variables: { id: pageStore.id }
+    })
+  } catch {}
+}
+
 const thumbStyle = {
   right: '2px',
   borderRadius: '5px',
@@ -357,6 +396,8 @@ watch(() => route.path, async (newValue) => {
         isActive: false
       })
     }
+    // -> Track page view
+    trackPageView()
     // -> Load Blocks & Render Diagrams
     nextTick(() => {
       if (pageContents.value) {

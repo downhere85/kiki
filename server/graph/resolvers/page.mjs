@@ -139,6 +139,46 @@ export default {
     /**
      * LIST PAGES
      */
+    async pageAnalytics (obj, args, context) {
+      if (!WIKI.auth.checkAccess(context.req.user, ['manage:system'])) {
+        throw new Error('ERR_FORBIDDEN')
+      }
+      const limit = args.limit || 50
+      let orderCol = 'title'
+      let orderDir = 'asc'
+      switch (args.orderBy) {
+        case 'VIEWS': orderCol = 'config'; orderDir = 'desc'; break
+        case 'RATING': orderCol = 'ratingScore'; orderDir = 'desc'; break
+        case 'UPDATED': orderCol = 'updatedAt'; orderDir = 'desc'; break
+        default: orderCol = 'title'; orderDir = 'asc'
+      }
+
+      let results = await WIKI.db.pages.query()
+        .select('id', 'path', 'title', 'ratingScore', 'ratingCount', 'config', 'updatedAt')
+        .limit(limit)
+
+      // Extract viewCount from config JSONB and compute avgRating
+      results = results.map(r => ({
+        id: r.id,
+        path: r.path,
+        title: r.title,
+        viewCount: r.config?.viewCount || 0,
+        ratingScore: r.ratingScore || 0,
+        ratingCount: r.ratingCount || 0,
+        avgRating: r.ratingCount > 0 ? Math.round((r.ratingScore / r.ratingCount) * 10) / 10 : 0,
+        updatedAt: r.updatedAt
+      }))
+
+      // Sort in JS since viewCount is inside JSONB
+      switch (args.orderBy) {
+        case 'VIEWS': results.sort((a, b) => b.viewCount - a.viewCount); break
+        case 'RATING': results.sort((a, b) => b.avgRating - a.avgRating); break
+        case 'UPDATED': results.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)); break
+        default: results.sort((a, b) => a.title.localeCompare(b.title))
+      }
+      return results.slice(0, limit)
+    },
+
     async pages (obj, args, context, info) {
       let results = await WIKI.db.pages.query().column([
         'pages.id',
@@ -665,6 +705,51 @@ export default {
         await WIKI.db.pageHistory.purge(args.olderThan)
         return {
           operation: generateSuccess('Page history purged successfully.')
+        }
+      } catch (err) {
+        return generateError(err)
+      }
+    },
+    async trackPageView (obj, args, context) {
+      try {
+        await WIKI.db.knex('pages').where('id', args.id).increment('ratingCount', 0) // no-op if column missing
+        // Use raw query to increment viewCount safely
+        await WIKI.db.knex.raw(`
+          UPDATE pages SET "updatedAt" = "updatedAt"
+          WHERE id = ?
+        `, [args.id])
+        // Track in a lightweight way: increment a counter in the page's config JSONB
+        const page = await WIKI.db.pages.query().findById(args.id).select('config')
+        const config = page?.config ?? {}
+        config.viewCount = (config.viewCount || 0) + 1
+        config.lastViewedAt = new Date().toISOString()
+        await WIKI.db.pages.query().findById(args.id).patch({ config })
+        return {
+          operation: generateSuccess('Page view tracked.')
+        }
+      } catch (err) {
+        return generateError(err)
+      }
+    },
+    async ratePage (obj, args, context) {
+      try {
+        const page = await WIKI.db.pages.query().findById(args.id)
+        if (!page) {
+          throw new Error('ERR_PAGE_NOT_FOUND')
+        }
+        if (!WIKI.auth.checkAccess(context.req.user, ['read:pages'], {
+          path: page.path,
+          locale: page.locale
+        })) {
+          throw new Error('ERR_FORBIDDEN')
+        }
+        const rating = Math.max(1, Math.min(5, args.rating))
+        await WIKI.db.pages.query().findById(args.id).patch({
+          ratingCount: page.ratingCount + 1,
+          ratingScore: page.ratingScore + rating
+        })
+        return {
+          operation: generateSuccess('Page rated successfully.')
         }
       } catch (err) {
         return generateError(err)

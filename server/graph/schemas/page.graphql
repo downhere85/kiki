@@ -70,6 +70,11 @@ extend type Query {
     query: String!
   ): [String]
 
+  pageAnalytics(
+    limit: Int
+    orderBy: PageAnalyticsOrderBy
+  ): [PageAnalyticsItem]
+
   pages(
     limit: Int
     orderBy: PageOrderBy
@@ -203,6 +208,15 @@ extend type Mutation {
 
   purgePagesHistory (
     olderThan: String!
+  ): DefaultResponse
+
+  ratePage(
+    id: UUID!
+    rating: Int!
+  ): DefaultResponse
+
+  trackPageView(
+    id: UUID!
   ): DefaultResponse
 }
 
@@ -465,4 +479,22 @@ enum PageRelationPosition {
   left
   center
   right
+}
+
+enum PageAnalyticsOrderBy {
+  VIEWS
+  RATING
+  TITLE
+  UPDATED
+}
+
+type PageAnalyticsItem {
+  id: UUID
+  path: String
+  title: String
+  viewCount: Int
+  ratingScore: Int
+  ratingCount: Int
+  avgRating: Float
+  updatedAt: Date
 }
