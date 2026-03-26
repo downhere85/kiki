@@ -208,8 +208,7 @@ function togglePageData () {
 function convertPage () {
   const editors = [
     { label: 'Markdown', value: 'markdown' },
-    { label: 'Visual Editor (WYSIWYG)', value: 'wysiwyg' },
-    { label: 'AsciiDoc', value: 'asciidoc' }
+    { label: 'Visual Editor (WYSIWYG)', value: 'wysiwyg' }
   ].filter(e => e.value !== pageStore.editor)
 
   $q.dialog({

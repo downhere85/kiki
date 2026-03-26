@@ -221,80 +221,80 @@ const menuBar = [
     icon: 'mdi-palette',
     title: 'Text Color',
     type: 'dropdown',
-    isActive: () => editor.value.isActive('color'),
+    isActive: () => editor.value.isActive('textStyle'),
     children: [
       {
         key: 'color-blue',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle',
         title: 'Blue',
         color: 'blue',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().setColor('#1976D2').run()
       },
       {
         key: 'color-brown',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle',
         title: 'Brown',
         color: 'brown',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().setColor('#795548').run()
       },
       {
         key: 'color-green',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle',
         title: 'Green',
         color: 'green',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().setColor('#4CAF50').run()
       },
       {
         key: 'color-orange',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle',
         title: 'Orange',
         color: 'orange',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().setColor('#FF9800').run()
       },
       {
         key: 'color-pink',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle',
         title: 'Pink',
         color: 'pink',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().setColor('#E91E63').run()
       },
       {
         key: 'color-purple',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle',
         title: 'Purple',
         color: 'purple',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().setColor('#9C27B0').run()
       },
       {
         key: 'color-red',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle',
         title: 'Red',
         color: 'red',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().setColor('#F44336').run()
       },
       {
         key: 'color-teal',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle',
         title: 'Teal',
         color: 'teal',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().setColor('#009688').run()
       },
       {
         key: 'color-yellow',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle',
         title: 'Yellow',
         color: 'yellow',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().setColor('#FFC107').run()
       },
       {
         type: 'divider'
       },
       {
         key: 'color-remove',
-        icon: 'mdi-palette',
+        icon: 'mdi-circle-off-outline',
         title: 'Default',
         color: 'grey',
-        action: () => editor.value.chain().focus().unsetHighlight().run()
+        action: () => editor.value.chain().focus().unsetColor().run()
       }
     ]
   },
@@ -310,35 +310,35 @@ const menuBar = [
         icon: 'mdi-marker',
         title: 'Yellow',
         color: 'yellow',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().toggleHighlight({ color: '#FFF9C4' }).run()
       },
       {
         key: 'highlight-blue',
         icon: 'mdi-marker',
         title: 'Blue',
         color: 'blue',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().toggleHighlight({ color: '#BBDEFB' }).run()
       },
       {
         key: 'highlight-pink',
         icon: 'mdi-marker',
         title: 'Pink',
         color: 'pink',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().toggleHighlight({ color: '#F8BBD0' }).run()
       },
       {
         key: 'highlight-green',
         icon: 'mdi-marker',
         title: 'Green',
         color: 'green',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().toggleHighlight({ color: '#C8E6C9' }).run()
       },
       {
         key: 'highlight-orange',
         icon: 'mdi-marker',
         title: 'Orange',
         color: 'orange',
-        action: () => editor.value.chain().focus().toggleHighlight().run()
+        action: () => editor.value.chain().focus().toggleHighlight({ color: '#FFE0B2' }).run()
       },
       {
         type: 'divider'
@@ -789,17 +789,8 @@ function insertLink () {
 }
 
 function insertTable () {
-  // this.ql.getModule('table').insertTable(3, 3)
+  editor.value.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
 }
-function snapshot () {
-  // console.info(Y.encodeStateVector(this.ydoc))
-}
-
-// MOUNTED
-
-onMounted(() => {
-  // init()
-})
 
 onBeforeUnmount(() => {
   editor.value.destroy()
