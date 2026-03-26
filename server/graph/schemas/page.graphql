@@ -327,22 +327,20 @@ type PageSearchResult {
 }
 
 type PageListItem {
-  id: Int
+  id: UUID
   path: String
   locale: String
   title: String
   description: String
   contentType: String
-  isPublished: Boolean
-  isPrivate: Boolean
-  privateNS: String
+  publishState: PagePublishState
   createdAt: Date
   updatedAt: Date
   tags: [String]
 }
 
 type PageTreeItem {
-  id: Int
+  id: UUID
   path: String
   depth: Int
   title: String
