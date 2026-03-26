@@ -64,7 +64,7 @@ export const useSiteStore = defineStore('site', {
     },
     sideDialogShown: false,
     sideDialogComponent: '',
-    docsBase: 'https://beta.js.wiki/docs',
+    docsBase: 'https://github.com/downhere85/kiki/wiki',
     nav: {
       currentId: null,
       items: []
