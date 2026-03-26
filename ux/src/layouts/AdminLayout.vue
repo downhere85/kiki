@@ -6,7 +6,7 @@ q-layout.admin(view='hHh Lpr lff')
         q-btn(dense, flat, to='/')
           q-avatar(size='34px', square)
             img(src='/_assets/logo-wikijs.svg')
-        q-toolbar-title.text-h6 Wiki.js
+        q-toolbar-title.text-h6 Kiki
       q-toolbar.gt-sm.justify-center(style='height: 64px;', dark)
         .text-overline.text-uppercase.text-grey {{ t('admin.adminArea') }}
         q-badge.q-ml-sm(
@@ -295,7 +295,7 @@ const { t } = useI18n()
 // META
 
 useMeta({
-  titleTemplate: title => `${title} - ${t('admin.adminArea')} - Wiki.js`
+  titleTemplate: title => `${title} - ${t('admin.adminArea')} - Kiki`
 })
 
 // DATA

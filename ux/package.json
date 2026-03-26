@@ -1,9 +1,9 @@
 {
-  "name": "wiki-ux",
+  "name": "kiki-ux",
   "version": "3.0.0",
-  "description": "The most powerful and extensible open source Wiki software",
-  "productName": "Wiki.js",
-  "author": "Nicolas Giard <nick@requarks.io>",
+  "description": "Kiki — a community-driven fork of Wiki.js v3",
+  "productName": "Kiki",
+  "author": "Kenneth Tan",
   "private": true,
   "type": "module",
   "scripts": {

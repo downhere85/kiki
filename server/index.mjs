@@ -1,5 +1,5 @@
 // ===========================================
-// Wiki.js Server
+// Kiki Server (based on Wiki.js)
 // Licensed under AGPLv3
 // ===========================================
 

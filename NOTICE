@@ -1,0 +1,31 @@
+Kiki
+Copyright 2025-2026 Kenneth Tan
+
+This software is a fork of Wiki.js v3, originally developed by:
+  Wiki.js - Copyright 2017-2024 Requarks (https://requarks.io)
+  Licensed under the GNU Affero General Public License v3.0
+
+Kiki is a modified version of Wiki.js. Modifications include:
+- Feature completion for the v3 alpha (page history, browse mode,
+  3rd party authentication, password reset, editor enhancements,
+  comments, search autocomplete, and more)
+- Bug fixes (authentication strategy loading, deprecated dependencies,
+  GraphQL schema type corrections)
+- UI rebranding from Wiki.js to Kiki
+- Modernization of server dependencies
+
+The original Wiki.js source code is available at:
+  https://github.com/requarks/wiki
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.

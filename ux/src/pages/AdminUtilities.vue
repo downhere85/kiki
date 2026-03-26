@@ -254,7 +254,7 @@ function invalidateAuthCertificates () {
     // Auth certificate regeneration requires server restart
     $q.notify({
       type: 'info',
-      message: 'Auth certificate invalidation requires a server restart. Please restart the Wiki.js server.'
+      message: 'Auth certificate invalidation requires a server restart. Please restart the Kiki server.'
     })
   })
 }

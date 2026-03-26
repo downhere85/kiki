@@ -12,7 +12,7 @@
           <EButton px="10" py="10" :style="button" :href="buttonLink"> {{ buttonText }} </EButton>
           <EHr :style="hr" />
           <EText :style="footer"> This link will expire in 24 hours. </EText>
-          <EText :style="footer"> Wiki.js, an open source project. </EText>
+          <EText :style="footer"> Kiki, based on Wiki.js — an open source project. </EText>
         </ESection>
       </EContainer>
     </EBody>
