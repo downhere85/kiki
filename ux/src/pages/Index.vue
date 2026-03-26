@@ -29,7 +29,7 @@ q-page.column
       .text-caption.text-grey-6 Last modified on #[strong {{lastModified}}]
   page-header
   .page-container.row.no-wrap.items-stretch(style='flex: 1 1 100%;')
-    .col(
+    .col.page-col(
       :style='siteStore.theme.tocPosition === `left` ? `order: 2;` : `order: 1;`'
       )
       q-no-ssr(

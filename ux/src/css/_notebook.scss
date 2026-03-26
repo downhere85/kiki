@@ -1,0 +1,281 @@
+// ===========================================
+// Kiki Paper Notebook Theme
+// Nostalgic student notebook aesthetic
+// ===========================================
+
+// ------------------------------------------------------------------
+// GOOGLE FONTS - Import a slightly handwritten-feel serif
+// ------------------------------------------------------------------
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+// ------------------------------------------------------------------
+// GLOBAL NOTEBOOK BACKGROUND
+// ------------------------------------------------------------------
+
+body.body--light {
+  background-color: #F0EBE3 !important;
+}
+
+// ------------------------------------------------------------------
+// HEADER - Dark walnut wood / leather cover
+// ------------------------------------------------------------------
+
+.q-header {
+  background: linear-gradient(180deg, #3D2B1F 0%, #4A3728 100%) !important;
+  box-shadow: 0 2px 8px rgba(61, 43, 31, 0.3) !important;
+}
+
+// ------------------------------------------------------------------
+// LEFT SIDEBAR - Cardboard cover feel
+// ------------------------------------------------------------------
+
+.q-drawer--left {
+  .body--light & {
+    background: linear-gradient(135deg, #8B7355 0%, #7A6548 100%) !important;
+  }
+}
+
+// ------------------------------------------------------------------
+// PAGE CONTENT - Creamy notebook paper with ruled lines
+// ------------------------------------------------------------------
+
+.body--light .page-contents {
+  background-color: var(--notebook-cream) !important;
+  background-image:
+    repeating-linear-gradient(
+      transparent,
+      transparent 31px,
+      var(--notebook-line) 31px,
+      var(--notebook-line) 32px
+    );
+  background-size: 100% 32px;
+  background-position: 0 8px;
+  padding: 16px 40px 40px 52px !important;
+  position: relative;
+  min-height: 80vh;
+  border-radius: 2px;
+  box-shadow:
+    inset 0 0 40px rgba(139, 115, 85, 0.05),
+    0 1px 4px rgba(0, 0, 0, 0.08);
+
+  // Red margin line
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 44px;
+    bottom: 0;
+    width: 1px;
+    background: var(--notebook-margin);
+    z-index: 1;
+  }
+}
+
+// ------------------------------------------------------------------
+// RING BINDER - Left edge holes
+// ------------------------------------------------------------------
+
+.body--light .page-col {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: -4px;
+    width: 16px;
+    height: 16px;
+    background: #F0EBE3;
+    border: 2px solid var(--ring-metal);
+    border-radius: 50%;
+    box-shadow:
+      0 60px 0 0 #F0EBE3,
+      0 60px 0 2px var(--ring-metal),
+      0 120px 0 0 #F0EBE3,
+      0 120px 0 2px var(--ring-metal),
+      0 180px 0 0 #F0EBE3,
+      0 180px 0 2px var(--ring-metal),
+      0 240px 0 0 #F0EBE3,
+      0 240px 0 2px var(--ring-metal);
+    z-index: 10;
+  }
+}
+
+// ------------------------------------------------------------------
+// RIGHT SIDEBAR - Slightly aged paper
+// ------------------------------------------------------------------
+
+.body--light .page-sidebar {
+  background-color: #F5F0E8 !important;
+  border-left: 1px solid rgba(139, 115, 85, 0.15);
+}
+
+// ------------------------------------------------------------------
+// TYPOGRAPHY - Serif headings, clean sans body
+// ------------------------------------------------------------------
+
+.page-contents {
+  font-family: 'Source Sans 3', 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 32px; // Match the ruled lines
+  color: #2C2416;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', Georgia, 'Times New Roman', serif;
+    color: #3D2B1F;
+    font-weight: 700;
+    margin-top: 32px; // Align to ruled lines
+  }
+
+  h1 {
+    font-size: 1.8em;
+    line-height: 64px; // 2 lines
+    border-bottom: 2px solid rgba(139, 115, 85, 0.2);
+    padding-bottom: 4px;
+  }
+
+  h2 {
+    font-size: 1.4em;
+    line-height: 32px;
+  }
+
+  h3 {
+    font-size: 1.15em;
+    line-height: 32px;
+  }
+
+  a {
+    color: #6B5B4F;
+    text-decoration-color: rgba(107, 91, 79, 0.3);
+    &:hover {
+      color: #C4956A;
+    }
+  }
+
+  blockquote {
+    border-left: 3px solid #C4956A;
+    background: rgba(196, 149, 106, 0.08);
+    padding: 8px 16px;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+    color: #5C4A3A;
+  }
+
+  code {
+    background: rgba(139, 115, 85, 0.1);
+    color: #6B5B4F;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  pre {
+    background: #2C2416 !important;
+    border-radius: 6px;
+    padding: 16px;
+
+    code {
+      background: transparent;
+      color: #E8DFD5;
+      padding: 0;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+
+    th {
+      background: rgba(139, 115, 85, 0.15);
+      font-family: 'Merriweather', serif;
+      font-weight: 700;
+    }
+
+    td, th {
+      border: 1px solid rgba(139, 115, 85, 0.2);
+      padding: 6px 12px;
+    }
+
+    tr:nth-child(even) {
+      background: rgba(139, 115, 85, 0.04);
+    }
+  }
+}
+
+// ------------------------------------------------------------------
+// PAGE HEADER - Warm tones
+// ------------------------------------------------------------------
+
+.body--light .page-header {
+  border-bottom: 1px solid rgba(139, 115, 85, 0.15) !important;
+
+  .page-header-title {
+    font-family: 'Merriweather', Georgia, serif !important;
+    color: #3D2B1F !important;
+    font-weight: 700;
+  }
+}
+
+// ------------------------------------------------------------------
+// TOC & TAGS SIDEBAR
+// ------------------------------------------------------------------
+
+.body--light .page-toc {
+  .q-tree__node--selected {
+    color: #6B5B4F;
+    font-weight: 600;
+  }
+}
+
+// ------------------------------------------------------------------
+// BREADCRUMB BAR
+// ------------------------------------------------------------------
+
+.body--light .q-toolbar {
+  &.bg-grey-3 {
+    background: #EDE7DD !important;
+    color: #6B5B4F;
+  }
+}
+
+// ------------------------------------------------------------------
+// FOOTER - Subtle, warm
+// ------------------------------------------------------------------
+
+.body--light .site-footer {
+  background-color: #EDE7DD !important;
+  color: #8B7355 !important;
+}
+
+// ------------------------------------------------------------------
+// BUTTONS & ACCENTS
+// ------------------------------------------------------------------
+
+.body--light {
+  .q-btn--flat.text-primary {
+    color: #6B5B4F !important;
+  }
+}
+
+// ------------------------------------------------------------------
+// CARDS & DIALOGS
+// ------------------------------------------------------------------
+
+.body--light {
+  .q-card {
+    border-radius: 6px;
+  }
+
+  .card-header {
+    background: linear-gradient(180deg, #3D2B1F 0%, #4A3728 100%) !important;
+  }
+}
+
+// ------------------------------------------------------------------
+// SCROLLBAR - Warm tones
+// ------------------------------------------------------------------
+
+html {
+  --scrollbarBG: #EDE7DD;
+  --thumbBG: #B8A898;
+}
