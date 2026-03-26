@@ -44,44 +44,44 @@ module.exports = {
     }
   },
   async created(page) {
-    WIKI.logger.info(`(STORAGE/DISK) Creating file [${page.localeCode}] ${page.path}...`)
+    WIKI.logger.info(`(STORAGE/DISK) Creating file [${page.locale}] ${page.path}...`)
     let fileName = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
-    if (WIKI.config.lang.code !== page.localeCode) {
-      fileName = `${page.localeCode}/${fileName}`
+    if (WIKI.config.lang.code !== page.locale) {
+      fileName = `${page.locale}/${fileName}`
     }
     const filePath = path.join(this.config.path, fileName)
     await fs.outputFile(filePath, page.injectMetadata(), 'utf8')
   },
   async updated(page) {
-    WIKI.logger.info(`(STORAGE/DISK) Updating file [${page.localeCode}] ${page.path}...`)
+    WIKI.logger.info(`(STORAGE/DISK) Updating file [${page.locale}] ${page.path}...`)
     let fileName = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
-    if (WIKI.config.lang.code !== page.localeCode) {
-      fileName = `${page.localeCode}/${fileName}`
+    if (WIKI.config.lang.code !== page.locale) {
+      fileName = `${page.locale}/${fileName}`
     }
     const filePath = path.join(this.config.path, fileName)
     await fs.outputFile(filePath, page.injectMetadata(), 'utf8')
   },
   async deleted(page) {
-    WIKI.logger.info(`(STORAGE/DISK) Deleting file [${page.localeCode}] ${page.path}...`)
+    WIKI.logger.info(`(STORAGE/DISK) Deleting file [${page.locale}] ${page.path}...`)
     let fileName = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
-    if (WIKI.config.lang.code !== page.localeCode) {
-      fileName = `${page.localeCode}/${fileName}`
+    if (WIKI.config.lang.code !== page.locale) {
+      fileName = `${page.locale}/${fileName}`
     }
     const filePath = path.join(this.config.path, fileName)
     await fs.unlink(filePath)
   },
   async renamed(page) {
-    WIKI.logger.info(`(STORAGE/DISK) Renaming file [${page.localeCode}] ${page.path} to [${page.destinationLocaleCode}] ${page.destinationPath}...`)
+    WIKI.logger.info(`(STORAGE/DISK) Renaming file [${page.locale}] ${page.path} to [${page.destinationLocale}] ${page.destinationPath}...`)
 
     let sourceFilePath = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
     let destinationFilePath = `${page.destinationPath}.${pageHelper.getFileExtension(page.contentType)}`
 
     if (WIKI.config.lang.namespacing) {
-      if (WIKI.config.lang.code !== page.localeCode) {
-        sourceFilePath = `${page.localeCode}/${sourceFilePath}`
+      if (WIKI.config.lang.code !== page.locale) {
+        sourceFilePath = `${page.locale}/${sourceFilePath}`
       }
-      if (WIKI.config.lang.code !== page.destinationLocaleCode) {
-        destinationFilePath = `${page.destinationLocaleCode}/${destinationFilePath}`
+      if (WIKI.config.lang.code !== page.destinationLocale) {
+        destinationFilePath = `${page.destinationLocale}/${destinationFilePath}`
       }
     }
 
@@ -125,15 +125,15 @@ module.exports = {
 
     // -> Pages
     await pipeline(
-      WIKI.db.knex.column('path', 'localeCode', 'title', 'description', 'contentType', 'content', 'isPublished', 'updatedAt', 'createdAt').select().from('pages').where({
-        isPrivate: false
+      WIKI.db.knex.column('path', 'locale', 'title', 'description', 'contentType', 'content', 'publishState', 'updatedAt', 'createdAt').select().from('pages').where({
+        publishState: 'published'
       }).stream(),
       new stream.Transform({
         objectMode: true,
         transform: async (page, enc, cb) => {
           let fileName = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
-          if (WIKI.config.lang.code !== page.localeCode) {
-            fileName = `${page.localeCode}/${fileName}`
+          if (WIKI.config.lang.code !== page.locale) {
+            fileName = `${page.locale}/${fileName}`
           }
           WIKI.logger.info(`(STORAGE/DISK) Dumping page ${fileName}...`)
           const filePath = path.join(this.config.path, fileName)

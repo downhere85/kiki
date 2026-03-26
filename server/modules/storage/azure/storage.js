@@ -7,8 +7,8 @@ const _ = require('lodash')
 
 const getFilePath = (page, pathKey) => {
   const fileName = `${page[pathKey]}.${pageHelper.getFileExtension(page.contentType)}`
-  const withLocaleCode = WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.localeCode
-  return withLocaleCode ? `${page.localeCode}/${fileName}` : fileName
+  const withLocale = WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.locale
+  return withLocale ? `${page.locale}/${fileName}` : fileName
 }
 
 module.exports = {
@@ -63,11 +63,11 @@ module.exports = {
     let sourceFilePath = getFilePath(page, 'path')
     let destinationFilePath = getFilePath(page, 'destinationPath')
     if (WIKI.config.lang.namespacing) {
-      if (WIKI.config.lang.code !== page.localeCode) {
-        sourceFilePath = `${page.localeCode}/${sourceFilePath}`
+      if (WIKI.config.lang.code !== page.locale) {
+        sourceFilePath = `${page.locale}/${sourceFilePath}`
       }
-      if (WIKI.config.lang.code !== page.destinationLocaleCode) {
-        destinationFilePath = `${page.destinationLocaleCode}/${destinationFilePath}`
+      if (WIKI.config.lang.code !== page.destinationLocale) {
+        destinationFilePath = `${page.destinationLocale}/${destinationFilePath}`
       }
     }
     const sourceBlockBlobClient = this.container.getBlockBlobClient(sourceFilePath)
@@ -124,8 +124,8 @@ module.exports = {
 
     // -> Pages
     await pipeline(
-      WIKI.db.knex.column('path', 'localeCode', 'title', 'description', 'contentType', 'content', 'isPublished', 'updatedAt', 'createdAt').select().from('pages').where({
-        isPrivate: false
+      WIKI.db.knex.column('path', 'locale', 'title', 'description', 'contentType', 'content', 'publishState', 'updatedAt', 'createdAt').select().from('pages').where({
+        publishState: 'published'
       }).stream(),
       new stream.Transform({
         objectMode: true,
