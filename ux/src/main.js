@@ -17,6 +17,7 @@ import '@quasar/extras/line-awesome/line-awesome.css'
 // Import Quasar css
 import 'quasar/src/css/index.sass'
 import './css/app.scss'
+import './css/notebook.scss'
 
 import RootApp from './App.vue'
 
