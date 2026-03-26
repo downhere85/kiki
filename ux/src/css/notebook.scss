@@ -482,3 +482,270 @@ body::-webkit-scrollbar-thumb {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
+
+// ==================================================================
+// EDITOR - Match dark charcoal theme
+// ==================================================================
+
+// Editor left toolbar (icon strip)
+.body--light .editor-markdown-sidebar,
+.body--light .editor-wysiwyg-sidebar {
+  background: #3A3330 !important;
+  border-radius: 0 !important;
+
+  .q-btn {
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12) !important;
+      transform: scale(1.05);
+    }
+  }
+}
+
+// Editor top formatting toolbar
+.body--light .editor-markdown-toolbar,
+.body--light .editor-wysiwyg-toolbar {
+  background: #F5F2EE !important;
+  border-bottom: 1px solid rgba(139, 115, 85, 0.1) !important;
+
+  .q-btn {
+    border-radius: 6px !important;
+
+    &:hover {
+      background: rgba(139, 115, 85, 0.08) !important;
+    }
+  }
+}
+
+// Editor preview pane — match page content styling
+.body--light .editor-markdown-preview,
+.body--light .render-preview {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif !important;
+  font-size: 15.5px;
+  line-height: 1.75;
+  color: #3A3330;
+  -webkit-font-smoothing: antialiased;
+  background: #FFFFFF !important;
+  padding: 32px !important;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+    color: #2A2220;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+}
+
+// Editor page header area
+.body--light .editor-markdown-header {
+  background: transparent !important;
+}
+
+// Editor right action column
+.body--light .editor-actions-col {
+  background: #3A3330 !important;
+
+  .q-btn {
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12) !important;
+    }
+  }
+}
+
+// "Render Preview" tab bar
+.body--light .q-tabs--dense {
+  background: #F5F2EE !important;
+}
+
+// ==================================================================
+// ADMIN AREA - Warm tones, rounded cards
+// ==================================================================
+
+// Admin layout background
+.body--light .admin {
+  background: #F0EBE3 !important;
+}
+
+// Admin header
+.body--light .admin .q-header {
+  background: linear-gradient(135deg, #3D2B1F 0%, #5A3E2E 100%) !important;
+  border-radius: 0 !important; // Full width in admin
+}
+
+// Admin left sidebar
+.body--light .admin .q-drawer--left,
+.body--light .admin .q-drawer--left .q-drawer__content {
+  background: #2A2220 !important;
+  border-radius: 0 !important;
+}
+
+// Admin sidebar items
+.body--light .admin .q-drawer--left {
+  .q-item {
+    border-radius: 8px !important;
+    margin: 1px 6px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    &.q-router-link--active {
+      background: rgba(255, 255, 255, 0.12) !important;
+    }
+  }
+
+  // Section headers
+  .q-item-type {
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    font-size: 0.7em;
+    letter-spacing: 0.1em;
+  }
+}
+
+// Admin dashboard cards
+.body--light .admin {
+  .q-card {
+    border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// Admin page content area
+.body--light .admin .q-page {
+  background: #F0EBE3 !important;
+}
+
+// Admin status banner
+.body--light .admin .q-banner {
+  border-radius: 10px !important;
+}
+
+// Hide the Donate button (or restyle it)
+.body--light .admin .q-drawer--left .q-btn[href*="donate"],
+.body--light .admin .q-drawer--left a[href*="donate"] {
+  display: none !important;
+}
+
+// Admin form inputs
+.body--light .admin {
+  .q-field--outlined .q-field__control {
+    border-radius: 8px !important;
+  }
+
+  .q-toggle,
+  .q-checkbox {
+    border-radius: 6px;
+  }
+}
+
+// ==================================================================
+// COMMENTS SECTION - On page view
+// ==================================================================
+
+.body--light .page-comments {
+  margin-top: 2em;
+  padding-top: 1.5em;
+  border-top: 1px solid rgba(139, 115, 85, 0.1);
+
+  .comment-item {
+    background: #FAFAF8;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  .comment-author {
+    font-weight: 600;
+    color: #3A3330;
+  }
+
+  .comment-date {
+    color: #A09080;
+    font-size: 0.85em;
+  }
+
+  .comment-body {
+    margin-top: 8px;
+    line-height: 1.65;
+    color: #4A4340;
+  }
+
+  // Comment input
+  .comment-input {
+    border-radius: 10px !important;
+    background: #FAFAF8;
+    border: 1px solid rgba(139, 115, 85, 0.12);
+
+    &:focus-within {
+      border-color: rgba(139, 115, 85, 0.3);
+      box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.06);
+    }
+  }
+}
+
+// ==================================================================
+// OVERLAYS - Match theme (Browse, History, Source, etc)
+// ==================================================================
+
+.body--light .main-overlay {
+  .q-layout {
+    background: #F0EBE3 !important;
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, #3D2B1F 0%, #5A3E2E 100%) !important;
+    border-radius: 0 !important;
+  }
+
+  .q-list {
+    .q-item {
+      border-radius: 8px;
+      margin: 2px 0;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: rgba(139, 115, 85, 0.06);
+      }
+    }
+  }
+}
+
+// ==================================================================
+// LOGIN PAGE
+// ==================================================================
+
+.body--light .auth-login {
+  background: #F0EBE3 !important;
+
+  .q-card {
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  }
+
+  .q-btn {
+    border-radius: 10px !important;
+  }
+
+  .q-field--outlined .q-field__control {
+    border-radius: 10px !important;
+  }
+}
