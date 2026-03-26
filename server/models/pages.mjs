@@ -1071,74 +1071,7 @@ export class Page extends Model {
    * @param {string} opts.mode - Page Update mode (create, move, delete)
    * @returns {Promise} Promise with no value
    */
-  static async reconnectLinks (opts) {
-    return
-    // TODO: fix this
-    const pageHref = `/${opts.locale}/${opts.path}`
-    const replaceArgs = {
-      from: '',
-      to: ''
-    }
-    switch (opts.mode) {
-      case 'create':
-        replaceArgs.from = `<a href="${pageHref}" class="is-internal-link is-invalid-page">`
-        replaceArgs.to = `<a href="${pageHref}" class="is-internal-link is-valid-page">`
-        break
-      case 'move':
-        const prevPageHref = `/${opts.sourceLocale}/${opts.sourcePath}`
-        replaceArgs.from = `<a href="${prevPageHref}" class="is-internal-link is-valid-page">`
-        replaceArgs.to = `<a href="${pageHref}" class="is-internal-link is-valid-page">`
-        break
-      case 'delete':
-        replaceArgs.from = `<a href="${pageHref}" class="is-internal-link is-valid-page">`
-        replaceArgs.to = `<a href="${pageHref}" class="is-internal-link is-invalid-page">`
-        break
-      default:
-        return false
-    }
-
-    let affectedHashes = []
-    // -> Perform replace and return affected page hashes (POSTGRES only)
-    if (WIKI.config.db.type === 'postgres') {
-      const qryHashes = await WIKI.db.pages.query()
-        .returning('hash')
-        .patch({
-          render: WIKI.db.knex.raw('REPLACE(??, ?, ?)', ['render', replaceArgs.from, replaceArgs.to])
-        })
-        .whereIn('pages.id', function () {
-          this.select('pageLinks.pageId').from('pageLinks').where({
-            'pageLinks.path': opts.path,
-            'pageLinks.locale': opts.locale
-          })
-        })
-      affectedHashes = qryHashes.map(h => h.hash)
-    } else {
-      // -> Perform replace, then query affected page hashes (MYSQL, MARIADB, MSSQL, SQLITE only)
-      await WIKI.db.pages.query()
-        .patch({
-          render: WIKI.db.knex.raw('REPLACE(??, ?, ?)', ['render', replaceArgs.from, replaceArgs.to])
-        })
-        .whereIn('pages.id', function () {
-          this.select('pageLinks.pageId').from('pageLinks').where({
-            'pageLinks.path': opts.path,
-            'pageLinks.locale': opts.locale
-          })
-        })
-      const qryHashes = await WIKI.db.pages.query()
-        .column('hash')
-        .whereIn('pages.id', function () {
-          this.select('pageLinks.pageId').from('pageLinks').where({
-            'pageLinks.path': opts.path,
-            'pageLinks.locale': opts.locale
-          })
-        })
-      affectedHashes = qryHashes.map(h => h.hash)
-    }
-    for (const hash of affectedHashes) {
-      await WIKI.db.pages.deletePageFromCache(hash)
-      WIKI.events.outbound.emit('deletePageFromCache', hash)
-    }
-  }
+  // reconnectLinks was removed — v2 dead code (started with bare return)
 
   /**
    * Trigger the rendering of a page

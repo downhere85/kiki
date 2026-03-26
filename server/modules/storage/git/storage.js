@@ -246,10 +246,10 @@ module.exports = {
    * @param {Object} page Page to create
    */
   async created(page) {
-    WIKI.logger.info(`(STORAGE/GIT) Committing new file [${page.localeCode}] ${page.path}...`)
+    WIKI.logger.info(`(STORAGE/GIT) Committing new file [${page.locale}] ${page.path}...`)
     let fileName = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
-    if (WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.localeCode) {
-      fileName = `${page.localeCode}/${fileName}`
+    if (WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.locale) {
+      fileName = `${page.locale}/${fileName}`
     }
     const filePath = path.join(this.repoPath, fileName)
     await fs.outputFile(filePath, page.injectMetadata(), 'utf8')
@@ -268,10 +268,10 @@ module.exports = {
    * @param {Object} page Page to update
    */
   async updated(page) {
-    WIKI.logger.info(`(STORAGE/GIT) Committing updated file [${page.localeCode}] ${page.path}...`)
+    WIKI.logger.info(`(STORAGE/GIT) Committing updated file [${page.locale}] ${page.path}...`)
     let fileName = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
-    if (WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.localeCode) {
-      fileName = `${page.localeCode}/${fileName}`
+    if (WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.locale) {
+      fileName = `${page.locale}/${fileName}`
     }
     const filePath = path.join(this.repoPath, fileName)
     await fs.outputFile(filePath, page.injectMetadata(), 'utf8')
@@ -290,10 +290,10 @@ module.exports = {
    * @param {Object} page Page to delete
    */
   async deleted(page) {
-    WIKI.logger.info(`(STORAGE/GIT) Committing removed file [${page.localeCode}] ${page.path}...`)
+    WIKI.logger.info(`(STORAGE/GIT) Committing removed file [${page.locale}] ${page.path}...`)
     let fileName = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
-    if (WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.localeCode) {
-      fileName = `${page.localeCode}/${fileName}`
+    if (WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.locale) {
+      fileName = `${page.locale}/${fileName}`
     }
 
     const gitFilePath = `./${fileName}`
@@ -310,16 +310,16 @@ module.exports = {
    * @param {Object} page Page to rename
    */
   async renamed(page) {
-    WIKI.logger.info(`(STORAGE/GIT) Committing file move from [${page.localeCode}] ${page.path} to [${page.destinationLocaleCode}] ${page.destinationPath}...`)
+    WIKI.logger.info(`(STORAGE/GIT) Committing file move from [${page.locale}] ${page.path} to [${page.destinationLocale}] ${page.destinationPath}...`)
     let sourceFileName = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
     let destinationFileName = `${page.destinationPath}.${pageHelper.getFileExtension(page.contentType)}`
 
     if (WIKI.config.lang.namespacing) {
-      if (WIKI.config.lang.code !== page.localeCode) {
-        sourceFileName = `${page.localeCode}/${sourceFileName}`
+      if (WIKI.config.lang.code !== page.locale) {
+        sourceFileName = `${page.locale}/${sourceFileName}`
       }
-      if (WIKI.config.lang.code !== page.destinationLocaleCode) {
-        destinationFileName = `${page.destinationLocaleCode}/${destinationFileName}`
+      if (WIKI.config.lang.code !== page.destinationLocale) {
+        destinationFileName = `${page.destinationLocale}/${destinationFileName}`
       }
     }
 
@@ -422,15 +422,15 @@ module.exports = {
 
     // -> Pages
     await pipeline(
-      WIKI.db.knex.column('path', 'localeCode', 'title', 'description', 'contentType', 'content', 'isPublished', 'updatedAt', 'createdAt').select().from('pages').where({
-        isPrivate: false
+      WIKI.db.knex.column('path', 'locale', 'title', 'description', 'contentType', 'content', 'publishState', 'updatedAt', 'createdAt').select().from('pages').where({
+        publishState: 'published'
       }).stream(),
       new stream.Transform({
         objectMode: true,
         transform: async (page, enc, cb) => {
           let fileName = `${page.path}.${pageHelper.getFileExtension(page.contentType)}`
-          if (WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.localeCode) {
-            fileName = `${page.localeCode}/${fileName}`
+          if (WIKI.config.lang.namespacing && WIKI.config.lang.code !== page.locale) {
+            fileName = `${page.locale}/${fileName}`
           }
           WIKI.logger.info(`(STORAGE/GIT) Adding page ${fileName}...`)
           const filePath = path.join(this.repoPath, fileName)

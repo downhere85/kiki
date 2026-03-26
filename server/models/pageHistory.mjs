@@ -114,7 +114,7 @@ export class PageHistory extends Model {
         'pageHistory.path',
         'pageHistory.title',
         'pageHistory.description',
-        'pageHistory.isPublished',
+        'pageHistory.publishState',
         'pageHistory.publishStartDate',
         'pageHistory.publishEndDate',
         'pageHistory.content',
@@ -126,7 +126,7 @@ export class PageHistory extends Model {
         'pageHistory.versionDate',
         {
           versionId: 'pageHistory.id',
-          editor: 'pageHistory.editorKey',
+          editor: 'pageHistory.editor',
           locale: 'pageHistory.locale',
           authorName: 'author.name'
         }

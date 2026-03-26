@@ -397,5 +397,10 @@ export default {
         return generateError(err)
       }
     }
+  },
+  AssetItem: {
+    ext (asset) { return asset.fileExt ?? asset.ext },
+    mime (asset) { return asset.mimeType ?? asset.mime },
+    metadata (asset) { return asset.meta ?? asset.metadata }
   }
 }

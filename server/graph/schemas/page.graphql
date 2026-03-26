@@ -290,8 +290,7 @@ type PageVersion {
   versionDate: Date
   description: String
   editor: String
-  isPrivate: Boolean
-  isPublished: Boolean
+  publishState: PagePublishState
   locale: String
   pageId: UUID
   path: String

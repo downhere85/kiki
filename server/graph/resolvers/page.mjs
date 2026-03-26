@@ -688,17 +688,11 @@ export default {
 
       return page.content
     },
-    // async tags (page) {
-    //   return WIKI.db.pages.relatedQuery('tags').for(page.id)
-    // },
     tocDepth (page) {
       return {
         min: page.extra?.tocDepth?.min ?? 1,
         max: page.extra?.tocDepth?.max ?? 2
       }
     }
-    // comments(pg) {
-    //   return pg.$relatedQuery('comments')
-    // }
   }
 }

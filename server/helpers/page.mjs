@@ -75,10 +75,10 @@ export function injectPageMetadata(page) {
   const meta = [
     ['title', page.title],
     ['description', page.description],
-    ['published', page.isPublished.toString()],
+    ['published', page.publishState ?? 'published'],
     ['date', page.updatedAt],
-    ['tags', page.tags ? page.tags.map(t => t.tag).join(', ') : ''],
-    ['editor', page.editorKey],
+    ['tags', Array.isArray(page.tags) ? page.tags.join(', ') : ''],
+    ['editor', page.editor],
     ['dateCreated', page.createdAt]
   ]
   switch (page.contentType) {

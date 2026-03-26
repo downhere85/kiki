@@ -61,6 +61,8 @@ input CommentProviderInput {
 
 type CommentPost {
   id: UUID
+  pageId: UUID
+  replyTo: UUID
   content: String
   render: String
   authorId: UUID
