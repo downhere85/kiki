@@ -151,7 +151,7 @@ export default {
         'privateNS',
         'contentType',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
         'tags'
       ])
         .modify(queryBuilder => {
