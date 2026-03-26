@@ -769,20 +769,27 @@ body::-webkit-scrollbar-thumb {
 }
 
 .mermaid-collapsible-inner {
-  overflow: hidden;
+  overflow: auto;
   transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: #C4B5A0 transparent;
 
-  // Fade overlay when collapsed
-  .mermaid-collapsible[data-expanded="false"] & {
-    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #C4B5A0;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
   }
 
   svg {
     display: block;
     margin: 0 auto;
-    max-width: 100%;
   }
 }
 
