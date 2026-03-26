@@ -681,14 +681,20 @@ export class Page extends Model {
     }
     // -> Exclude password-protected content from being indexed
     const safeContent = page.password ? '' : WIKI.db.pages.cleanHTML(page.render)
+    // -> Truncate content to avoid exceeding btree index row size limit (max ~2KB tsvector)
+    const truncatedContent = safeContent.length > 50000 ? safeContent.substring(0, 50000) : safeContent
     const dictName = getDictNameFromLocale(page.locale)
-    return WIKI.db.knex('pages').where('id', page.id).update({
-      searchContent: safeContent,
-      ts: WIKI.db.knex.raw(`
-        setweight(to_tsvector('${dictName}', coalesce(title,'')), 'A') ||
-        setweight(to_tsvector('${dictName}', coalesce(description,'')), 'B') ||
-        setweight(to_tsvector('${dictName}', coalesce(?,'')), 'C')`, [safeContent])
-    })
+    try {
+      return await WIKI.db.knex('pages').where('id', page.id).update({
+        searchContent: safeContent,
+        ts: WIKI.db.knex.raw(`
+          setweight(to_tsvector('${dictName}', coalesce(title,'')), 'A') ||
+          setweight(to_tsvector('${dictName}', coalesce(description,'')), 'B') ||
+          setweight(to_tsvector('${dictName}', coalesce(?,'')), 'C')`, [truncatedContent])
+      })
+    } catch (err) {
+      WIKI.logger.warn(`Failed to update search index for page ${page.id}: ${err.message}`)
+    }
   }
 
   /**
