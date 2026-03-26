@@ -20,11 +20,9 @@
 //   element.removeClass('prefetch-candidate')
 // }
 
-module.exports = {
-  async init($) {
-    // const promises = $('img.prefetch-candidate').map((index, element) => {
-    //   return prefetch($(element))
-    // }).toArray()
-    // await Promise.all(promises)
-  }
+export async function render ($) {
+  // const promises = $('img.prefetch-candidate').map((index, element) => {
+  //   return prefetch($(element))
+  // }).toArray()
+  // await Promise.all(promises)
 }

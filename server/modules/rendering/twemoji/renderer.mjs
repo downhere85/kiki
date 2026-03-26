@@ -1,14 +1,12 @@
-// const twemoji = require('twemoji')
+// import twemoji from 'twemoji'
 
 // ------------------------------------
 // HTML - Twemoji
 // ------------------------------------
 
-module.exports = {
-  init (input, conf) {
-    // TODO: Must limit to text nodes only (exclude code blocks, already processed emojis, etc.)
-    //
-    // return twemoji.parse(input)
-    return input
-  }
+export async function render (input, conf) {
+  // TODO: Must limit to text nodes only (exclude code blocks, already processed emojis, etc.)
+  //
+  // return twemoji.parse(input)
+  return input
 }

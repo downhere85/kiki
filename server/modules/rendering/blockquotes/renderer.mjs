@@ -1,5 +1,3 @@
-module.exports = {
-  init($, config) {
+export async function render ($, config) {
 
-  }
 }

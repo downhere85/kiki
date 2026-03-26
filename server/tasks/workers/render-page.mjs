@@ -55,6 +55,8 @@ export async function task ({ payload }) {
     await WIKI.db.renderers.fetchDefinitions()
     const pipeline = await WIKI.db.renderers.getRenderingPipeline(page.contentType)
 
+    WIKI.logger.info(`Render pipeline for ${page.contentType}: ${pipeline.map(c => `${c.key}(children: ${c.children?.map(ch => ch.key).join(',') || 'none'})`).join(' → ')}`)
+
     for (const core of pipeline) {
       const { render } = (await import(`../../modules/rendering/${core.key}/renderer.mjs`))
       output = await render.call({

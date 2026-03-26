@@ -1,7 +1,7 @@
-import { reject } from 'lodash-es'
+import { reject, kebabCase, filter, sortBy, endsWith, some, differenceWith, map } from 'lodash-es'
 import * as cheerio from 'cheerio'
 import uslug from 'uslug'
-import pageHelper from '../../../helpers/page'
+import * as pageHelper from '../../../helpers/page.mjs'
 import { URL } from 'node:url'
 
 const mustacheRegExp = /(\{|&#x7b;?){2}(.+?)(\}|&#x7d;?){2}/i
@@ -51,7 +51,7 @@ export async function render () {
     // -> Assign local / external tag
     if (href.indexOf('://') < 0) {
       // -> Remove trailing slash
-      if (_.endsWith('/')) {
+      if (endsWith('/')) {
         href = href.slice(0, -1)
       }
 
@@ -147,7 +147,7 @@ export async function render () {
       } catch (err) {
         return
       }
-      if (_.some(results, r => {
+      if (some(results, r => {
         return r.locale === hrefObj.locale && r.path === hrefObj.path
       })) {
         $(elm).addClass(`is-valid-page`)
@@ -157,7 +157,7 @@ export async function render () {
     })
 
     // -> Add missing links
-    const missingLinks = _.differenceWith(internalRefs, pastLinks, (nLink, pLink) => {
+    const missingLinks = differenceWith(internalRefs, pastLinks, (nLink, pLink) => {
       return nLink.locale === pLink.locale && nLink.path === pLink.path
     })
     if (missingLinks.length > 0) {
@@ -181,11 +181,11 @@ export async function render () {
 
   // -> Remove outdated links
   if (pastLinks) {
-    const outdatedLinks = _.differenceWith(pastLinks, internalRefs, (nLink, pLink) => {
+    const outdatedLinks = differenceWith(pastLinks, internalRefs, (nLink, pLink) => {
       return nLink.locale === pLink.locale && nLink.path === pLink.path
     })
     if (outdatedLinks.length > 0) {
-      await WIKI.db.pageLinks.query().delete().whereIn('id', _.map(outdatedLinks, 'id'))
+      await WIKI.db.pageLinks.query().delete().whereIn('id', map(outdatedLinks, 'id'))
     }
   }
 
@@ -266,9 +266,13 @@ export async function render () {
 
   let output = decodeEscape($.html('body').replace('<body>', '').replace('</body>', ''))
 
-  for (let child of _.sortBy(_.filter(this.children, ['step', 'post']), ['order'])) {
-    const renderer = require(`../${_.kebabCase(child.key)}/renderer.js`)
-    output = await renderer.init(output, child.config)
+  for (let child of sortBy(filter(this.children, ['step', 'post']), ['order'])) {
+    try {
+      const mod = await import(`../${kebabCase(child.key)}/renderer.mjs`)
+      output = await mod.render(output, child.config)
+    } catch (err) {
+      WIKI.logger.warn(`Post-step renderer ${child.key} failed: ${err.message}`)
+    }
   }
 
   return output

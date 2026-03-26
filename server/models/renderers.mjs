@@ -141,6 +141,11 @@ export class Renderer extends Model {
 
       // Filter unused cores
       let activeCoreKeys = filter(rawCores, ['input', contentType]).map(core => core.key)
+      // If no cores match the contentType, include all cores
+      // (all content types are converted to HTML before the pipeline runs)
+      if (activeCoreKeys.length === 0) {
+        activeCoreKeys = rawCores.map(core => core.key)
+      }
       clone(activeCoreKeys).map(coreKey => {
         activeCoreKeys = union(activeCoreKeys, graph.dependenciesOf(coreKey))
       })
