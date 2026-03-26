@@ -1,7 +1,6 @@
 <template lang="pug">
 q-dialog.main-overlay(
   v-model='siteStore.overlayIsShown'
-  persistent
   full-width
   full-height
   no-shake

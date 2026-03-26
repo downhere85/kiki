@@ -233,6 +233,44 @@ const state = reactive({
   tocSelected: [],
   currentRating: 3
 })
+// -> Scroll to heading when TOC item is selected
+watch(() => state.tocSelected, (newVal) => {
+  if (newVal && newVal.length > 0 && pageContents.value) {
+    const key = newVal[0]
+    // Try to find heading by id matching the key
+    const heading = pageContents.value.querySelector(`[id="${key}"], h1, h2, h3, h4, h5, h6`)
+    // Find all headings and match by index
+    const allHeadings = pageContents.value.querySelectorAll('h1, h2, h3, h4, h5, h6')
+    for (const h of allHeadings) {
+      if (h.id === key) {
+        h.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
+    }
+    // Fallback: match by TOC node label text
+    const tocNode = findTocNode(pageStore.toc, key)
+    if (tocNode) {
+      for (const h of allHeadings) {
+        if (h.textContent.trim() === tocNode.label) {
+          h.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          return
+        }
+      }
+    }
+  }
+})
+
+function findTocNode (nodes, key) {
+  for (const n of nodes) {
+    if (n.key === key) return n
+    if (n.children) {
+      const found = findTocNode(n.children, key)
+      if (found) return found
+    }
+  }
+  return null
+}
+
 const thumbStyle = {
   right: '2px',
   borderRadius: '5px',

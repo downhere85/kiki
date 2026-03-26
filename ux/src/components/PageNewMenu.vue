@@ -3,6 +3,7 @@ q-menu.translucent-menu(
   auto-close
   anchor='bottom right'
   self='top right'
+  :style='{ minWidth: "220px" }'
   )
   q-list(padding)
     q-item(

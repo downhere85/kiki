@@ -1,5 +1,6 @@
 <template lang="pug">
 .q-gutter-xs
+  .text-caption.text-grey(v-if='(!pageStore.tags || pageStore.tags.length === 0) && !props.edit') No tags yet.
   template(v-if='pageStore.tags && pageStore.tags.length > 0')
     q-chip(
       square
