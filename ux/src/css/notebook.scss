@@ -1,10 +1,10 @@
 // ===========================================
-// Kiki Paper Notebook Theme
-// Nostalgic student notebook aesthetic
+// Kiki Theme — Modern Warm
+// Rounded, fluid, with shadows and hover effects
 // ===========================================
 
 // ------------------------------------------------------------------
-// GLOBAL NOTEBOOK BACKGROUND
+// GLOBAL
 // ------------------------------------------------------------------
 
 body.body--light {
@@ -12,49 +12,87 @@ body.body--light {
 }
 
 // ------------------------------------------------------------------
-// HEADER - Dark walnut wood / leather cover
+// HEADER - Rounded bottom, floating feel
 // ------------------------------------------------------------------
 
 .q-header {
-  background: linear-gradient(180deg, #3D2B1F 0%, #4A3728 100%) !important;
-  box-shadow: 0 2px 8px rgba(61, 43, 31, 0.3) !important;
+  background: linear-gradient(135deg, #3D2B1F 0%, #5A3E2E 100%) !important;
+  box-shadow: 0 4px 20px rgba(61, 43, 31, 0.25) !important;
+  border-radius: 0 0 16px 16px !important;
 }
 
 // ------------------------------------------------------------------
-// LEFT SIDEBAR - Cardboard cover feel
+// LEFT SIDEBAR - Softer, rounded
 // ------------------------------------------------------------------
 
 .q-drawer--left {
   .body--light & {
-    background: linear-gradient(135deg, #8B7355 0%, #7A6548 100%) !important;
+    background: linear-gradient(180deg, #8B7355 0%, #7A6548 100%) !important;
+    border-radius: 0 16px 16px 0 !important;
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.08) !important;
   }
 }
 
 // ------------------------------------------------------------------
-// PAGE CONTENT - Creamy notebook paper with ruled lines
+// BREADCRUMB BAR - Blend into page, no hard block
+// ------------------------------------------------------------------
+
+.body--light .page-breadcrumbs {
+  background: transparent !important;
+  border: none !important;
+  color: #8B7355;
+}
+
+// ------------------------------------------------------------------
+// PAGE HEADER - Remove hard border, float title
+// ------------------------------------------------------------------
+
+.body--light .page-header {
+  border-bottom: none !important;
+  padding-bottom: 8px;
+
+  .page-header-title {
+    font-family: 'New York', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif !important;
+    color: #3D2B1F !important;
+    font-weight: 700;
+  }
+}
+
+// ------------------------------------------------------------------
+// PAGE CONTENT - Clean white card, rounded, floating
 // ------------------------------------------------------------------
 
 .body--light .page-contents {
-  background-color: #FEFCFA !important;
-  padding: 24px 40px 40px 40px !important;
+  background-color: #FFFFFF !important;
+  padding: 32px 48px 48px 48px !important;
   position: relative;
   min-height: 80vh;
-  border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  margin: 8px;
 }
 
-
 // ------------------------------------------------------------------
-// RIGHT SIDEBAR - Slightly aged paper
+// RIGHT SIDEBAR - Blend, no hard border
 // ------------------------------------------------------------------
 
 .body--light .page-sidebar {
-  background-color: #F5F0E8 !important;
-  border-left: 1px solid rgba(139, 115, 85, 0.15);
+  background-color: transparent !important;
+  border-left: none !important;
+  padding-top: 8px;
 }
 
 // ------------------------------------------------------------------
-// TYPOGRAPHY - Serif headings, clean sans body
+// RIGHT ACTION COLUMN - Floating icons
+// ------------------------------------------------------------------
+
+.body--light .page-actions-col {
+  background: transparent !important;
+  border-left: none !important;
+}
+
+// ------------------------------------------------------------------
+// TYPOGRAPHY
 // ------------------------------------------------------------------
 
 .page-contents {
@@ -74,8 +112,8 @@ body.body--light {
   h1 {
     font-size: 1.8em;
     line-height: 1.3;
-    border-bottom: 1px solid rgba(139, 115, 85, 0.15);
-    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(139, 115, 85, 0.12);
+    padding-bottom: 8px;
   }
 
   h2 {
@@ -90,33 +128,38 @@ body.body--light {
 
   a {
     color: #6B5B4F;
-    text-decoration-color: rgba(107, 91, 79, 0.3);
+    text-decoration: underline;
+    text-decoration-color: rgba(107, 91, 79, 0.25);
+    text-underline-offset: 3px;
+    transition: all 0.2s ease;
     &:hover {
       color: #C4956A;
+      text-decoration-color: #C4956A;
     }
   }
 
   blockquote {
     border-left: 3px solid #C4956A;
-    background: rgba(196, 149, 106, 0.08);
-    padding: 8px 16px;
-    border-radius: 0 4px 4px 0;
+    background: rgba(196, 149, 106, 0.06);
+    padding: 12px 20px;
+    border-radius: 0 8px 8px 0;
     font-style: italic;
     color: #5C4A3A;
   }
 
   code {
-    background: rgba(139, 115, 85, 0.1);
+    background: rgba(139, 115, 85, 0.08);
     color: #6B5B4F;
-    padding: 1px 5px;
-    border-radius: 3px;
+    padding: 2px 6px;
+    border-radius: 4px;
     font-size: 0.9em;
   }
 
   pre {
     background: #2C2416 !important;
-    border-radius: 6px;
-    padding: 16px;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 
     code {
       background: transparent;
@@ -126,99 +169,273 @@ body.body--light {
   }
 
   table {
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 
     th {
-      background: rgba(139, 115, 85, 0.15);
-      font-family: 'Merriweather', serif;
+      background: rgba(139, 115, 85, 0.12);
       font-weight: 700;
+      padding: 10px 14px;
     }
 
-    td, th {
-      border: 1px solid rgba(139, 115, 85, 0.2);
-      padding: 6px 12px;
+    td {
+      padding: 8px 14px;
+      border-top: 1px solid rgba(139, 115, 85, 0.1);
     }
 
-    tr:nth-child(even) {
-      background: rgba(139, 115, 85, 0.04);
+    tr {
+      transition: background 0.15s ease;
+      &:hover {
+        background: rgba(139, 115, 85, 0.04);
+      }
+    }
+  }
+
+  hr {
+    border: none;
+    height: 1px;
+    background: rgba(139, 115, 85, 0.12);
+    margin: 2em 0;
+  }
+}
+
+// ------------------------------------------------------------------
+// BUTTONS - Rounded, hover effects
+// ------------------------------------------------------------------
+
+.body--light {
+  // All flat buttons get hover lift
+  .q-btn--flat {
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      background: rgba(139, 115, 85, 0.08) !important;
+      transform: translateY(-1px);
+    }
+  }
+
+  // Primary buttons
+  .q-btn--unelevated {
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      transform: translateY(-1px);
+    }
+  }
+
+  // Edit button special styling
+  .q-btn--outline {
+    border-radius: 10px !important;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
   }
 }
 
 // ------------------------------------------------------------------
-// PAGE HEADER - Warm tones
-// ------------------------------------------------------------------
-
-.body--light .page-header {
-  border-bottom: 1px solid rgba(139, 115, 85, 0.15) !important;
-
-  .page-header-title {
-    font-family: 'Merriweather', Georgia, serif !important;
-    color: #3D2B1F !important;
-    font-weight: 700;
-  }
-}
-
-// ------------------------------------------------------------------
-// TOC & TAGS SIDEBAR
+// TOC SIDEBAR - Clean, rounded items
 // ------------------------------------------------------------------
 
 .body--light .page-toc {
   .q-tree__node--selected {
     color: #6B5B4F;
     font-weight: 600;
+    background: rgba(139, 115, 85, 0.06);
+    border-radius: 6px;
+  }
+
+  .q-tree__node-header {
+    border-radius: 6px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(139, 115, 85, 0.06);
+    }
   }
 }
 
 // ------------------------------------------------------------------
-// BREADCRUMB BAR
+// TAGS - Rounded chips
 // ------------------------------------------------------------------
 
-.body--light .q-toolbar {
-  &.bg-grey-3 {
-    background: #EDE7DD !important;
-    color: #6B5B4F;
-  }
+.body--light .q-chip {
+  border-radius: 16px !important;
 }
 
 // ------------------------------------------------------------------
-// FOOTER - Subtle, warm
+// FOOTER - Subtle, blended
 // ------------------------------------------------------------------
 
 .body--light .site-footer {
-  background-color: #EDE7DD !important;
-  color: #8B7355 !important;
+  background-color: transparent !important;
+  color: #A0936E !important;
+  border-top: 1px solid rgba(139, 115, 85, 0.1);
 }
 
 // ------------------------------------------------------------------
-// BUTTONS & ACCENTS
-// ------------------------------------------------------------------
-
-.body--light {
-  .q-btn--flat.text-primary {
-    color: #6B5B4F !important;
-  }
-}
-
-// ------------------------------------------------------------------
-// CARDS & DIALOGS
+// CARDS & DIALOGS - Rounded, shadowed
 // ------------------------------------------------------------------
 
 .body--light {
   .q-card {
-    border-radius: 6px;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
   }
 
   .card-header {
-    background: linear-gradient(180deg, #3D2B1F 0%, #4A3728 100%) !important;
+    background: linear-gradient(135deg, #3D2B1F 0%, #5A3E2E 100%) !important;
+    border-radius: 12px 12px 0 0 !important;
+  }
+
+  .q-dialog .q-card {
+    border-radius: 14px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
   }
 }
 
 // ------------------------------------------------------------------
-// SCROLLBAR - Warm tones
+// SEARCH BAR - Rounded pill
+// ------------------------------------------------------------------
+
+.body--light .q-header {
+  .q-field--outlined .q-field__control {
+    border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.12);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+  }
+
+  .q-field--focused .q-field__control {
+    background: rgba(255, 255, 255, 0.22) !important;
+  }
+}
+
+// ------------------------------------------------------------------
+// LEFT SIDEBAR BUTTONS - Rounded hover
+// ------------------------------------------------------------------
+
+.body--light .q-drawer--left {
+  .q-btn {
+    border-radius: 10px !important;
+    transition: all 0.2s ease !important;
+    margin: 2px 4px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15) !important;
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ------------------------------------------------------------------
+// SEPARATORS - Softer
+// ------------------------------------------------------------------
+
+.body--light {
+  .q-separator {
+    background: rgba(139, 115, 85, 0.08) !important;
+  }
+}
+
+// ------------------------------------------------------------------
+// LIST ITEMS - Hover effects
+// ------------------------------------------------------------------
+
+.body--light {
+  .q-item {
+    border-radius: 8px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(139, 115, 85, 0.04);
+    }
+  }
+}
+
+// ------------------------------------------------------------------
+// SCROLLBAR - Rounded, warm
 // ------------------------------------------------------------------
 
 html {
-  --scrollbarBG: #EDE7DD;
-  --thumbBG: #B8A898;
+  --scrollbarBG: #F0EBE3;
+  --thumbBG: #C4B5A0;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px !important;
+}
+
+// ------------------------------------------------------------------
+// MOBILE RESPONSIVE
+// ------------------------------------------------------------------
+
+@media (max-width: 768px) {
+  .q-header {
+    border-radius: 0 !important;
+  }
+
+  .body--light .page-contents {
+    padding: 20px 16px 32px 16px !important;
+    margin: 4px !important;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+
+  .body--light .page-sidebar {
+    flex: 0 0 100% !important;
+    order: 3 !important;
+  }
+
+  .body--light .page-header {
+    padding: 12px 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .body--light .page-contents {
+    padding: 16px 12px 24px 12px !important;
+    margin: 2px !important;
+    border-radius: 6px;
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+
+  .page-contents h1 {
+    font-size: 1.5em !important;
+  }
+
+  .page-contents h2 {
+    font-size: 1.25em !important;
+  }
+}
+
+// ------------------------------------------------------------------
+// TRANSITIONS - Smooth everything
+// ------------------------------------------------------------------
+
+.body--light {
+  .q-drawer {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .q-page {
+    transition: padding 0.3s ease;
+  }
+
+  * {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
