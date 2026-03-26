@@ -107,6 +107,32 @@ export default {
       return config ?? {}
     },
 
+    async myBookmarks (obj, args, context) {
+      if (!context.req.user || context.req.user.id === WIKI.auth.guest.id) {
+        throw new WIKI.Error.AuthRequired()
+      }
+      const usr = await WIKI.db.users.query().findById(context.req.user.id).select('prefs')
+      const bookmarkIds = usr?.prefs?.bookmarks ?? []
+      if (bookmarkIds.length === 0) return []
+      return WIKI.db.pages.query()
+        .select('id', 'path', 'title', 'updatedAt')
+        .whereIn('id', bookmarkIds)
+        .orderBy('title')
+    },
+
+    async myWatchedPages (obj, args, context) {
+      if (!context.req.user || context.req.user.id === WIKI.auth.guest.id) {
+        throw new WIKI.Error.AuthRequired()
+      }
+      const usr = await WIKI.db.users.query().findById(context.req.user.id).select('prefs')
+      const watchIds = usr?.prefs?.watchedPages ?? []
+      if (watchIds.length === 0) return []
+      return WIKI.db.pages.query()
+        .select('id', 'path', 'title', 'updatedAt')
+        .whereIn('id', watchIds)
+        .orderBy('title')
+    },
+
     async lastLogins (obj, args, context, info) {
       if (!WIKI.auth.checkAccess(context.req.user, ['read:dashboard', 'read:users', 'write:users', 'manage:users'])) {
         throw new Error('ERR_FORBIDDEN')
@@ -296,6 +322,54 @@ export default {
         return generateError(err)
       }
     },
+    async toggleBookmark (obj, args, context) {
+      try {
+        if (!context.req.user || context.req.user.id === WIKI.auth.guest.id) {
+          throw new Error('ERR_NOT_AUTHENTICATED')
+        }
+        const usr = await WIKI.db.users.query().findById(context.req.user.id)
+        const bookmarks = usr.prefs?.bookmarks ?? []
+        const idx = bookmarks.indexOf(args.pageId)
+        if (idx >= 0) {
+          bookmarks.splice(idx, 1)
+        } else {
+          bookmarks.push(args.pageId)
+        }
+        await WIKI.db.users.query().findById(usr.id).patch({
+          prefs: { ...usr.prefs, bookmarks }
+        })
+        return {
+          operation: generateSuccess(idx >= 0 ? 'Bookmark removed' : 'Bookmark added')
+        }
+      } catch (err) {
+        return generateError(err)
+      }
+    },
+
+    async toggleWatchPage (obj, args, context) {
+      try {
+        if (!context.req.user || context.req.user.id === WIKI.auth.guest.id) {
+          throw new Error('ERR_NOT_AUTHENTICATED')
+        }
+        const usr = await WIKI.db.users.query().findById(context.req.user.id)
+        const watchedPages = usr.prefs?.watchedPages ?? []
+        const idx = watchedPages.indexOf(args.pageId)
+        if (idx >= 0) {
+          watchedPages.splice(idx, 1)
+        } else {
+          watchedPages.push(args.pageId)
+        }
+        await WIKI.db.users.query().findById(usr.id).patch({
+          prefs: { ...usr.prefs, watchedPages }
+        })
+        return {
+          operation: generateSuccess(idx >= 0 ? 'Stopped watching page' : 'Now watching page')
+        }
+      } catch (err) {
+        return generateError(err)
+      }
+    },
+
     async updateProfile (obj, args, context) {
       try {
         if (!context.req.user || context.req.user.id === WIKI.auth.guest.id) {

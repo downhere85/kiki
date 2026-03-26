@@ -38,7 +38,7 @@
                 q-item-label From Clipboard...
             q-item(
               clickable
-              @click='notImplemented'
+              @click='insertAssetFromUrl'
               v-close-popup
               )
               q-item-section(side)
@@ -544,6 +544,27 @@ function insertEmoji () {
   })
 }
 
+function insertAssetFromUrl () {
+  $q.dialog({
+    title: 'Insert Asset from URL',
+    prompt: {
+      model: '',
+      type: 'url',
+      label: 'Image or file URL',
+      outlined: true
+    },
+    cancel: true
+  }).onOk(url => {
+    if (!url) return
+    const isImage = /\.(png|jpe?g|gif|svg|webp|bmp|ico)(\?.*)?$/i.test(url)
+    if (isImage) {
+      insertAfter({ content: `![](${url})`, newLine: true })
+    } else {
+      insertAfter({ content: `[${url}](${url})`, newLine: true })
+    }
+  })
+}
+
 /**
 * Set current line as header
 */
@@ -957,13 +978,6 @@ onBeforeUnmount(() => {
     editor.dispose()
   }
 })
-
-function notImplemented () {
-  $q.notify({
-    type: 'negative',
-    message: 'Not implemented'
-  })
-}
 </script>
 
 <style lang="scss">

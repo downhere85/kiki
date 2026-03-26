@@ -30,7 +30,7 @@ q-layout(view='hHh Lpr lff')
         icon='las la-bookmark'
         color='white'
         aria-label='Bookmarks'
-        @click='notImplemented'
+        @click='openBookmarks'
         )
         q-tooltip(anchor='center right' self='center left') Bookmarks
       q-space
@@ -101,7 +101,7 @@ q-layout(view='hHh Lpr lff')
           icon='las la-bookmark'
           label='Bookmarks'
           flat
-          @click='notImplemented'
+          @click='openBookmarks'
         )
   q-page-container
     router-view
@@ -187,15 +187,12 @@ const isSidebarMini = computed(() => {
 
 // METHODS
 
-function browsePages () {
-  siteStore.$patch({ overlay: 'BrowsePages' })
+function openBookmarks () {
+  siteStore.$patch({ overlay: 'Bookmarks' })
 }
 
-function notImplemented () {
-  $q.notify({
-    type: 'negative',
-    message: 'Not implemented'
-  })
+function browsePages () {
+  siteStore.$patch({ overlay: 'BrowsePages' })
 }
 
 </script>

@@ -16,6 +16,10 @@ extend type Query {
     id: UUID!
   ): User
 
+  myBookmarks: [PageMinimal]
+
+  myWatchedPages: [PageMinimal]
+
   userDefaults: UserDefaults
 
   userEditorSettings(
@@ -91,6 +95,14 @@ extend type Mutation {
     cvd: UserCvdChoices
   ): DefaultResponse
 
+  toggleBookmark(
+    pageId: UUID!
+  ): DefaultResponse
+
+  toggleWatchPage(
+    pageId: UUID!
+  ): DefaultResponse
+
   uploadUserAvatar(
     id: UUID!
     image: Upload!
@@ -125,6 +137,13 @@ type UserLastLogin {
 type UserResults {
   users: [UserMinimal]
   total: Int
+}
+
+type PageMinimal {
+  id: UUID
+  path: String
+  title: String
+  updatedAt: Date
 }
 
 type UserMinimal {

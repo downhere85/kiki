@@ -1,7 +1,7 @@
 title: Local Git
 icon: '/_assets/icons/ultraviolet-git.svg'
 banner: '/_assets/storage/git.jpg'
-description: Git is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. If using GitHub, use the GitHub module instead!
+description: Bidirectional sync with any Git repository (GitHub, GitLab, Bitbucket, etc). Supports push, pull, and full two-way sync on a configurable schedule. Edits in Kiki are committed and pushed; edits on the remote are pulled and imported automatically.
 vendor: Software Freedom Conservancy, Inc.
 website: 'https://git-scm.com'
 assetDelivery:

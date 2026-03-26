@@ -344,13 +344,6 @@ function removePendingAsset (item) {
     menuPendingAssets.value.hide()
   }
 }
-
-function notImplemented () {
-  $q.notify({
-    type: 'negative',
-    message: 'Not implemented'
-  })
-}
 </script>
 
 <style lang="scss">

@@ -77,22 +77,22 @@
         v-if='userStore.authenticated'
         flat
         dense
-        icon='las la-bell'
-        color='grey'
+        :icon='state.isWatching ? "las la-bell" : "lar la-bell"'
+        :color='state.isWatching ? "amber" : "grey"'
         aria-label='Watch Page'
-        @click='notImplemented'
+        @click='toggleWatch'
         )
-        q-tooltip Watch Page
+        q-tooltip {{ state.isWatching ? 'Stop Watching' : 'Watch Page' }}
       q-btn.q-ml-md(
         v-if='userStore.authenticated'
         flat
         dense
-        icon='las la-bookmark'
-        color='grey'
+        :icon='state.isBookmarked ? "las la-bookmark" : "lar la-bookmark"'
+        :color='state.isBookmarked ? "amber" : "grey"'
         aria-label='Bookmark Page'
-        @click='notImplemented'
+        @click='toggleBookmark'
         )
-        q-tooltip Bookmark Page
+        q-tooltip {{ state.isBookmarked ? 'Remove Bookmark' : 'Bookmark Page' }}
       q-btn.q-ml-md(
         v-if='siteStore.theme.showSharingMenu'
         flat
@@ -194,6 +194,7 @@ import { useQuasar } from 'quasar'
 import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import gql from 'graphql-tag'
 
 import { useEditorStore } from '@/stores/editor'
 import { useFlagsStore } from '@/stores/flags'
@@ -409,10 +410,81 @@ function printPage () {
   window.print()
 }
 
-function notImplemented () {
-  $q.notify({
-    type: 'negative',
-    message: 'Not implemented'
-  })
+// BOOKMARK / WATCH STATE
+
+const state = reactive({
+  isBookmarked: false,
+  isWatching: false
+})
+
+async function checkBookmarkWatchState () {
+  if (!userStore.authenticated || !pageStore.id) return
+  try {
+    const resp = await APOLLO_CLIENT.query({
+      query: gql`
+        query checkBookmarks {
+          myBookmarks { id }
+          myWatchedPages { id }
+        }
+      `,
+      fetchPolicy: 'network-only'
+    })
+    const bookmarkIds = (resp.data?.myBookmarks ?? []).map(b => b.id)
+    const watchIds = (resp.data?.myWatchedPages ?? []).map(w => w.id)
+    state.isBookmarked = bookmarkIds.includes(pageStore.id)
+    state.isWatching = watchIds.includes(pageStore.id)
+  } catch {}
 }
+
+async function toggleBookmark () {
+  try {
+    await APOLLO_CLIENT.mutate({
+      mutation: gql`
+        mutation toggleBookmark ($pageId: UUID!) {
+          toggleBookmark(pageId: $pageId) {
+            operation { succeeded message }
+          }
+        }
+      `,
+      variables: { pageId: pageStore.id }
+    })
+    state.isBookmarked = !state.isBookmarked
+    $q.notify({
+      type: 'positive',
+      message: state.isBookmarked ? 'Page bookmarked' : 'Bookmark removed'
+    })
+  } catch (err) {
+    $q.notify({ type: 'negative', message: 'Failed to toggle bookmark.' })
+  }
+}
+
+async function toggleWatch () {
+  try {
+    await APOLLO_CLIENT.mutate({
+      mutation: gql`
+        mutation toggleWatchPage ($pageId: UUID!) {
+          toggleWatchPage(pageId: $pageId) {
+            operation { succeeded message }
+          }
+        }
+      `,
+      variables: { pageId: pageStore.id }
+    })
+    state.isWatching = !state.isWatching
+    $q.notify({
+      type: 'positive',
+      message: state.isWatching ? 'Now watching this page' : 'Stopped watching'
+    })
+  } catch (err) {
+    $q.notify({ type: 'negative', message: 'Failed to toggle watch.' })
+  }
+}
+
+watch(() => pageStore.id, () => {
+  checkBookmarkWatchState()
+})
+
+onMounted(() => {
+  checkBookmarkWatchState()
+})
 </script>
