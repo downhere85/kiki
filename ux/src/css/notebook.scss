@@ -749,3 +749,79 @@ body::-webkit-scrollbar-thumb {
     border-radius: 10px !important;
   }
 }
+
+// ==================================================================
+// MERMAID DIAGRAMS - Collapsible container
+// ==================================================================
+
+.mermaid-collapsible {
+  position: relative;
+  margin: 1.5em 0;
+  border-radius: 12px;
+  background: #FAFAF8;
+  border: 1px solid rgba(139, 115, 85, 0.1);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.mermaid-collapsible-inner {
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 16px;
+
+  // Fade overlay when collapsed
+  .mermaid-collapsible[data-expanded="false"] & {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+}
+
+.mermaid-expand-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  border: none;
+  background: linear-gradient(to bottom, transparent, rgba(139, 115, 85, 0.04));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    border-radius: 20px;
+    background: #3A3330;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  &:hover span {
+    background: #5A4E48;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Also style non-collapsible mermaid diagrams
+.page-contents {
+  .mermaid {
+    text-align: center;
+
+    svg {
+      max-width: 100%;
+    }
+  }
+}
