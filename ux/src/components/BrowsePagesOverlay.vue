@@ -38,7 +38,7 @@ q-layout(view='hHh lpR fFf', container)
             )
             q-item-section(avatar)
               q-avatar(
-                :color='page.isPublished ? "primary" : "grey"'
+                :color='page.publishState === "published" ? "primary" : "grey"'
                 text-color='white'
                 rounded
                 size='sm'
@@ -123,7 +123,7 @@ async function fetchPages () {
             path
             title
             updatedAt
-            isPublished
+            publishState
           }
         }
       `,
