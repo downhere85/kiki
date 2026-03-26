@@ -93,7 +93,7 @@ extend type Query {
 
   pageTree(
     path: String
-    parent: Int
+    parent: UUID
     mode: PageTreeMode!
     locale: String!
     includeAncestors: Boolean
@@ -113,12 +113,12 @@ extend type Query {
   ): [PageTag]
 
   checkConflicts(
-    id: Int!
+    id: UUID!
     checkoutDate: Date!
   ): Boolean
 
   checkConflictsLatest(
-    id: Int!
+    id: UUID!
   ): PageConflictLatest
 }
 
@@ -174,11 +174,11 @@ extend type Mutation {
   ): DefaultResponse
 
   deleteTag(
-    id: Int!
+    id: UUID!
   ): DefaultResponse
 
   updateTag(
-    id: Int!
+    id: UUID!
     tag: String!
     title: String!
   ): DefaultResponse
@@ -282,7 +282,7 @@ type PageHistory {
 
 type PageVersion {
   action: String
-  authorId: String
+  authorId: UUID
   authorName: String
   content: String
   contentType: String
@@ -344,29 +344,27 @@ type PageTreeItem {
   path: String
   depth: Int
   title: String
-  isPrivate: Boolean
   isFolder: Boolean
-  privateNS: String
-  parent: Int
-  pageId: Int
+  parent: UUID
+  pageId: UUID
   locale: String
 }
 
 type PageLinkItem {
-  id: Int
+  id: UUID
   path: String
   title: String
   links: [String]
 }
 
 type PageConflictLatest {
-  id: Int
-  authorId: String
+  id: UUID
+  authorId: UUID
   authorName: String
   content: String
   createdAt: Date
   description: String
-  isPublished: Boolean
+  publishState: PagePublishState
   locale: String
   path: String
   tags: [String]

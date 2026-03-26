@@ -11,7 +11,7 @@ extend type Query {
   ): [CommentPost]!
 
   commentById(
-    id: Int!
+    id: UUID!
   ): CommentPost
 }
 
@@ -21,20 +21,20 @@ extend type Mutation {
   ): DefaultResponse
 
   createComment(
-    pageId: Int!
-    replyTo: Int
+    pageId: UUID!
+    replyTo: UUID
     content: String!
     guestName: String
     guestEmail: String
   ): CommentCreateResponse  @rateLimit(limit: 1, duration: 15)
 
   updateComment(
-    id: Int!
+    id: UUID!
     content: String!
   ): CommentUpdateResponse
 
   deleteComment(
-    id: Int!
+    id: UUID!
   ): DefaultResponse
 }
 
@@ -60,10 +60,10 @@ input CommentProviderInput {
 }
 
 type CommentPost {
-  id: Int
+  id: UUID
   content: String
   render: String
-  authorId: Int
+  authorId: UUID
   authorName: String
   authorEmail: String
   authorIP: String
@@ -73,7 +73,7 @@ type CommentPost {
 
 type CommentCreateResponse {
   operation: Operation
-  id: Int
+  id: UUID
 }
 
 type CommentUpdateResponse {
