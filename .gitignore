@@ -33,9 +33,10 @@ npm-debug.log*
 /tmp
 *.sqlite
 
-# IDE exclude
+# IDE / OS exclude
 .idea
 *.sublime-*
+.DS_Store
 
 # Test results
 test-results/

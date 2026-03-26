@@ -1,150 +1,110 @@
-<div align="center">
+# Kiki
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://static.requarks.io/logo/wikijs-full-darktheme.svg">
-  <img alt="Wiki.js" src="https://static.requarks.io/logo/wikijs-full.svg" width="600">
-</picture>
+A community-driven fork of [Wiki.js](https://js.wiki/) v3, focused on reaching beta quality through feature completion, bug fixes, and modernization.
 
-[![License](https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat)](https://github.com/requarks/wiki/blob/master/LICENSE)
-[![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-green.svg?style=flat&logo=javascript&logoColor=white)](http://standardjs.com/)
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/ngpixel?logo=github&color=ea4aaa)](https://github.com/users/NGPixel/sponsorship)
-[![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/wikijs?label=backers&color=218bff&logo=opencollective&logoColor=white)](https://opencollective.com/wikijs)  
-[![Chat on Slack](https://img.shields.io/badge/slack-requarks-CC2B5E.svg?style=flat&logo=slack)](https://wiki.requarks.io/slack)
-[![Twitter Follow](https://img.shields.io/badge/follow-%40requarks-blue.svg?style=flat&logo=twitter)](https://twitter.com/requarks)
-[![Reddit](https://img.shields.io/badge/reddit-%2Fr%2Fwikijs-orange?logo=reddit&logoColor=white)](https://www.reddit.com/r/wikijs/)
-[![Subscribe to Newsletter](https://img.shields.io/badge/newsletter-subscribe-yellow.svg?style=flat&logo=mailchimp)](https://blog.js.wiki/subscribe)
+Wiki.js v3 (upstream) has been in alpha for several years with many features stubbed out or incomplete. Kiki picks up where upstream left off, wiring up the missing pieces to create a usable, self-hostable wiki platform.
 
-##### Next Generation Open Source Wiki
+## What's Different from Upstream Wiki.js v3
 
-</div>
+### Features Completed
+- **Page History** — View revision timeline, inspect any version, restore previous versions
+- **Reset Password** — Full forgot-password flow with email template
+- **3rd Party Authentication** — Fixed critical bugs preventing Google OAuth (and other Passport strategies) from working. Removed experimental flag from admin UI
+- **Browse Pages** — Full-screen page browser with search/filter
+- **Page Table of Contents** — Auto-generated from headings with smooth scroll
+- **Print View** — Clean print stylesheet for page printing
+- **My Pages** — View all pages authored by a user
+- **Icon Picker** — Searchable MDI icon grid for page icons
+- **Search Autocomplete** — Live search suggestions with keyboard navigation
 
-- **[Official Website](https://next.js.wiki/)**
-- **[Documentation](https://next.js.wiki/docs/)**
+### Editor Improvements
+- **Insert Link** — Dialog with internal page search + external URL support
+- **Insert Code Block** — Language selector with 50+ languages, line numbers toggle
+- **Insert Diagram** — Mermaid (flowchart, sequence, gantt) and PlantUML templates
+- **Insert Footnote** — Adds reference at cursor + definition at end of document
+- **Insert Emoji** — Emoji shortcode insertion
+- **Mermaid Rendering** — Client-side mermaid diagram rendering with latest mermaid 11.x
 
-:red_square: :warning: :warning: :red_square:   
-**THIS IS A VERY BUGGY, INCOMPLETE AND NON-SECURE DEVELOPMENT BRANCH!**  
-**USE AT YOUR OWN RISK! THERE'S NO UPGRADE PATH FROM THIS BUILD AND NO SUPPORT IS PROVIDED!**  
-:red_square: :warning: :warning: :red_square:
+### Bug Fixes & Modernization
+- Fixed deprecated `csurf` (replaced with `csrf-csrf`)
+- Fixed deprecated `passport-azure-ad` dependency
+- Added Content Security Policy (CSP) headers
+- Fixed missing `pako` dependency
+- Fixed `.mjs` vs `.js` import mismatch for auth strategy modules
+- Fixed strategy `init()` parameter mismatch (was passing UUID instead of config)
+- GraphQL schema types corrected from `Int` to `UUID` where appropriate
 
-The current stable release (2.x) is available at https://js.wiki
+## Getting Started
 
----
+### Docker (Recommended)
 
-- [Using VS Code Dev Environment](#using-vs-code-dev-environment) *(recommended)*
-  - [Requirements](#requirements-1)
-  - [Usage](#usage)
-  - [Server Development](#server-development)
-  - [Frontend Development (Quasar/Vue 3)](#frontend-development-quasarvue-3)
-  - [pgAdmin](#pgadmin)
-- [Generic Setup](#generic-setup)
-  - [Requirements](#requirements)
-  - [Usage](#usage-1)
-
-## Using VS Code Dev Environment
-
-### Requirements
-
-- [VS Code](https://code.visualstudio.com/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- **Windows-only:** [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install) + [WSL Integration](https://docs.docker.com/desktop/wsl/) enabled in Docker Desktop
-
-### Usage
-
-1. Clone the project.
-1. Open the project in VS Code.
-1. Make sure you have **Dev Containers** extension installed. (On Windows, you need the **WSL** VS Code extension as well.)
-1. Reopen the project in container (from the popup in the lower-right corner of the screen when opening the project, or via the Command Palette (Ctrl+Shift+P *or* F1) afterwards).
-1. Once in container mode, make a copy of `config.sample.yml` and rename it to `config.yml`. There's no need to edit the file, the default values are ok.
-1. From the Command Palette, run the task "Create terminals":
-    - Launch the Command Palette (Ctrl+Shift+P *or* F1)
-    - Type `Run Task` and press <kbd>Enter</kbd>
-    - Select the task "Create terminals" and press Enter
-1. Two terminals will launch in split-screen mode at the bottom of the screen. **Server** on the left and **UX** on the right.
-1. In the right-side terminal (UX), run the command:
-    ```sh
-    pnpm build
-    ```
-1. In the left-side terminal (Server), run the command:
-    ```sh
-    pnpm start
-    ```
-1. Open your browser to `http://localhost:3000`
-1. Login using the default administrator user:
-    - Email: `admin@example.com`
-    - Password: `12345678`
-
-> **DO NOT** report bugs. This build is **VERY** buggy and **VERY** incomplete. Absolutely **NO** support is provided either.
-
-### Server Development
-
-From the left-side terminal (Server), run the command:
-
-```sh
-pnpm dev
+```bash
+git clone https://github.com/downhere85/kiki.git
+cd kiki/kiki/.devcontainer
+docker compose up
 ```
 
-This will launch the server and automatically restart upon modification of any server files.
+Then open `http://localhost:3000` and login:
+- **Email:** `admin@example.com`
+- **Password:** `12345678`
 
-Only precompiled client assets are served in this mode. See the sections below on how to modify the frontend and run in SPA (Single Page Application) mode.
+### Manual Setup
+
+**Requirements:**
+- PostgreSQL 16+
+- Node.js 24+
+- [pnpm](https://pnpm.io/installation#using-corepack)
+
+```bash
+git clone https://github.com/downhere85/kiki.git
+cd kiki/kiki
+cp config.sample.yml config.yml
+# Edit config.yml with your PostgreSQL details
+
+cd server && pnpm install && cd ..
+cd ux && pnpm install && pnpm build && cd ..
+cd blocks && pnpm install && pnpm build && cd ..
+
+node server
+```
+
+Open `http://localhost:3000` and login with `admin@example.com` / `12345678`.
 
 ### Frontend Development
 
-> Make sure you are running `npm run dev` in the left-side terminal (Server) first! Requests still need to be forwarded to the server, even in SPA mode!
+Run the server and Quasar dev server simultaneously:
 
-If you wish to modify any frontend content (under `/ux`), you need to start the Quasar Dev Server in the right-side terminal (UX):
+```bash
+# Terminal 1 - Server
+cd server && pnpm dev
 
-```sh
-pnpm dev
+# Terminal 2 - Frontend (hot-reload on port 3001)
+cd ux && pnpm dev
 ```
-
-You can then access the site at `http://localhost:3001`. Notice the port being `3001` rather than `3000`. The app runs in a SPA (single-page application) mode and automatically hot-reload any modified component. Any requests made to the `/graphql` endpoint are automatically forwarded to the server running on port `3000`, which is why both must be running at the same time.
-
-Any change you make to the frontend will not be reflected on port 3000 until you run the command `yarn build` in the right-side terminal.
 
 ### pgAdmin
 
-A web version of pgAdmin (a PostgreSQL administration tool) is available at `http://localhost:8000`. Use the login `dev@js.wiki` / `123123` to login.
+Available at `http://localhost:8000` (Docker setup only).
+- Login: `dev@js.wiki` / `123123`
+- DB host: `db`, port `5432`, user `postgres`, password `postgres`
 
-The server **dev** should already be available under **Servers**. If that's not the case, add a new one with the following settings:
+## Remaining Work
 
-- Hostname: `db`
-- Port: `5432`
-- Username: `postgres`
-- Password: `postgres`
-- Database: `postgres`
+See the [upstream v3 feature tracker](https://github.com/requarks/wiki/issues/6844) for the full checklist. Key remaining items:
 
-## Generic Setup
+- [ ] Comments system
+- [ ] External storage module wiring (admin)
+- [ ] Analytics admin module
+- [ ] Locale switching
+- [ ] Convert page between editors
+- [ ] WYSIWYG editor output rendering + polish
+- [ ] Tabsets
+- [ ] Draw.io integration
 
-### Requirements
+## License
 
-- PostgreSQL **16** or later
-- Node.js **24.x** or later
-- [pnpm](https://pnpm.io/installation#using-corepack)
+AGPLv3 — same as upstream Wiki.js. See [LICENSE](LICENSE).
 
-### Usage
+## Acknowledgments
 
-1. Clone the project
-1. Make a copy of `config.sample.yml` and rename it to `config.yml`
-1. Edit `config.yml` and fill in the database details. **You need an empty PostgreSQL database.**
-1. Run the following commands to install dependencies and generate the client assets:
-    ```sh
-    cd server
-    pnpm install
-    cd ../ux
-    pnpm install
-    pnpm build
-    cd ../blocks
-    pnpm install
-    pnpm build
-    cd ..
-    ```
-1. Run this command to start the server:
-    ```sh
-    node server
-    ```
-1. In your browser, navigate to `http://localhost:3000` *(or the IP/hostname of the server and the PORT you defined earlier.)*
-1. Login using the default administrator user:
-    - Email: `admin@example.com`
-    - Password: `12345678`
-
-> **DO NOT** report bugs. This build is **VERY** buggy and **VERY** incomplete. Absolutely **NO** support is provided either.
+Kiki is built on top of [Wiki.js](https://js.wiki/) by [Requarks](https://github.com/requarks). All credit for the core architecture goes to the upstream team.
