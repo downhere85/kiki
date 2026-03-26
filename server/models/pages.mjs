@@ -682,7 +682,9 @@ export class Page extends Model {
     // -> Exclude password-protected content from being indexed
     const safeContent = page.password ? '' : WIKI.db.pages.cleanHTML(page.render)
     // -> Truncate content to avoid exceeding btree index row size limit (max ~2KB tsvector)
-    const truncatedContent = safeContent.length > 50000 ? safeContent.substring(0, 50000) : safeContent
+    // PostgreSQL btree has a 2704 byte limit per index row. Tsvector compresses text
+    // heavily but very large pages can still exceed it. 10,000 chars is safe.
+    const truncatedContent = safeContent.length > 10000 ? safeContent.substring(0, 10000) : safeContent
     const dictName = getDictNameFromLocale(page.locale)
     try {
       return await WIKI.db.knex('pages').where('id', page.id).update({
