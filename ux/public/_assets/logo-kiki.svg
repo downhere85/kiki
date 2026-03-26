@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Monochrome squirrel side view - clean vector art -->
+  <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Tail (big fluffy, curving up) -->
+    <path d="M60,145 C35,125 18,85 28,52 C38,22 62,12 78,28 C92,44 86,75 76,100 C70,115 64,132 60,145"/>
+
+    <!-- Body -->
+    <ellipse cx="108" cy="142" rx="34" ry="36"/>
+
+    <!-- Head (side view facing right) -->
+    <ellipse cx="148" cy="96" rx="28" ry="26"/>
+
+    <!-- Ear -->
+    <path d="M128,75 C125,58 130,45 138,48 C146,51 144,66 138,76"/>
+
+    <!-- Eye -->
+    <circle cx="157" cy="89" r="5" fill="currentColor"/>
+    <circle cx="159" cy="87" r="1.5" fill="white" stroke="none"/>
+
+    <!-- Nose -->
+    <circle cx="174" cy="96" r="3" fill="currentColor"/>
+
+    <!-- Mouth -->
+    <path d="M171,100 Q167,106 161,104"/>
+
+    <!-- Back leg -->
+    <path d="M88,168 C80,178 78,188 86,192 C94,194 102,186 104,176"/>
+
+    <!-- Front leg -->
+    <path d="M132,162 C134,174 132,184 136,190 C140,194 146,190 146,184 C146,176 140,166 136,160"/>
+
+    <!-- Acorn -->
+    <ellipse cx="140" cy="162" rx="5" ry="7"/>
+    <path d="M135,157 Q140,153 145,157"/>
+    <line x1="140" y1="153" x2="140" y2="148"/>
+  </g>
+</svg>

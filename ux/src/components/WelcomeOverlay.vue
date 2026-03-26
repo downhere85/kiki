@@ -3,7 +3,7 @@
   .welcome-bg
   .welcome-content
     .welcome-logo
-      img(src='/_assets/logo-wikijs.svg')
+      img(src='/_assets/logo-kiki.svg')
     .welcome-title {{ t('welcome.title') }}
     .welcome-subtitle {{ t('welcome.subtitle') }}
     .welcome-actions

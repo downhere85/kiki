@@ -1162,7 +1162,7 @@ function generateGraph () {
   state.deliveryNodes = {
     user: { name: t('admin.storage.deliveryPathsUser'), borderRadius: 16, icon: '/_assets/icons/fluent-account.svg' },
     pages: { name: t('admin.storage.contentTypePages'), color: '#3f51b5', icon: 'las', iconText: '&#xf15c;' },
-    pages_wiki: { name: 'Kiki', icon: '/_assets/logo-wikijs.svg', color: '#161b22' }
+    pages_wiki: { name: 'Kiki', icon: '/_assets/logo-kiki.svg', color: '#161b22' }
   }
   state.deliveryEdges = {
     user_pages: { source: 'user', target: 'pages' },
@@ -1190,7 +1190,7 @@ function generateGraph () {
 
     if (dt) {
       state.deliveryNodes[`${tp.key}_${dt.module}`] = { name: dt.title, icon: dt.icon }
-      state.deliveryNodes[`${tp.key}_wiki`] = { name: 'Kiki', icon: '/_assets/logo-wikijs.svg', color: '#161b22' }
+      state.deliveryNodes[`${tp.key}_wiki`] = { name: 'Kiki', icon: '/_assets/logo-kiki.svg', color: '#161b22' }
       state.deliveryLayouts.nodes[`${tp.key}_${dt.module}`] = { x: 60, y: (i + 1) * 15 }
       state.deliveryLayouts.nodes[`${tp.key}_wiki`] = { x: 120, y: (i + 1) * 15 }
       state.deliveryEdges[`${tp.key}_${dt.module}_in`] = { source: tp.key, target: `${tp.key}_${dt.module}` }
@@ -1207,7 +1207,7 @@ function generateGraph () {
 
     if (st) {
       state.deliveryNodes[`${tp.key}_${st.module}`] = { name: st.title, icon: st.icon }
-      state.deliveryNodes[`${tp.key}_wiki`] = { name: 'Kiki', icon: '/_assets/logo-wikijs.svg', color: '#161b22' }
+      state.deliveryNodes[`${tp.key}_wiki`] = { name: 'Kiki', icon: '/_assets/logo-kiki.svg', color: '#161b22' }
       state.deliveryLayouts.nodes[`${tp.key}_${st.module}`] = { x: 120, y: (i + 1) * 15 }
       state.deliveryLayouts.nodes[`${tp.key}_wiki`] = { x: 60, y: (i + 1) * 15 }
       state.deliveryEdges[`${tp.key}_wiki_in`] = { source: tp.key, target: `${tp.key}_wiki` }
@@ -1222,7 +1222,7 @@ function generateGraph () {
 
     const dbt = find(state.targets, ['module', 'db'])
     if (dbt.contentTypes.activeTypes.includes(tp.key)) {
-      state.deliveryNodes[`${tp.key}_wiki`] = { name: 'Kiki', icon: '/_assets/logo-wikijs.svg', color: '#161b22' }
+      state.deliveryNodes[`${tp.key}_wiki`] = { name: 'Kiki', icon: '/_assets/logo-kiki.svg', color: '#161b22' }
       state.deliveryLayouts.nodes[`${tp.key}_wiki`] = { x: 60, y: (i + 1) * 15 }
       state.deliveryEdges[`${tp.key}_db_in`] = { source: tp.key, target: `${tp.key}_wiki` }
       state.deliveryEdges[`${tp.key}_db_out`] = { source: `${tp.key}_wiki`, target: tp.key }

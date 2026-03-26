@@ -5,7 +5,7 @@ q-layout.admin(view='hHh Lpr lff')
       q-toolbar(style='height: 64px;', dark)
         q-btn(dense, flat, to='/')
           q-avatar(size='34px', square)
-            img(src='/_assets/logo-wikijs.svg')
+            img(src='/_assets/logo-kiki.svg')
         q-toolbar-title.text-h6 Kiki
       q-toolbar.gt-sm.justify-center(style='height: 64px;', dark)
         .text-overline.text-uppercase.text-grey {{ t('admin.adminArea') }}
