@@ -85,11 +85,17 @@ export default {
             const mod = await import(`../modules/authentication/${stg.module}/authentication.js`)
             strategy = mod.default || mod
           }
-          strategy.init(passport, {
-            ...stg.config,
-            key: stg.id,
-            callbackURL: `${WIKI.config.host}/login/${stg.id}/callback`
-          })
+          // Local strategy uses init(passport, strategyId, conf)
+          // 3rd party strategies use init(passport, conf) where conf includes key + callbackURL
+          if (strategy.init.length >= 3) {
+            strategy.init(passport, stg.id, stg.config)
+          } else {
+            strategy.init(passport, {
+              ...stg.config,
+              key: stg.id,
+              callbackURL: `${WIKI.config.host}/login/${stg.id}/callback`
+            })
+          }
 
           WIKI.auth.strategies[stg.id] = {
             ...strategy,
