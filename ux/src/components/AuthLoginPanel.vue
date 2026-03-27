@@ -15,7 +15,7 @@
           no-caps
           :color='str.id === state.selectedStrategyId ? `primary` : ($q.dark.isActive ? `blue-grey-9` : `grey-1`)'
           :text-color='str.id === state.selectedStrategyId || $q.dark.isActive ? `white` : `blue-grey-9`'
-          @click='state.selectedStrategyId = str.id'
+          @click='selectStrategy(str)'
           )
     q-form(ref='loginForm', @submit='login')
       q-input(
@@ -479,6 +479,13 @@ const userPasswordVerifyValidation = [
 ]
 
 // METHODS
+
+function selectStrategy (str) {
+  state.selectedStrategyId = str.id
+  if (!str.activeStrategy?.strategy?.useForm) {
+    window.location.assign(`/login/${str.id}`)
+  }
+}
 
 function switchTo (screen) {
   switch (screen) {
