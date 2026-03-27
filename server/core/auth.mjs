@@ -83,9 +83,13 @@ export default {
           try {
             strategy = (await import(`../modules/authentication/${stg.module}/authentication.mjs`)).default
           } catch {
-            // 3rd party modules use CommonJS (.js) — use createRequire since package.json has "type": "module"
-            const require = createRequire(import.meta.url)
-            strategy = require(`../modules/authentication/${stg.module}/authentication.js`)
+            // 3rd party modules use CommonJS (.js/.cjs) — use createRequire since package.json has "type": "module"
+            const esmRequire = createRequire(import.meta.url)
+            try {
+              strategy = esmRequire(`../modules/authentication/${stg.module}/authentication.cjs`)
+            } catch {
+              strategy = esmRequire(`../modules/authentication/${stg.module}/authentication.js`)
+            }
           }
           // Local strategy uses init(passport, strategyId, conf)
           // 3rd party strategies use init(passport, conf) where conf includes key + callbackURL
