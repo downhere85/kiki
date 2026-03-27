@@ -6,6 +6,7 @@ import ms from 'ms'
 import { DateTime } from 'luxon'
 import util from 'node:util'
 import crypto from 'node:crypto'
+import { createRequire } from 'node:module'
 import { pem2jwk } from 'pem-jwk'
 import NodeCache from 'node-cache'
 import { extractJWT } from '../helpers/security.mjs'
@@ -82,8 +83,9 @@ export default {
           try {
             strategy = (await import(`../modules/authentication/${stg.module}/authentication.mjs`)).default
           } catch {
-            const mod = await import(`../modules/authentication/${stg.module}/authentication.js`)
-            strategy = mod.default || mod
+            // 3rd party modules use CommonJS (.js) — use createRequire since package.json has "type": "module"
+            const require = createRequire(import.meta.url)
+            strategy = require(`../modules/authentication/${stg.module}/authentication.js`)
           }
           // Local strategy uses init(passport, strategyId, conf)
           // 3rd party strategies use init(passport, conf) where conf includes key + callbackURL
