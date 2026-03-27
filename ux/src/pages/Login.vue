@@ -413,46 +413,64 @@ onMounted(() => {
 
 <style lang="scss">
  .auth {
-    background-color: #FFF;
+    background: linear-gradient(135deg, #F5F0EB 0%, #EDE4D9 50%, #E8DDD0 100%);
     display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 
     @at-root .body--dark & {
-      background-color: $dark-6;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     }
 
     &-content {
-      flex: 1 0 100%;
+      flex: 0 1 auto;
       width: 100%;
-      max-width: 500px;
-      padding: 3rem 4rem;
+      max-width: 420px;
+      padding: 2.5rem 3rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: stretch;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.04);
+      margin: 2rem;
+
+      @at-root .body--dark & {
+        background: #1e1e2e;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+      }
 
       @media (max-width: $breakpoint-xs-max) {
-        padding: 1rem 2rem;
+        padding: 1.5rem 1.5rem;
         max-width: 100vw;
+        margin: 1rem;
+        border-radius: 12px;
       }
     }
 
     &-logo {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      text-align: center;
 
       img {
-        height: 72px;
+        height: 64px;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
       }
     }
 
     &-site-title {
-      font-size: 1.875rem;
-      line-height: 2.25rem;
-      font-weight: 700;
-      margin: 0;
-      color: $blue-grey-9;
+      font-size: 1.5rem;
+      line-height: 2rem;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+      text-align: center;
+      color: #3C3226;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 
       @at-root .body--dark & {
-        color: $blue-grey-1;
+        color: #e0d6cc;
       }
     }
 
@@ -463,24 +481,51 @@ onMounted(() => {
     }
 
     &-bg {
-      flex: 1;
-      flex-basis: 0;
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
+      display: none;
+    }
 
-      img {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: 0;
-        padding: 0;
+    .text-grey-7 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    // Override Quasar input styles for warmth
+    .q-field--outlined .q-field__control {
+      border-radius: 10px;
+
+      &:before {
+        border-color: #D4C9BB;
       }
+
+      &:hover:before {
+        border-color: #B8A99A;
+      }
+    }
+
+    .q-field--focused .q-field__control {
+      &:after {
+        border-color: #8B7355;
+        border-width: 2px;
+      }
+    }
+
+    // Rounded buttons
+    .q-btn {
+      border-radius: 10px !important;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    // Strategy buttons
+    .auth-strategies .q-btn {
+      border-radius: 10px !important;
+      padding: 12px 16px;
+    }
+
+    // Separator
+    .q-separator {
+      background-color: #E8DDD0;
     }
   }
 </style>
