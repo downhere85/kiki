@@ -4,11 +4,11 @@ q-layout(view='hHh Lpr lff')
   q-drawer.bg-sidebar(
     :model-value='isSidebarShown'
     :show-if-above='siteStore.theme.sidebarPosition !== `off`'
-    :width='isSidebarMini ? 56 : 255'
+    :width='isSidebarMini ? 44 : 240'
     :side='siteStore.theme.sidebarPosition === `right` ? `right` : `left`'
     )
     .sidebar-mini.column.items-stretch(v-if='isSidebarMini')
-      q-btn.q-py-md(
+      q-btn.q-py-sm(
         flat
         icon='las la-globe'
         color='white'
@@ -16,7 +16,7 @@ q-layout(view='hHh Lpr lff')
         )
         locale-selector-menu(anchor='top right' self='top left')
         q-tooltip(anchor='center right' self='center left') Switch Locale
-      q-btn.q-py-md(
+      q-btn.q-py-sm(
         flat
         icon='las la-sitemap'
         color='white'
@@ -25,7 +25,7 @@ q-layout(view='hHh Lpr lff')
         )
         q-tooltip(anchor='center right' self='center left') Browse
       q-separator.q-my-sm(inset, dark)
-      q-btn.q-py-md(
+      q-btn.q-py-sm(
         flat
         icon='las la-bookmark'
         color='white'

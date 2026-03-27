@@ -475,7 +475,7 @@ function refreshTocExpanded (baseToc, lvl) {
   }
 }
 .page-header {
-  height: 95px;
+  height: 64px;
 
   @at-root .body--light & {
     background: linear-gradient(to bottom, $grey-2 0%, $grey-1 100%);
@@ -522,7 +522,7 @@ function refreshTocExpanded (baseToc, lvl) {
   }
 }
 .page-sidebar {
-  flex: 0 0 300px;
+  flex: 0 0 220px;
 
   @at-root .body--light & {
     background-color: $grey-2;

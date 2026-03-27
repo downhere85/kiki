@@ -6,8 +6,6 @@
     h2.auth-site-title(v-if='siteStore.logoText') {{ siteStore.title }}
     p.text-grey-7 Login to continue
     auth-login-panel
-  .auth-bg(aria-hidden="true")
-    img(:src='`/_site/loginbg`' alt='')
 </template>
 
 <script setup>
@@ -426,15 +424,16 @@ onMounted(() => {
     &-content {
       flex: 0 1 auto;
       width: 100%;
-      max-width: 420px;
-      padding: 2.5rem 3rem;
+      max-width: 380px;
+      padding: 2.5rem 2.5rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: stretch;
       background: white;
-      border-radius: 16px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.04);
+      border-radius: 12px;
+      border-top: 3px solid #C4956A;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
       margin: 2rem;
 
       @at-root .body--dark & {

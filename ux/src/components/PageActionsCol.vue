@@ -347,7 +347,7 @@ function removePendingAsset (item) {
 
 <style lang="scss">
 .page-actions {
-  flex: 0 0 56px;
+  flex: 0 0 40px;
 
   @at-root .body--light & {
     background-color: $grey-3;
