@@ -491,7 +491,7 @@ onMounted(() => {
 
     // Override Quasar input styles for warmth
     .q-field--outlined .q-field__control {
-      border-radius: 10px;
+      border-radius: 8px;
 
       &:before {
         border-color: #D4C9BB;
@@ -509,17 +509,44 @@ onMounted(() => {
       }
     }
 
-    // Rounded buttons
+    // All buttons — warm neutrals, no blue
     .q-btn {
-      border-radius: 10px !important;
+      border-radius: 8px !important;
       font-weight: 500;
       letter-spacing: 0.02em;
     }
 
+    // Primary action button (Log In) — warm brown instead of blue
+    .q-btn.bg-primary,
+    .q-btn--push.bg-primary {
+      background-color: #6B5B4F !important;
+      color: white !important;
+
+      &:hover {
+        background-color: #5A4A3F !important;
+      }
+    }
+
+    // Secondary buttons (Passkey, Forgot) — warm tone
+    .q-btn.text-primary {
+      color: #8B7355 !important;
+    }
+
     // Strategy buttons
     .auth-strategies .q-btn {
-      border-radius: 10px !important;
-      padding: 12px 16px;
+      border-radius: 8px !important;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+    }
+
+    // Selected strategy — warm brown instead of blue
+    .auth-strategies .q-btn.bg-primary {
+      background-color: #6B5B4F !important;
+    }
+
+    // Unselected strategy
+    .auth-strategies .q-btn.bg-grey-1 {
+      border: 1px solid #D4C9BB;
     }
 
     // Separator
