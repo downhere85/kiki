@@ -492,6 +492,7 @@ onMounted(() => {
     // Override Quasar input styles for warmth
     .q-field--outlined .q-field__control {
       border-radius: 8px;
+      background: white !important;
 
       &:before {
         border-color: #D4C9BB;
@@ -507,6 +508,15 @@ onMounted(() => {
         border-color: #8B7355;
         border-width: 2px;
       }
+    }
+
+    // Fix browser autofill blue tint
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px white inset !important;
+      -webkit-text-fill-color: #3C3226 !important;
+      transition: background-color 5000s ease-in-out 0s;
     }
 
     // All buttons — warm neutrals, no blue
