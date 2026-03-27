@@ -539,7 +539,7 @@ async function save () {
         }
       `,
       variables: {
-        strategies: this.activeStrategies.map((str, idx) => ({
+        strategies: state.activeStrategies.map((str, idx) => ({
           key: str.key,
           strategyKey: str.strategy.key,
           displayName: str.displayName,
