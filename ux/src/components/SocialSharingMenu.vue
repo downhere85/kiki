@@ -9,11 +9,11 @@ q-menu(
   q-list(dense, padding)
     q-item(clickable, ref='copyUrlButton')
       q-item-section.items-center(avatar)
-        q-icon(color='grey', name='las la-clipboard', size='sm')
+        q-icon(color='grey', name='ph ph-clipboard', size='sm')
       q-item-section.q-pr-md Copy URL
     q-item(clickable, tag='a', :href='`mailto:?subject=` + encodeURIComponent(props.title) + `&body=` + encodeURIComponent(urlFormatted) + `%0D%0A%0D%0A` + encodeURIComponent(props.description)', target='_blank')
       q-item-section.items-center(avatar)
-        q-icon(color='grey', name='las la-envelope', size='sm')
+        q-icon(color='grey', name='ph ph-envelope', size='sm')
       q-item-section.q-pr-md Email
 </template>
 
@@ -90,7 +90,7 @@ function menuShown (ev) {
   clip.on('success', () => {
     $q.notify({
       message: 'URL copied successfully',
-      icon: 'las la-clipboard'
+      icon: 'ph ph-clipboard'
     })
   })
   clip.on('error', () => {

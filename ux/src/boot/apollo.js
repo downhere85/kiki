@@ -73,7 +73,7 @@ export function initializeApollo (store) {
       split(
         op => op.getContext().uploadMode,
         uploadLink,
-        new BatchHttpLink(defaultLinkOptions)
+        new BatchHttpLink({ ...defaultLinkOptions, headers: { 'Apollo-Require-Preflight': 'true' } })
       )
     ])
   )

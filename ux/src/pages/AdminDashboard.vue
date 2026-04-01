@@ -19,7 +19,7 @@ q-page.admin-dashboard
           q-btn(
             flat
             color='primary'
-            icon='las la-plus-circle'
+            icon='ph ph-plus-circle'
             :label='t(`common.actions.new`)'
             :disable='!userStore.can(`manage:sites`)'
             @click='newSite'
@@ -28,7 +28,7 @@ q-page.admin-dashboard
           q-btn(
             flat
             color='primary'
-            icon='las la-sitemap'
+            icon='ph ph-tree-structure'
             :label='t(`common.actions.manage`)'
             :disable='!userStore.can(`manage:sites`)'
             to='/_admin/sites'
@@ -45,7 +45,7 @@ q-page.admin-dashboard
           q-btn(
             flat
             color='primary'
-            icon='las la-plus-circle'
+            icon='ph ph-plus-circle'
             :label='t(`common.actions.new`)'
             :disable='!userStore.can(`manage:users`)'
             @click='newGroup'
@@ -54,7 +54,7 @@ q-page.admin-dashboard
           q-btn(
             flat
             color='primary'
-            icon='las la-users'
+            icon='ph ph-users'
             :label='t(`common.actions.manage`)'
             :disable='!userStore.can(`manage:users`)'
             to='/_admin/groups'
@@ -71,7 +71,7 @@ q-page.admin-dashboard
           q-btn(
             flat
             color='primary'
-            icon='las la-user-plus'
+            icon='ph ph-user-plus'
             :label='t(`common.actions.new`)'
             :disable='!userStore.can(`manage:users`)'
             @click='newUser'
@@ -80,7 +80,7 @@ q-page.admin-dashboard
           q-btn(
             flat
             color='primary'
-            icon='las la-user-friends'
+            icon='ph ph-users'
             :label='t(`common.actions.manage`)'
             :disable='!userStore.can(`manage:users`)'
             to='/_admin/users'
@@ -97,7 +97,7 @@ q-page.admin-dashboard
     //-       q-btn(
     //-         flat
     //-         color='primary'
-    //-         icon='las la-tags'
+    //-         icon='ph ph-tag'
     //-         :label='t(`common.actions.manage`)'
     //-         :disable='!userStore.can(`manage:sites`)'
     //-         :to='`/_admin/` + adminStore.currentSiteId + `/tags`'
@@ -114,7 +114,7 @@ q-page.admin-dashboard
           q-btn(
             flat
             color='primary'
-            icon='las la-chart-area'
+            icon='ph ph-chart-line-up'
             :label='t(`admin.analytics.title`)'
             :to='`/_admin/` + adminStore.currentSiteId + `/analytics`'
             )
@@ -149,7 +149,7 @@ q-page.admin-dashboard
       q-card
         q-card-section
           .text-h6.text-primary
-            q-icon.q-mr-sm(name='las la-chart-bar')
+            q-icon.q-mr-sm(name='ph ph-chart-bar')
             | Page Insights
         q-separator
         q-tabs(v-model='state.insightsTab', dense, align='left', active-color='primary', indicator-color='primary')

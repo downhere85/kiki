@@ -15,14 +15,14 @@ q-page.q-py-md(:style-fn='pageStyle')
           )
         q-icon(
           v-else,
-          name='las la-user'
+          name='ph ph-user'
           )
     .col.self-center(v-if='canEdit')
       .text-body1 {{ t('profile.avatarUploadTitle') }}
       .text-caption {{ t('profile.avatarUploadHint') }}
       .q-mt-md
         q-btn(
-          icon='las la-upload'
+          icon='ph ph-upload'
           unelevated
           :label='t(`profile.uploadNewAvatar`)'
           color='primary'
@@ -30,7 +30,7 @@ q-page.q-py-md(:style-fn='pageStyle')
         )
       .q-mt-md
         q-btn.q-mr-sm(
-          icon='las la-times'
+          icon='ph ph-x'
           outline
           :label='t(`common.actions.clear`)'
           color='primary'

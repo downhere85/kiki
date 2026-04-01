@@ -10,14 +10,14 @@ q-page.admin-flags
       template(v-if='flagsStore.experimental')
         q-btn.q-mr-sm.acrylic-btn(
           unelevated
-          icon='las la-plus'
+          icon='ph ph-plus'
           :label='t(`admin.blocks.add`)'
           color='primary'
           @click='addBlock'
         )
         q-separator.q-mr-sm(vertical)
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -27,7 +27,7 @@ q-page.admin-flags
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -62,7 +62,7 @@ q-page.admin-flags
               side
               )
               q-btn(
-                icon='las la-trash'
+                icon='ph ph-trash'
                 :aria-label='t(`common.actions.delete`)'
                 color='negative'
                 outline
@@ -75,8 +75,8 @@ q-page.admin-flags
             q-toggle.q-pr-sm(
               v-model='block.isEnabled'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :label='t(`admin.blocks.isEnabled`)'
               :aria-label='t(`admin.blocks.isEnabled`)'
               disable

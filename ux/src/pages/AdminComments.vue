@@ -1,206 +1,252 @@
 <template lang='pug'>
-  v-container(fluid, grid-list-lg)
-    v-layout(row, wrap)
-      v-flex(xs12)
-        .admin-header
-          img.animated.fadeInUp(src='/_assets/svg/icon-chat-bubble.svg', alt='Comments', style='width: 80px;')
-          .admin-header-title
-            .headline.primary--text.animated.fadeInLeft {{$t('admin.comments.title')}}
-            .subtitle-1.grey--text.animated.fadeInLeft.wait-p2s {{$t('admin.comments.subtitle')}}
-          v-spacer
-          v-btn.animated.fadeInDown.wait-p3s(icon, outlined, color='grey', href='https://docs.requarks.io/comments', target='_blank')
-            v-icon mdi-help-circle
-          v-btn.mx-3.animated.fadeInDown.wait-p2s(icon, outlined, color='grey', @click='refresh')
-            v-icon mdi-refresh
-          v-btn.animated.fadeInDown(color='success', @click='save', depressed, large)
-            v-icon(left) mdi-check
-            span {{$t('common.actions.apply')}}
-
-      v-flex(lg3, xs12)
-        v-card.animated.fadeInUp
-          v-toolbar(flat, color='primary', dark, dense)
-            .subtitle-1 {{$t('admin.comments.provider')}}
-          v-list.py-0(two-line, dense)
-            template(v-for='(provider, idx) in providers')
-              v-list-item(:key='provider.key', @click='selectedProvider = provider.key', :disabled='!provider.isAvailable')
-                v-list-item-avatar(size='24')
-                  v-icon(color='grey', v-if='!provider.isAvailable') mdi-minus-box-outline
-                  v-icon(color='primary', v-else-if='provider.key === selectedProvider') mdi-checkbox-marked-circle-outline
-                  v-icon(color='grey', v-else) mdi-checkbox-blank-circle-outline
-                v-list-item-content
-                  v-list-item-title.body-2(:class='!provider.isAvailable ? `grey--text` : (selectedProvider === provider.key ? `primary--text` : ``)') {{ provider.title }}
-                  v-list-item-subtitle: .caption(:class='!provider.isAvailable ? `grey--text text--lighten-1` : (selectedProvider === provider.key ? `blue--text ` : ``)') {{ provider.description }}
-                v-list-item-avatar(v-if='selectedProvider === provider.key', size='24')
-                  v-icon.animated.fadeInLeft(color='primary', large) mdi-chevron-right
-              v-divider(v-if='idx < providers.length - 1')
-
-      v-flex(lg9, xs12)
-        v-card.animated.fadeInUp.wait-p2s
-          v-toolbar(color='primary', dense, flat, dark)
-            .subtitle-1 {{provider.title}}
-          v-card-info(color='blue')
-            div
-              div {{provider.description}}
-              span.caption: a(:href='provider.website') {{provider.website}}
-            v-spacer
-            .admin-providerlogo
-              img(:src='provider.logo', :alt='provider.title')
-          v-card-text
-            .overline.my-5 {{$t('admin.comments.providerConfig')}}
-            .body-2.ml-3(v-if='!provider.config || provider.config.length < 1'): em {{$t('admin.comments.providerNoConfig')}}
-            template(v-else, v-for='cfg in provider.config')
-              v-select.mb-3(
+q-page.admin-comments
+  .row.q-pa-md.items-center
+    .col-auto
+      img.admin-icon.animated.fadeInLeft(src='/_assets/icons/fluent-chat-bubble-animated.svg')
+    .col.q-pl-md
+      .text-h5.text-primary.animated.fadeInLeft {{ t('admin.comments.title') }}
+      .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.comments.subtitle') }}
+    .col-auto
+      q-btn.q-mr-sm.acrylic-btn(
+        icon='ph ph-question'
+        flat
+        color='grey'
+        :aria-label='t(`common.actions.viewDocs`)'
+        :href='siteStore.docsBase + `/admin/comments`'
+        target='_blank'
+        type='a'
+        )
+        q-tooltip {{ t(`common.actions.viewDocs`) }}
+      q-btn.q-mr-sm.acrylic-btn(
+        icon='ph ph-arrow-clockwise'
+        flat
+        color='secondary'
+        :loading='state.loading > 0'
+        :aria-label='t(`common.actions.refresh`)'
+        @click='load'
+        )
+        q-tooltip {{ t(`common.actions.refresh`) }}
+      q-btn(
+        unelevated
+        icon='mdi-check'
+        :label='t(`common.actions.apply`)'
+        color='secondary'
+        @click='save'
+        :disabled='state.loading > 0'
+      )
+  q-separator(inset)
+  .row.q-pa-md.q-col-gutter-md
+    .col-auto
+      q-card.rounded-borders.bg-dark(style='min-width: 300px;')
+        q-list(padding, dark)
+          q-item(
+            v-for='p of state.providers'
+            :key='p.key'
+            clickable
+            :active='state.selectedKey === p.key'
+            active-class='bg-primary text-white'
+            @click='state.selectedKey = p.key'
+            :disable='!p.isAvailable'
+            )
+            q-item-section(side)
+              q-icon(
+                :name='state.selectedKey === p.key ? `ph ph-radio-button` : `ph ph-circle`'
+                :color='!p.isAvailable ? `grey` : (state.selectedKey === p.key ? `positive` : `grey-5`)'
+                )
+            q-item-section
+              q-item-label {{ p.title }}
+              q-item-label(caption) {{ p.description }}
+            q-item-section(v-if='state.selectedKey === p.key', side)
+              q-icon(name='ph ph-caret-right', color='white')
+    .col(v-if='selectedProvider')
+      q-card
+        q-bar.bg-primary.text-white
+          span {{ selectedProvider.title }}
+        q-card-section.bg-blue-1(v-if='selectedProvider.description')
+          .row.items-center
+            .col
+              .text-body2 {{ selectedProvider.description }}
+              a.text-caption(:href='selectedProvider.website', target='_blank') {{ selectedProvider.website }}
+            .col-auto(v-if='selectedProvider.logo')
+              img(:src='selectedProvider.logo', :alt='selectedProvider.title', style='max-height: 40px; max-width: 100px;')
+        q-card-section
+          .text-overline.q-mb-md {{ t('admin.comments.providerConfig') }}
+          .text-body2.text-grey(v-if='!selectedProvider.config || selectedProvider.config.length < 1')
+            em {{ t('admin.comments.providerNoConfig') }}
+          template(v-else)
+            template(v-for='cfg in selectedProvider.config', :key='cfg.key')
+              q-select.q-mb-md(
                 v-if='cfg.value.type === "string" && cfg.value.enum'
                 outlined
-                :items='cfg.value.enum'
-                :key='cfg.key'
+                :options='cfg.value.enum'
                 :label='cfg.value.title'
                 v-model='cfg.value.value'
-                prepend-icon='mdi-cog-box'
-                :hint='cfg.value.hint ? cfg.value.hint : ""'
-                persistent-hint
-                :class='cfg.value.hint ? "mb-2" : ""'
-                :style='cfg.value.maxWidth > 0 ? `max-width:` + cfg.value.maxWidth + `px;` : ``'
-              )
-              v-switch.mb-6(
+                :hint='cfg.value.hint || ""'
+                )
+              q-toggle.q-mb-md(
                 v-else-if='cfg.value.type === "boolean"'
-                :key='cfg.key'
                 :label='cfg.value.title'
                 v-model='cfg.value.value'
                 color='primary'
-                prepend-icon='mdi-cog-box'
-                :hint='cfg.value.hint ? cfg.value.hint : ""'
-                persistent-hint
-                inset
                 )
-              v-textarea.mb-3(
+                template(v-if='cfg.value.hint')
+                  .text-caption.text-grey {{ cfg.value.hint }}
+              q-input.q-mb-md(
                 v-else-if='cfg.value.type === "string" && cfg.value.multiline'
                 outlined
-                :key='cfg.key'
+                type='textarea'
                 :label='cfg.value.title'
                 v-model='cfg.value.value'
-                prepend-icon='mdi-cog-box'
-                :hint='cfg.value.hint ? cfg.value.hint : ""'
-                persistent-hint
-                :class='cfg.value.hint ? "mb-2" : ""'
+                :hint='cfg.value.hint || ""'
                 )
-              v-text-field.mb-3(
+              q-input.q-mb-md(
                 v-else
                 outlined
-                :key='cfg.key'
                 :label='cfg.value.title'
                 v-model='cfg.value.value'
-                prepend-icon='mdi-cog-box'
-                :hint='cfg.value.hint ? cfg.value.hint : ""'
-                persistent-hint
-                :class='cfg.value.hint ? "mb-2" : ""'
-                :style='cfg.value.maxWidth > 0 ? `max-width:` + cfg.value.maxWidth + `px;` : ``'
+                :hint='cfg.value.hint || ""'
                 )
 </template>
 
-<script>
-import _ from 'lodash'
+<script setup>
+import { useMeta, useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
+import { computed, onMounted, reactive } from 'vue'
 import gql from 'graphql-tag'
+import { cloneDeep, sortBy } from 'lodash-es'
 
-export default {
-  data() {
-    return {
-      providers: [],
-      selectedProvider: '',
-      provider: {}
-    }
-  },
-  watch: {
-    selectedProvider(newValue, oldValue) {
-      this.provider = _.find(this.providers, ['key', newValue]) || {}
-    },
-    providers(newValue, oldValue) {
-      this.selectedProvider = _.get(_.find(this.providers, 'isEnabled'), 'key', 'db')
-    }
-  },
-  methods: {
-    async refresh() {
-      await this.$apollo.queries.providers.refetch()
-      this.$store.commit('showNotification', {
-        message: this.$t('admin.comments.listRefreshSuccess'),
-        style: 'success',
-        icon: 'cached'
-      })
-    },
-    async save() {
-      this.$store.commit(`loadingStart`, 'admin-comments-saveproviders')
-      try {
-        const resp = await this.$apollo.mutate({
-          mutation: gql`
-            mutation($providers: [CommentProviderInput]!) {
-              comments {
-                updateProviders(providers: $providers) {
-                  responseResult {
-                    succeeded
-                    errorCode
-                    slug
-                    message
-                  }
-                }
-              }
-            }
-          `,
-          variables: {
-            providers: this.providers.map(tgt => ({
-              isEnabled: tgt.key === this.selectedProvider,
-              key: tgt.key,
-              config: tgt.config.map(cfg => ({...cfg, value: JSON.stringify({ v: cfg.value.value })}))
-            }))
-          }
-        })
-        if (_.get(resp, 'data.comments.updateProviders.responseResult.succeeded', false)) {
-          this.$store.commit('showNotification', {
-            message: this.$t('admin.comments.configSaveSuccess'),
-            style: 'success',
-            icon: 'check'
-          })
-        } else {
-          throw new Error(_.get(resp, 'data.comments.updateProviders.responseResult.message', this.$t('common.error.unexpected')))
-        }
-      } catch (err) {
-        this.$store.commit('pushGraphError', err)
-      }
-      this.$store.commit(`loadingStop`, 'admin-comments-saveproviders')
-    }
-  },
-  apollo: {
-    providers: {
+import { useAdminStore } from '@/stores/admin'
+import { useSiteStore } from '@/stores/site'
+
+// QUASAR
+
+const $q = useQuasar()
+
+// STORES
+
+const adminStore = useAdminStore()
+const siteStore = useSiteStore()
+
+// I18N
+
+const { t } = useI18n()
+
+// META
+
+useMeta({
+  title: t('admin.comments.title')
+})
+
+// STATE
+
+const state = reactive({
+  loading: 0,
+  providers: [],
+  selectedKey: ''
+})
+
+const selectedProvider = computed(() => {
+  return state.providers.find(p => p.key === state.selectedKey) || null
+})
+
+// METHODS
+
+async function load () {
+  state.loading++
+  try {
+    const resp = await APOLLO_CLIENT.query({
       query: gql`
         query {
-          comments {
-            providers {
-              isEnabled
+          commentsProviders {
+            isEnabled
+            key
+            title
+            description
+            logo
+            website
+            isAvailable
+            config {
               key
-              title
-              description
-              logo
-              website
-              isAvailable
-              config {
-                key
-                value
-              }
+              value
             }
           }
         }
       `,
-      fetchPolicy: 'network-only',
-      update: (data) => _.cloneDeep(data.comments.providers).map(str => ({
-        ...str,
-        config: _.sortBy(str.config.map(cfg => ({
+      fetchPolicy: 'network-only'
+    })
+    state.providers = cloneDeep(resp?.data?.commentsProviders || []).map(p => ({
+      ...p,
+      config: sortBy(
+        (p.config || []).map(cfg => ({
           ...cfg,
           value: JSON.parse(cfg.value)
-        })), [t => t.value.order])
-      })),
-      watchLoading (isLoading) {
-        this.$store.commit(`loading${isLoading ? 'Start' : 'Stop'}`, 'admin-comments-refresh')
-      }
+        })),
+        [c => c.value.order]
+      )
+    }))
+    if (!state.selectedKey && state.providers.length > 0) {
+      const enabled = state.providers.find(p => p.isEnabled)
+      state.selectedKey = enabled ? enabled.key : state.providers[0].key
     }
+  } catch (err) {
+    $q.notify({
+      type: 'negative',
+      message: 'Failed to load comments providers.',
+      caption: err.message
+    })
   }
+  state.loading--
 }
+
+async function save () {
+  state.loading++
+  try {
+    const resp = await APOLLO_CLIENT.mutate({
+      mutation: gql`
+        mutation ($providers: [CommentProviderInput]) {
+          updateCommentsProviders(providers: $providers) {
+            operation {
+              succeeded
+              message
+            }
+          }
+        }
+      `,
+      variables: {
+        providers: state.providers.map(p => ({
+          isEnabled: p.key === state.selectedKey,
+          key: p.key,
+          config: (p.config || []).map(cfg => ({
+            key: cfg.key,
+            value: JSON.stringify({ v: cfg.value.value })
+          }))
+        }))
+      }
+    })
+    if (resp?.data?.updateCommentsProviders?.operation?.succeeded) {
+      $q.notify({
+        type: 'positive',
+        message: t('admin.comments.configSaveSuccess')
+      })
+    } else {
+      throw new Error(resp?.data?.updateCommentsProviders?.operation?.message || 'An unexpected error occurred.')
+    }
+  } catch (err) {
+    $q.notify({
+      type: 'negative',
+      message: 'Failed to save comments provider config.',
+      caption: err.message
+    })
+  }
+  state.loading--
+}
+
+// MOUNTED
+
+onMounted(() => {
+  load()
+})
 </script>
+
+<style lang='scss'>
+</style>

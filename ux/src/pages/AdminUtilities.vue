@@ -8,7 +8,7 @@ q-page.admin-utilities
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.utilities.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -29,7 +29,7 @@ q-page.admin-utilities
           q-item-section(side)
             q-btn.acrylic-btn(
               flat
-              icon='las la-arrow-circle-right'
+              icon='ph ph-arrow-circle-right'
               color='primary'
               @click='disconnectWS'
               :label='t(`common.actions.proceed`)'
@@ -42,7 +42,7 @@ q-page.admin-utilities
           q-item-section(side)
             q-btn.acrylic-btn(
               flat
-              icon='las la-arrow-circle-right'
+              icon='ph ph-arrow-circle-right'
               color='primary'
               @click='flushCache'
               :label='t(`common.actions.proceed`)'
@@ -67,7 +67,7 @@ q-page.admin-utilities
           q-item-section(side)
             q-btn.acrylic-btn(
               flat
-              icon='las la-arrow-circle-right'
+              icon='ph ph-arrow-circle-right'
               color='primary'
               @click='purgeHistory'
               :label='t(`common.actions.proceed`)'
@@ -80,7 +80,7 @@ q-page.admin-utilities
           q-item-section(side)
             q-btn.acrylic-btn(
               flat
-              icon='las la-arrow-circle-right'
+              icon='ph ph-arrow-circle-right'
               color='primary'
               @click='rebuildSearchIndex'
               :label='t(`common.actions.proceed`)'
@@ -93,7 +93,7 @@ q-page.admin-utilities
           q-item-section(side)
             q-btn.acrylic-btn(
               flat
-              icon='las la-arrow-circle-right'
+              icon='ph ph-arrow-circle-right'
               color='primary'
               @click='invalidateAuthCertificates'
               :label='t(`common.actions.proceed`)'
@@ -106,7 +106,7 @@ q-page.admin-utilities
           q-item-section(side)
             q-btn.acrylic-btn(
               flat
-              icon='las la-arrow-circle-right'
+              icon='ph ph-arrow-circle-right'
               color='grey'
               disabled
               :label='t(`common.actions.proceed`)'
@@ -119,7 +119,7 @@ q-page.admin-utilities
           q-item-section(side)
             q-btn.acrylic-btn(
               flat
-              icon='las la-arrow-circle-right'
+              icon='ph ph-arrow-circle-right'
               color='grey'
               disabled
               :label='t(`common.actions.proceed`)'

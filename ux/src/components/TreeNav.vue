@@ -54,27 +54,27 @@ const { t } = useI18n()
 
 const contextActions = {
   newFolder: {
-    icon: 'las la-plus-circle',
+    icon: 'ph ph-plus-circle',
     iconColor: 'blue',
     label: t('common.actions.newFolder')
   },
   duplicate: {
-    icon: 'las la-copy',
+    icon: 'ph ph-copy',
     iconColor: 'teal',
     label: t('common.actions.duplicate') + '...'
   },
   rename: {
-    icon: 'las la-redo',
+    icon: 'ph ph-arrow-clockwise',
     iconColor: 'teal',
     label: t('common.actions.rename') + '...'
   },
   move: {
-    icon: 'las la-arrow-right',
+    icon: 'ph ph-arrow-right',
     iconColor: 'teal',
     label: t('common.actions.moveTo') + '...'
   },
   del: {
-    icon: 'las la-trash-alt',
+    icon: 'ph ph-trash',
     iconColor: 'negative',
     label: t('common.actions.delete'),
     labelColor: 'negative'

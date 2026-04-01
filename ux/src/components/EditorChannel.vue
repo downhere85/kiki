@@ -15,7 +15,7 @@
           clickable
           )
           q-item-section(side)
-            q-icon(name='las la-grip-lines')
+            q-icon(name='ph ph-dots-six')
           q-item-section
             q-item-label
               span #&nbsp;
@@ -25,7 +25,7 @@
           //-   q-badge(color='accent', label='0')
     q-btn.q-mt-sm.full-width(
       color='primary'
-      icon='las la-plus'
+      icon='ph ph-plus'
       :label='$t(`Add Channel`)'
       no-caps
       )

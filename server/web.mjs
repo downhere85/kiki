@@ -256,11 +256,14 @@ export async function init () {
         }]
       })
     } else {
-      res.status(err.status || 500)
-      set(res.locals, 'pageMeta.title', 'Error')
-      res.render('error', {
-        message: err.message,
-        error: WIKI.IS_DEBUG ? err : {}
+      const status = err.status || 500
+      WIKI.logger.error(`${req.method} ${req.path} - ${status}: ${err.message}`)
+      if (WIKI.IS_DEBUG) {
+        WIKI.logger.error(err.stack)
+      }
+      res.status(status).json({
+        error: err.message,
+        status
       })
     }
   })

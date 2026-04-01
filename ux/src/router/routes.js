@@ -53,6 +53,8 @@ const routes = [
       { path: ':siteid/navigation', component: () => import('@/pages/AdminNavigation.vue') },
       { path: ':siteid/storage/:id?', component: () => import('@/pages/AdminStorage.vue') },
       { path: ':siteid/theme', component: () => import('@/pages/AdminTheme.vue') },
+      { path: ':siteid/analytics', component: () => import('@/pages/AdminAnalytics.vue') },
+      { path: ':siteid/comments', component: () => import('@/pages/AdminComments.vue') },
       // -> Users
       { path: 'auth', component: () => import('@/pages/AdminAuth.vue') },
       { path: 'groups/:id?/:section?', component: () => import('@/pages/AdminGroups.vue') },

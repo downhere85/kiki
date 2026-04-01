@@ -2,7 +2,7 @@
 q-btn.account-avbtn.q-ml-md(flat, round, dense, color='custom-color')
   q-icon(
     v-if='!userStore.authenticated || !userStore.hasAvatar'
-    name='las la-user-circle'
+    name='ph ph-user-circle'
     )
   q-avatar(
     v-else
@@ -19,14 +19,14 @@ q-btn.account-avbtn.q-ml-md(flat, round, dense, color='custom-color')
         q-btn(
           flat
           :label='t(`common.header.profile`)'
-          icon='las la-user-alt'
+          icon='ph ph-user'
           color='primary'
           to='/_profile'
           no-caps
           )
         q-btn(flat
           :label='t(`common.header.logout`)'
-          icon='las la-sign-out-alt'
+          icon='ph ph-sign-out'
           color='red'
           @click='userStore.logout()'
           no-caps

@@ -34,7 +34,7 @@ export class Authentication extends Model {
   }
 
   static async getStrategies({ enabledOnly = false } = {}) {
-    return WIKI.db.authentication.query().where(enabledOnly ? { isEnabled: true } : {})
+    return WIKI.db.authentication.query().where(enabledOnly ? { isEnabled: true } : {}).orderBy('order')
   }
 
   static async refreshStrategiesFromDisk() {

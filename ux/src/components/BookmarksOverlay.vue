@@ -1,11 +1,11 @@
 <template lang="pug">
 q-layout(view='hHh lpR fFf', container)
   q-header.card-header.q-px-md.q-py-sm
-    q-icon(name='las la-bookmark', left, size='md')
+    q-icon(name='ph ph-bookmark', left, size='md')
     span Bookmarks
     q-space
     q-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       color='pink-2'
       dense
       flat
@@ -27,13 +27,13 @@ q-layout(view='hHh lpR fFf', container)
           @click='goToPage(page)'
           )
           q-item-section(avatar)
-            q-icon(name='las la-file-alt', color='primary')
+            q-icon(name='ph ph-file-text', color='primary')
           q-item-section
             q-item-label {{ page.title }}
             q-item-label(caption) /{{ page.path }}
           q-item-section(side)
             q-btn(
-              icon='las la-times'
+              icon='ph ph-x'
               flat
               dense
               size='sm'

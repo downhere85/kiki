@@ -41,7 +41,7 @@ q-header.bg-header.text-white.site-header(
         flat
         round
         dense
-        icon='las la-plus-circle'
+        icon='ph ph-plus-circle'
         color='blue-4'
         aria-label='Create New Page'
         )
@@ -52,7 +52,7 @@ q-header.bg-header.text-white.site-header(
         flat
         round
         dense
-        icon='las la-folder-open'
+        icon='ph ph-folder-open'
         color='positive'
         aria-label='File Manager'
         @click='openFileManager'
@@ -63,7 +63,7 @@ q-header.bg-header.text-white.site-header(
         flat
         round
         dense
-        icon='las la-tools'
+        icon='ph ph-wrench'
         color='pink'
         to='/_admin'
         :aria-label='t(`common.header.admin`)'
@@ -76,7 +76,7 @@ q-header.bg-header.text-white.site-header(
         v-else
         flat
         rounded
-        icon='las la-sign-in-alt'
+        icon='ph ph-sign-in'
         color='white'
         :label='$t(`common.actions.login`)'
         :aria-label='$t(`common.actions.login`)'

@@ -14,9 +14,9 @@ q-page.admin-groups
         :class='$q.dark.isActive ? `bg-dark` : `bg-white`'
         )
         template(#prepend)
-          q-icon(name='las la-search')
+          q-icon(name='ph ph-magnifying-glass')
       q-btn.acrylic-btn.q-mr-sm(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         type='a'
@@ -26,7 +26,7 @@ q-page.admin-groups
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :aria-label='t(`common.actions.refresh`)'
@@ -35,7 +35,7 @@ q-page.admin-groups
         )
         q-tooltip {{ t(`common.actions.refresh`) }}
       q-btn.q-mr-sm(
-        icon='las la-user-cog'
+        icon='ph ph-user-gear'
         unelevated
         color='secondary'
         :aria-label='t(`admin.users.defaults`)'
@@ -44,7 +44,7 @@ q-page.admin-groups
         user-defaults-menu
       q-btn(
         unelevated
-        icon='las la-plus'
+        icon='ph ph-plus'
         :label='t(`admin.users.create`)'
         color='primary'
         @click='createUser'
@@ -66,19 +66,19 @@ q-page.admin-groups
           )
           template(#body-cell-id='props')
             q-td(:props='props')
-              q-icon(name='las la-user', color='primary', size='sm')
+              q-icon(name='ph ph-user', color='primary', size='sm')
           template(#body-cell-name='props')
             q-td(:props='props')
               .flex.items-center
                 strong {{ props.value }}
                 q-icon.q-ml-sm(
                   v-if='props.row.isSystem'
-                  name='las la-lock'
+                  name='ph ph-lock'
                   color='pink'
                   )
                 q-icon.q-ml-sm(
                   v-if='!props.row.isActive'
-                  name='las la-ban'
+                  name='ph ph-prohibit'
                   color='pink'
                   )
           template(#body-cell-email='props')
@@ -102,7 +102,7 @@ q-page.admin-groups
                 v-if='!props.row.isSystem'
                 flat
                 :to='`/_admin/users/` + props.row.id'
-                icon='las la-pen'
+                icon='ph ph-pen'
                 color='indigo'
                 :label='t(`common.actions.edit`)'
                 no-caps
@@ -110,7 +110,7 @@ q-page.admin-groups
               q-btn.acrylic-btn(
                 v-if='!props.row.isSystem'
                 flat
-                icon='las la-trash'
+                icon='ph ph-trash'
                 color='negative'
                 @click='deleteUser(props.row)'
                 )

@@ -22,8 +22,8 @@ q-layout.admin(view='hHh Lpr lff')
             color='accent'
             size='24px'
           )
-        q-btn.q-ml-md(flat, dense, icon='las la-times-circle', :label='t(`common.actions.exit`)' color='pink', to='/')
-        q-btn.q-ml-md(flat, dense, icon='las la-language', :label='commonStore.locale' color='grey-4')
+        q-btn.q-ml-md(flat, dense, icon='ph ph-x-circle', :label='t(`common.actions.exit`)' color='pink', to='/')
+        q-btn.q-ml-md(flat, dense, icon='ph ph-translate', :label='commonStore.locale' color='grey-4')
           q-menu.translucent-menu(auto-close, anchor='bottom right', self='top right')
             q-list(separator, padding)
               q-item(
@@ -50,7 +50,7 @@ q-layout.admin(view='hHh Lpr lff')
             q-btn.acrylic-btn(
               flat
               color='pink'
-              icon='las la-heart'
+              icon='ph ph-heart'
               :label='t(`admin.contribute.title`)'
               no-caps
               href='https://js.wiki/donate'

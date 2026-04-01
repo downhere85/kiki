@@ -9,7 +9,7 @@ q-layout(view='hHh lpR fFf', container)
       rounded
       color='white'
       :aria-label='t(`common.actions.viewDocs`)'
-      icon='las la-question-circle'
+      icon='ph ph-question'
       :href='siteStore.docsBase + `/system/mail`'
       target='_blank'
       type='a'
@@ -21,7 +21,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='grey-7'
         :label='t(`common.actions.cancel`)'
         :aria-label='t(`common.actions.cancel`)'
-        icon='las la-times'
+        icon='ph ph-x'
         @click='close'
       )
       q-btn(
@@ -30,7 +30,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='white'
         :label='t(`common.actions.save`)'
         :aria-label='t(`common.actions.save`)'
-        icon='las la-check'
+        icon='ph ph-check'
         :disabled='state.loading > 0'
       )
   q-page-container

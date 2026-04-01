@@ -11,23 +11,23 @@
       flat
       )
       q-badge(color='grey' floating rounded)
-        q-icon(name='las la-pen', size='xs', padding='xs xs')
+        q-icon(name='ph ph-pen', size='xs', padding='xs xs')
       q-menu(content-class='shadow-7', ref='iconMenu')
         icon-picker-dialog(:modelValue='pageStore.icon', @update:modelValue='onIconChange')
     q-icon.rounded-borders(
       v-else
       :name='pageStore.icon'
-      size='64px'
-      color='primary'
+      size='28px'
+      color='grey-7'
     )
   //- PAGE HEADER
-  .col.q-pa-md
-    .text-h4.page-header-title
+  .col.q-pa-sm.q-pl-md
+    .text-h6.page-header-title
       span {{pageStore.title}}
       template(v-if='editorStore.isActive')
         span.text-grey(v-if='!pageStore.title') {{ t(`editor.props.title`)}}
         q-btn.acrylic-btn.q-ml-md(
-          icon='las la-pen'
+          icon='ph ph-pen'
           flat
           padding='xs'
           size='sm'
@@ -51,7 +51,7 @@
       template(v-if='editorStore.isActive')
         span.text-grey(v-if='!pageStore.description') {{ t(`editor.props.shortDescription`)}}
         q-btn.acrylic-btn.q-ml-md(
-          icon='las la-pen'
+          icon='ph ph-pen'
           flat
           padding='none xs'
           size='xs'
@@ -77,7 +77,7 @@
         v-if='userStore.authenticated'
         flat
         dense
-        :icon='state.isWatching ? "las la-bell" : "lar la-bell"'
+        :icon='state.isWatching ? "ph ph-bell" : "ph ph-bell"'
         :color='state.isWatching ? "amber" : "grey"'
         aria-label='Watch Page'
         @click='toggleWatch'
@@ -87,7 +87,7 @@
         v-if='userStore.authenticated'
         flat
         dense
-        :icon='state.isBookmarked ? "las la-bookmark" : "lar la-bookmark"'
+        :icon='state.isBookmarked ? "ph ph-bookmark" : "ph ph-bookmark"'
         :color='state.isBookmarked ? "amber" : "grey"'
         aria-label='Bookmark Page'
         @click='toggleBookmark'
@@ -97,7 +97,7 @@
         v-if='siteStore.theme.showSharingMenu'
         flat
         dense
-        icon='las la-share-alt'
+        icon='ph ph-share-network'
         color='grey'
         aria-label='Share'
         )
@@ -107,7 +107,7 @@
         v-if='siteStore.theme.showPrintBtn'
         flat
         dense
-        icon='las la-print'
+        icon='ph ph-printer'
         color='grey'
         aria-label='Print'
         @click='printPage'
@@ -115,7 +115,7 @@
         q-tooltip Print
     template(v-if='editorStore.isActive')
       q-btn.q-ml-md.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :href='siteStore.docsBase + `/editor/${editorStore.editor}`'
@@ -124,7 +124,7 @@
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-ml-sm.acrylic-btn(
-        icon='las la-cog'
+        icon='ph ph-gear'
         flat
         color='grey'
         :aria-label='t(`editor.settings`)'
@@ -134,7 +134,7 @@
     template(v-if='editorStore.isActive || editorStore.hasPendingChanges')
       q-btn.acrylic-btn.q-ml-sm(
         flat
-        icon='las la-times'
+        icon='ph ph-x'
         color='negative'
         :label='editorStore.hasPendingChanges ? t(`common.actions.discard`) : t(`common.actions.close`)'
         :aria-label='editorStore.hasPendingChanges ? t(`common.actions.discard`) : t(`common.actions.close`)'
@@ -144,7 +144,7 @@
       q-btn.acrylic-btn.q-ml-sm(
         v-if='editorStore.mode === `create`'
         flat
-        icon='las la-check'
+        icon='ph ph-check'
         color='positive'
         :label='t(`editor.createPage`)'
         :aria-label='t(`editor.createPage`)'
@@ -157,7 +157,7 @@
         )
         q-btn.acrylic-btn(
           flat
-          icon='las la-check'
+          icon='ph ph-check'
           color='positive'
           :label='t(`common.actions.saveChanges`)'
           :aria-label='t(`common.actions.saveChanges`)'
@@ -170,7 +170,7 @@
           q-separator(vertical, dark)
           q-btn.acrylic-btn(
             flat
-            icon='las la-check-double'
+            icon='ph ph-checks'
             color='positive'
             :aria-label='t(`common.actions.saveAndClose`)'
             :disabled='!editorStore.hasPendingChanges'
@@ -180,7 +180,7 @@
     template(v-else-if='userStore.can(`edit:pages`)')
       q-btn.acrylic-btn.q-ml-md(
         flat
-        icon='las la-edit'
+        icon='ph ph-pencil-simple'
         color='deep-orange-9'
         :label='t(`common.actions.edit`)'
         :aria-label='t(`common.actions.edit`)'

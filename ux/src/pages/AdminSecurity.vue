@@ -8,7 +8,7 @@ q-page.admin-mail
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.security.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-mail
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -48,7 +48,7 @@ q-page.admin-mail
             q-card.bg-negative.text-white.rounded-borders(flat)
               q-card-section.items-center(horizontal)
                 q-card-section.col-auto.q-pr-none
-                  q-icon(name='las la-exclamation-triangle', size='sm')
+                  q-icon(name='ph ph-warning', size='sm')
                 q-card-section.text-caption {{ t('admin.security.warn') }}
         q-item(tag='label', v-ripple)
           blueprint-icon(icon='rfid-signal')
@@ -59,8 +59,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.disallowFloc'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.security.disallowFloc`)'
               )
         q-separator.q-my-sm(inset)
@@ -73,8 +73,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.disallowIframe'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.security.disallowIframe`)'
               )
         q-separator.q-my-sm(inset)
@@ -87,8 +87,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.enforceSameOriginReferrerPolicy'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.security.enforceSameOriginReferrerPolicy`)'
               )
         q-separator.q-my-sm(inset)
@@ -101,8 +101,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.disallowOpenRedirect'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.security.disallowOpenRedirect`)'
               )
         q-separator.q-my-sm(inset)
@@ -115,8 +115,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.forceAssetDownload'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.security.forceAssetDownload`)'
               )
         q-separator.q-my-sm(inset)
@@ -129,8 +129,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.trustProxy'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.security.trustProxy`)'
               )
       //- -----------------------
@@ -148,8 +148,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.enforceHsts'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.security.enforceHsts`)'
               )
         template(v-if='state.config.enforceHsts')
@@ -184,7 +184,7 @@ q-page.admin-mail
             q-card.bg-info.text-white.rounded-borders(flat)
               q-card-section.items-center(horizontal)
                 q-card-section.col-auto.q-pr-none
-                  q-icon(name='las la-info-circle', size='sm')
+                  q-icon(name='ph ph-info', size='sm')
                 q-card-section.text-caption {{ t('admin.security.uploadsInfo') }}
         q-item
           blueprint-icon(icon='upload-to-the-cloud')
@@ -222,8 +222,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.uploadScanSVG'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.security.scanSVG`)'
               )
 

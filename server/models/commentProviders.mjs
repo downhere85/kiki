@@ -70,7 +70,7 @@ export class CommentProvider extends Model {
       }
 
       if (WIKI.data.commentProvider.codeTemplate) {
-        const def = await fs.readFile(path.join(WIKI.SERVERPATH, 'modules/comments', commentProvider.key, 'code.yml'), 'utf8')
+        const def = await fs.readFile(path.join(WIKI.SERVERPATH, 'modules/comments', commentProvider.module, 'code.yml'), 'utf8')
         let code = yaml.safeLoad(def)
         code.head = defaultTo(code.head, '')
         code.body = defaultTo(code.body, '')
@@ -88,7 +88,7 @@ export class CommentProvider extends Model {
       } else {
         WIKI.data.commentProvider = {
           ...WIKI.data.commentProvider,
-          ...(await import(`../modules/comments/${commentProvider.key}/comment.mjs`)),
+          ...(await import(`../modules/comments/${commentProvider.module}/comment.mjs`)),
           config: commentProvider.config
         }
         await WIKI.data.commentProvider.init()

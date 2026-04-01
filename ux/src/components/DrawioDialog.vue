@@ -8,7 +8,7 @@ q-dialog(ref='dialogRef', @hide='onDialogHide', maximized, persistent)
       q-btn(
         flat
         dense
-        icon='las la-check'
+        icon='ph ph-check'
         label='Insert'
         @click='insertDiagram'
         :disable='!state.diagramData'
@@ -16,7 +16,7 @@ q-dialog(ref='dialogRef', @hide='onDialogHide', maximized, persistent)
       q-btn(
         flat
         dense
-        icon='las la-times'
+        icon='ph ph-x'
         @click='onDialogCancel'
         )
     q-card-section.col.q-pa-none

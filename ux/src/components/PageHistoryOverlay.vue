@@ -1,7 +1,7 @@
 <template lang="pug">
 q-layout(view='hHh lpR fFf', container)
   q-header.card-header.q-px-md.q-py-sm
-    q-icon(name='las la-history', left, size='md')
+    q-icon(name='ph ph-clock-counter-clockwise', left, size='md')
     span Page History
     q-space
     transition(name='syncing')
@@ -11,7 +11,7 @@ q-layout(view='hHh lpR fFf', container)
         size='24px'
       )
     q-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       color='pink-2'
       dense
       flat
@@ -25,7 +25,7 @@ q-layout(view='hHh lpR fFf', container)
       template(v-if='state.selectedVersion')
         .row.items-center.q-mb-md
           q-btn(
-            icon='las la-arrow-left'
+            icon='ph ph-arrow-left'
             flat
             dense
             label='Back to history'
@@ -33,8 +33,17 @@ q-layout(view='hHh lpR fFf', container)
             @click='state.selectedVersion = null'
             )
           q-space
+          q-btn-toggle.q-mr-sm(
+            v-model='state.viewMode'
+            no-caps
+            rounded
+            unelevated
+            toggle-color='primary'
+            :options='[{label: `Raw`, value: `raw`}, {label: `Diff`, value: `diff`}]'
+            size='sm'
+            )
           q-btn(
-            icon='las la-undo'
+            icon='ph ph-arrow-counter-clockwise'
             color='warning'
             label='Restore this version'
             no-caps
@@ -47,7 +56,19 @@ q-layout(view='hHh lpR fFf', container)
             .text-caption.text-grey {{ formatDate(state.selectedVersion.versionDate) }} — {{ state.selectedVersion.authorName || 'Unknown' }}
           q-separator
           q-card-section
-            pre.page-history-content(v-text='state.selectedVersion.content')
+            //- RAW VIEW
+            pre.page-history-content(v-if='state.viewMode === `raw`', v-text='state.selectedVersion.content')
+            //- DIFF VIEW
+            .page-history-diff(v-else)
+              .page-history-diff-legend.q-mb-sm.flex.items-center.q-gutter-x-sm
+                span.diff-legend-removed Removed
+                span.diff-legend-added Added
+              pre.page-history-content
+                span(
+                  v-for='(chunk, idx) of computedDiff'
+                  :key='idx'
+                  :class='{ "diff-removed": chunk.removed, "diff-added": chunk.added }'
+                  ) {{ chunk.value }}
 
       //- HISTORY TRAIL
       template(v-else)
@@ -84,7 +105,7 @@ q-layout(view='hHh lpR fFf', container)
 <script setup>
 import gql from 'graphql-tag'
 import { useQuasar } from 'quasar'
-import { onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 import { DateTime } from 'luxon'
 
 import { usePageStore } from '@/stores/page'
@@ -104,8 +125,53 @@ const siteStore = useSiteStore()
 const state = reactive({
   trail: [],
   selectedVersion: null,
+  viewMode: 'raw',
   loading: 0
 })
+
+// COMPUTED
+
+const computedDiff = computed(() => {
+  if (!state.selectedVersion) return []
+  return lineDiff(state.selectedVersion.content || '', pageStore.content || '')
+})
+
+// Simple line-level diff (Myers-inspired LCS)
+function lineDiff (oldText, newText) {
+  const oldLines = oldText.split('\n')
+  const newLines = newText.split('\n')
+  const m = oldLines.length
+  const n = newLines.length
+
+  // Build LCS table
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0))
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (oldLines[i - 1] === newLines[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + 1
+      } else {
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
+      }
+    }
+  }
+
+  // Backtrack to build chunks
+  const chunks = []
+  let i = m, j = n
+  while (i > 0 || j > 0) {
+    if (i > 0 && j > 0 && oldLines[i - 1] === newLines[j - 1]) {
+      chunks.unshift({ value: oldLines[i - 1] + '\n' })
+      i--; j--
+    } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+      chunks.unshift({ value: newLines[j - 1] + '\n', added: true })
+      j--
+    } else {
+      chunks.unshift({ value: oldLines[i - 1] + '\n', removed: true })
+      i--
+    }
+  }
+  return chunks
+}
 
 // METHODS
 
@@ -129,10 +195,10 @@ function actionColor (type) {
 
 function actionIcon (type) {
   switch (type) {
-    case 'edit': return 'las la-pen'
-    case 'initial': return 'las la-plus'
-    case 'move': return 'las la-arrows-alt'
-    default: return 'las la-history'
+    case 'edit': return 'ph ph-pen'
+    case 'initial': return 'ph ph-plus'
+    case 'move': return 'ph ph-arrows-out'
+    default: return 'ph ph-clock-counter-clockwise'
   }
 }
 
@@ -189,6 +255,7 @@ async function loadVersion (versionId) {
       fetchPolicy: 'network-only'
     })
     state.selectedVersion = resp.data?.pageVersionById ?? null
+    state.viewMode = 'diff'
   } catch (err) {
     $q.notify({
       type: 'negative',
@@ -254,5 +321,32 @@ onMounted(() => {
   font-family: 'Roboto Mono', monospace;
   font-size: 13px;
   line-height: 1.5;
+}
+
+.diff-removed {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  text-decoration: line-through;
+}
+
+.diff-added {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+}
+
+.diff-legend-removed {
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 4px;
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.diff-legend-added {
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 4px;
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #86efac;
 }
 </style>

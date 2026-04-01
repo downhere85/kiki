@@ -2,7 +2,7 @@
 .page-comments.q-mt-lg
   q-separator.q-mb-md
   .flex.items-center.q-mb-md
-    q-icon.q-mr-sm(name='las la-comments', size='sm', color='grey')
+    q-icon.q-mr-sm(name='ph ph-chat-circle-dots', size='sm', color='grey')
     .text-subtitle2.text-grey-7 Comments
     q-space
     q-btn(
@@ -12,7 +12,7 @@
       no-caps
       color='primary'
       label='Add Comment'
-      icon='las la-plus'
+      icon='ph ph-plus'
       @click='state.showForm = true'
       )
 
@@ -40,7 +40,7 @@
           no-caps
           color='primary'
           label='Post Comment'
-          icon='las la-paper-plane'
+          icon='ph ph-paper-plane-tilt'
           :loading='state.posting'
           :disable='!state.newComment.trim()'
           @click='postComment'

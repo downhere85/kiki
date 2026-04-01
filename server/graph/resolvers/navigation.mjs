@@ -10,14 +10,38 @@ export default {
   Mutation: {
     async updateNavigation (obj, args, context) {
       try {
+        // -> Require admin permissions
+        const userPermissions = context.req.user?.permissions || []
+        if (!userPermissions.includes('manage:system') && !userPermissions.includes('manage:navigation')) {
+          throw new Error('You do not have permission to manage navigation.')
+        }
+
         let updateInherited = false
         let updateInheritedNavId = null
         let updateNavId = null
         let ancestorNavId = null
 
-        const treeEntry = await WIKI.db.knex('tree').where('id', args.pageId).first()
+        let treeEntry = await WIKI.db.knex('tree').where('id', args.pageId).first()
         if (!treeEntry) {
-          throw new Error('Invalid ID')
+          // -> Fallback: look up in pages table (v2 migration scenario where tree is empty)
+          const page = await WIKI.db.knex('pages').where('id', args.pageId).first()
+          if (!page) {
+            throw new Error('Invalid ID')
+          }
+          // -> Get the site ID
+          const site = page.siteId || (await WIKI.db.knex('sites').first())?.id
+          // -> Construct a virtual tree entry from the page
+          const pathParts = (page.path || '').split('/')
+          const fileName = pathParts.pop() || 'home'
+          const folderPath = pathParts.join('.')
+          treeEntry = {
+            id: page.id,
+            folderPath,
+            fileName,
+            siteId: site,
+            navigationMode: 'inherit',
+            navigationId: null
+          }
         }
         const currentNavId = treeEntry.folderPath === '' && treeEntry.fileName === 'home' ? treeEntry.siteId : treeEntry.id
         const treeEntryPath = treeEntry.folderPath ? `${treeEntry.folderPath}.${treeEntry.fileName}` : treeEntry.fileName

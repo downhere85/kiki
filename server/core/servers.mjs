@@ -175,7 +175,7 @@ export default {
       this.ws = new IoServer(this.http, {
         path: '/_ws/',
         serveClient: false,
-        cors: true // TODO: dev only, replace with app settings once stable
+        cors: process.env.NODE_ENV === 'development'
       })
       WIKI.logger.info('WebSocket Server attached to HTTP Server [ OK ]')
     }

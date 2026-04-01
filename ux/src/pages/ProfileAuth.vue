@@ -23,7 +23,7 @@ q-page.q-py-md(:style-fn='pageStyle')
         template(v-if='auth.strategyKey === `local`')
           q-item-section(v-if='auth.config.isTfaSetup', side)
             q-btn(
-              icon='las la-fingerprint'
+              icon='ph ph-fingerprint'
               unelevated
               :label='t(`profile.authDisableTfa`)'
               color='negative'
@@ -32,7 +32,7 @@ q-page.q-py-md(:style-fn='pageStyle')
             )
           q-item-section(v-else, side)
             q-btn(
-              icon='las la-fingerprint'
+              icon='ph ph-fingerprint'
               unelevated
               :label='t(`profile.authSetTfa`)'
               color='primary'
@@ -40,7 +40,7 @@ q-page.q-py-md(:style-fn='pageStyle')
             )
           q-item-section(side)
             q-btn(
-              icon='las la-key'
+              icon='ph ph-key'
               unelevated
               :label='t(`profile.authChangePassword`)'
               color='primary'
@@ -65,7 +65,7 @@ q-page.q-py-md(:style-fn='pageStyle')
             text-color='white'
             rounded
             )
-            q-icon(name='las la-key')
+            q-icon(name='ph ph-key')
         q-item-section
           strong {{pkey.name}}
           .text-caption {{ pkey.siteHostname }}
@@ -73,14 +73,14 @@ q-page.q-py-md(:style-fn='pageStyle')
         q-item-section(side)
           q-btn.acrylic-btn(
             flat
-            icon='las la-trash'
+            icon='ph ph-trash'
             :aria-label='t(`common.actions.delete`)'
             color='negative'
             @click='deactivatePasskey(pkey)'
           )
     .q-mt-md
       q-btn(
-        icon='las la-plus'
+        icon='ph ph-plus'
         unelevated
         :label='t(`profile.passkeysAdd`)'
         color='primary'

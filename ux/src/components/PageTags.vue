@@ -13,7 +13,7 @@
       v-for='tag of pageStore.tags'
       :key='`tag-` + tag'
       )
-      q-icon.q-mr-xs(name='las la-hashtag', size='14px')
+      q-icon.q-mr-xs(name='ph ph-hash', size='14px')
       span.text-caption {{tag}}
   q-select.q-mt-md(
     v-if='props.edit'

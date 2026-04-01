@@ -8,7 +8,7 @@ q-page.admin-mail
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.auth.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -51,7 +51,7 @@ q-page.admin-mail
               status-light(:color='str.isEnabled ? `positive` : `negative`', :pulse='str.isEnabled')
       q-btn.q-mt-sm.full-width(
         color='primary'
-        icon='las la-plus'
+        icon='ph ph-plus'
         :label='t(`admin.auth.addStrategy`)'
         )
         q-menu(auto-close, fit, max-width='300px')
@@ -103,8 +103,8 @@ q-page.admin-mail
               v-model='state.strategy.isEnabled'
               :disable='state.strategy.strategy.key === `local`'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.auth.enabled`)'
               )
         q-separator.q-my-sm(inset)
@@ -117,8 +117,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.strategy.registration'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.auth.registration`)'
               )
         template(v-if='state.strategy.registration')
@@ -211,8 +211,8 @@ q-page.admin-mail
                 q-toggle(
                   v-model='cfg.value'
                   color='primary'
-                  checked-icon='las la-check'
-                  unchecked-icon='las la-times'
+                  checked-icon='ph ph-check'
+                  unchecked-icon='ph ph-x'
                   :aria-label='cfg.title'
                   :disable='cfg.readOnly'
                   )
@@ -296,7 +296,7 @@ q-page.admin-mail
         .text-caption.text-grey ID: {{ state.strategy.id }}
         q-space
         q-btn.acrylic-btn(
-          icon='las la-trash-alt'
+          icon='ph ph-trash'
           flat
           color='negative'
           :disable='state.strategy.strategy.key === `local`'
@@ -526,44 +526,46 @@ async function save () {
     const resp = await APOLLO_CLIENT.mutate({
       mutation: gql`
         mutation($strategies: [AuthenticationStrategyInput]!) {
-          authentication {
-            updateStrategies(strategies: $strategies) {
-              responseResult {
-                succeeded
-                errorCode
-                slug
-                message
-              }
+          updateAuthStrategies(strategies: $strategies) {
+            operation {
+              succeeded
+              message
             }
           }
         }
       `,
       variables: {
-        strategies: state.activeStrategies.map((str, idx) => ({
-          key: str.key,
-          strategyKey: str.strategy.key,
-          displayName: str.displayName,
-          order: idx,
-          isEnabled: str.isEnabled,
-          config: str.config.map(cfg => ({ ...cfg, value: JSON.stringify({ v: cfg.value.value }) })),
-          selfRegistration: str.selfRegistration,
-          domainWhitelist: str.domainWhitelist,
-          autoEnrollGroups: str.autoEnrollGroups
-        }))
+        strategies: state.activeStrategies.map((str, idx) => {
+          const configObj = {}
+          for (const [key, cfg] of Object.entries(str.config)) {
+            configObj[key] = cfg.value
+          }
+          return {
+            key: str.id,
+            strategyKey: str.strategy.key,
+            displayName: str.displayName,
+            order: idx,
+            isEnabled: str.isEnabled,
+            config: configObj,
+            registration: str.registration ?? false,
+            allowedEmailRegex: str.allowedEmailRegex ?? '',
+            autoEnrollGroups: str.autoEnrollGroups ?? []
+          }
+        })
       }
     })
-    if (resp?.data?.authentication?.updateStrategies?.operation.succeeded) {
+    if (resp?.data?.updateAuthStrategies?.operation?.succeeded) {
       $q.notify({
         type: 'positive',
         message: t('admin.auth.saveSuccess')
       })
     } else {
-      throw new Error(resp?.data?.authentication?.updateStrategies?.operation?.message || t('common.error.unexpected'))
+      throw new Error(resp?.data?.updateAuthStrategies?.operation?.message || t('common.error.unexpected'))
     }
   } catch (err) {
     $q.notify({
       type: 'negative',
-      message: 'Failed to save site theme config',
+      message: 'Failed to save authentication config',
       caption: err.message
     })
   }

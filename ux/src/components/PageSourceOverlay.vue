@@ -11,7 +11,7 @@ q-layout(view='hHh lpR fFf', container)
         size='24px'
       )
     q-btn.q-mr-md(
-      icon='las la-download'
+      icon='ph ph-download'
       color='teal-3'
       dense
       flat
@@ -19,7 +19,7 @@ q-layout(view='hHh lpR fFf', container)
       )
       q-tooltip(anchor='bottom middle', self='top middle') {{t(`common.actions.download`)}}
     q-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       color='pink-2'
       dense
       flat

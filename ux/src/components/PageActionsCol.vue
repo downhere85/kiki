@@ -3,7 +3,7 @@
   template(v-if='userStore.can(`edit:pages`)')
     q-btn.q-py-md(
       flat
-      icon='las la-pen-nib'
+      icon='ph ph-pen-nib'
       :color='editorStore.isActive ? `white` : `deep-orange-9`'
       aria-label='Page Properties'
       @click='togglePageProperties'
@@ -12,7 +12,7 @@
     q-btn.q-py-md(
       v-if='flagsStore.experimental'
       flat
-      icon='las la-project-diagram'
+      icon='ph ph-tree-structure'
       :color='editorStore.isActive ? `white` : `deep-orange-9`'
       aria-label='Page Data'
       @click='togglePageData'
@@ -53,13 +53,13 @@
               :key='item.id'
               )
               q-item-section(side)
-                q-icon(name='las la-file-image')
+                q-icon(name='ph ph-file-image')
               q-item-section {{ item.fileName }}
               q-item-section(side)
                 q-btn.acrylic-btn(
                   color='negative'
                   round
-                  icon='las la-times'
+                  icon='ph ph-x'
                   size='xs'
                   flat
                   @click='removePendingAsset(item)'
@@ -69,7 +69,7 @@
     q-separator.q-my-sm(inset)
   q-btn.q-py-md(
     flat
-    icon='las la-history'
+    icon='ph ph-clock-counter-clockwise'
     :color='editorStore.isActive ? `white` : `grey`'
     aria-label='Page History'
     @click='viewPageHistory'
@@ -77,7 +77,7 @@
     q-tooltip(anchor='center left' self='center right') Page History
   q-btn.q-py-md(
     flat
-    icon='las la-code'
+    icon='ph ph-code'
     :color='editorStore.isActive ? `white` : `grey`'
     aria-label='Page Source'
     @click='viewPageSource'
@@ -87,7 +87,7 @@
     q-separator.q-my-sm(inset)
     q-btn.q-py-sm(
       flat
-      icon='las la-ellipsis-h'
+      icon='ph ph-dots-three'
       :color='editorStore.isActive ? `deep-orange-2` : `grey`'
       aria-label='Page Actions'
       )
@@ -101,17 +101,17 @@
         q-list(padding, style='min-width: 225px;')
           q-item(clickable, v-if='userStore.can(`manage:pages`)', @click='convertPage')
             q-item-section.items-center(avatar)
-              q-icon(color='deep-orange-9', name='las la-atom', size='sm')
+              q-icon(color='deep-orange-9', name='ph ph-atom', size='sm')
             q-item-section
               q-item-label Convert Page
           q-item(clickable, v-if='userStore.can(`edit:pages`)', @click='rerenderPage')
             q-item-section.items-center(avatar)
-              q-icon(color='deep-orange-9', name='las la-magic', size='sm')
+              q-icon(color='deep-orange-9', name='ph ph-magic-wand', size='sm')
             q-item-section
               q-item-label Rerender Page
           q-item(clickable, disabled)
             q-item-section.items-center(avatar)
-              q-icon(color='deep-orange-9', name='las la-sun', size='sm')
+              q-icon(color='deep-orange-9', name='ph ph-sun', size='sm')
             q-item-section
               q-item-label View Backlinks
   q-space
@@ -119,7 +119,7 @@
     q-btn.q-py-sm(
       v-if='userStore.can(`create:pages`)'
       flat
-      icon='las la-copy'
+      icon='ph ph-copy'
       :color='editorStore.isActive ? `deep-orange-2` : `grey`'
       aria-label='Duplicate Page'
       @click='duplicatePage'
@@ -128,7 +128,7 @@
     q-btn.q-py-sm(
       v-if='userStore.can(`manage:pages`)'
       flat
-      icon='las la-share'
+      icon='ph ph-share'
       :color='editorStore.isActive ? `deep-orange-2` : `grey`'
       aria-label='Rename / Move Page'
       @click='renamePage'
@@ -137,7 +137,7 @@
     q-btn.q-py-sm(
       v-if='userStore.can(`delete:pages`)'
       flat
-      icon='las la-trash'
+      icon='ph ph-trash'
       :color='editorStore.isActive ? `deep-orange-2` : `grey`'
       aria-label='Delete Page'
       @click='deletePage'

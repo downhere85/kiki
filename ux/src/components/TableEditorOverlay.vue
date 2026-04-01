@@ -8,7 +8,7 @@ q-layout(view='hHh lpR fFf', container)
       q-btn(
         flat
         dense
-        icon='las la-plus-circle'
+        icon='ph ph-plus-circle'
         color='white'
         @click='addColumn'
         )
@@ -16,7 +16,7 @@ q-layout(view='hHh lpR fFf', container)
       q-btn(
         flat
         dense
-        icon='las la-minus-circle'
+        icon='ph ph-minus-circle'
         color='white'
         @click='removeColumn'
         :disable='state.cols < 2'
@@ -25,7 +25,7 @@ q-layout(view='hHh lpR fFf', container)
       q-btn(
         flat
         dense
-        icon='las la-plus-square'
+        icon='ph ph-plus-square'
         color='white'
         @click='addRow'
         )
@@ -33,7 +33,7 @@ q-layout(view='hHh lpR fFf', container)
       q-btn(
         flat
         dense
-        icon='las la-minus-square'
+        icon='ph ph-minus-square'
         color='white'
         @click='removeRow'
         :disable='state.rows.length < 2'
@@ -45,7 +45,7 @@ q-layout(view='hHh lpR fFf', container)
         color='white'
         text-color='grey-7'
         :label='t(`common.actions.cancel`)'
-        icon='las la-times'
+        icon='ph ph-x'
         @click='close'
       )
       q-btn(
@@ -53,7 +53,7 @@ q-layout(view='hHh lpR fFf', container)
         color='positive'
         text-color='white'
         :label='t(`common.actions.save`)'
-        icon='las la-check'
+        icon='ph ph-check'
         @click='save'
       )
 

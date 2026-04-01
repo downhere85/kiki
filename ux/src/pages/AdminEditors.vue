@@ -8,7 +8,7 @@ q-page.admin-flags
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.editors.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-flags
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -52,7 +52,7 @@ q-page.admin-flags
                 side
                 )
                 q-btn(
-                  icon='las la-cog'
+                  icon='ph ph-gear'
                   :label='t(`admin.editors.configuration`)'
                   :color='$q.dark.isActive ? `blue-grey-3` : `blue-grey-8`'
                   outline
@@ -65,8 +65,8 @@ q-page.admin-flags
               q-toggle.q-pr-sm(
                 v-model='state.config[editor.id]'
                 :color='editor.isDisabled ? `grey` : `primary`'
-                checked-icon='las la-check'
-                unchecked-icon='las la-times'
+                checked-icon='ph ph-check'
+                unchecked-icon='ph ph-x'
                 :label='t(`admin.sites.isActive`)'
                 :aria-label='t(`admin.sites.isActive`)'
                 :disabled='editor.isDisabled'

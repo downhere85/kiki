@@ -14,7 +14,7 @@ li.treeview-node
       )
     q-icon(
       v-if='isActive'
-      name='las la-angle-right'
+      name='ph ph-caret-right'
       :color='$q.dark.isActive ? `yellow-9` : `brown-4`'
       )
     //- RIGHT-CLICK MENU

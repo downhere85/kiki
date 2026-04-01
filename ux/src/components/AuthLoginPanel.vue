@@ -49,7 +49,7 @@
         color='primary'
         :label='t(`auth.actions.login`)'
         no-caps
-        icon='las la-sign-in-alt'
+        icon='ph ph-sign-in'
       )
     template(v-if='canUsePasskeys')
       q-separator.q-my-md
@@ -58,7 +58,7 @@
         color='primary'
         :label='t(`auth.passkeys.signin`)'
         no-caps
-        icon='las la-key'
+        icon='ph ph-key'
         @click='switchTo(`passkey`)'
       )
     template(v-if='selectedStrategy.activeStrategy?.strategy?.key === `local`')
@@ -69,7 +69,7 @@
         color='primary'
         :label='t(`auth.switchToRegister.link`)'
         no-caps
-        icon='las la-user-plus'
+        icon='ph ph-user-plus'
         @click='switchTo(`register`)'
       )
       q-btn.acrylic-btn.full-width(
@@ -77,7 +77,7 @@
         color='primary'
         :label='t(`auth.forgotPasswordLink`)'
         no-caps
-        icon='las la-life-ring'
+        icon='ph ph-lifebuoy'
         @click='switchTo(`forgot`)'
       )
 
@@ -103,7 +103,7 @@
         color='primary'
         :label='t(`auth.actions.login`)'
         no-caps
-        icon='las la-key'
+        icon='ph ph-key'
       )
     q-separator.q-my-md
     q-btn.acrylic-btn.full-width(
@@ -111,7 +111,7 @@
       color='primary'
       :label='t(`auth.forgotPasswordCancel`)'
       no-caps
-      icon='las la-arrow-circle-left'
+      icon='ph ph-arrow-circle-left'
       @click='switchTo(`login`)'
     )
 
@@ -139,7 +139,7 @@
         color='primary'
         :label='t(`auth.sendResetPassword`)'
         no-caps
-        icon='las la-life-ring'
+        icon='ph ph-lifebuoy'
       )
     q-separator.q-my-md
     q-btn.acrylic-btn.full-width(
@@ -147,7 +147,7 @@
       color='primary'
       :label='t(`auth.forgotPasswordCancel`)'
       no-caps
-      icon='las la-arrow-circle-left'
+      icon='ph ph-arrow-circle-left'
       @click='switchTo(`login`)'
     )
 
@@ -217,7 +217,7 @@
         color='primary'
         :label='t(`auth.actions.register`)'
         no-caps
-        icon='las la-user-plus'
+        icon='ph ph-user-plus'
       )
     q-separator.q-my-md
     q-btn.acrylic-btn.full-width(
@@ -225,7 +225,7 @@
       color='primary'
       :label='t(`auth.switchToLogin.link`)'
       no-caps
-      icon='las la-arrow-circle-left'
+      icon='ph ph-arrow-circle-left'
       @click='switchTo(`login`)'
     )
 
@@ -286,7 +286,7 @@
         color='primary'
         :label='t(`auth.changePwd.proceed`)'
         no-caps
-        icon='las la-sync-alt'
+        icon='ph ph-arrows-clockwise'
       )
   //- -----------------------------------------------------
   //- TFA SCREEN
@@ -307,7 +307,7 @@
       color='primary'
       :label='t(`auth.tfa.verifyToken`)'
       no-caps
-      icon='las la-sign-in-alt'
+      icon='ph ph-sign-in'
       @click='verifyTFA'
     )
   //- -----------------------------------------------------
@@ -332,7 +332,7 @@
       color='primary'
       :label='t(`auth.tfa.verifyToken`)'
       no-caps
-      icon='las la-sign-in-alt'
+      icon='ph ph-sign-in'
       @click='finishSetupTFA'
     )
 </template>

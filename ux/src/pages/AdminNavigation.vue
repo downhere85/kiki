@@ -8,7 +8,7 @@ q-page.admin-navigation
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.navigation.subtitle') }}
     .col-auto
       q-btn.acrylic-btn.q-mr-sm(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-navigation
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'

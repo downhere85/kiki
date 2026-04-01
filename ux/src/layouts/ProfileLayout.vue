@@ -25,7 +25,7 @@ q-layout(view='hHh Lpr lff')
             :to='`/_user/` + userStore.id'
             )
             q-item-section(side)
-              q-icon(name='las la-id-card')
+              q-icon(name='ph ph-identification-card')
             q-item-section
               q-item-label {{ t('profile.viewPublicProfile') }}
           q-separator.q-my-sm(inset)
@@ -35,7 +35,7 @@ q-layout(view='hHh Lpr lff')
             @click='userStore.logout()'
             )
             q-item-section(side)
-              q-icon(name='las la-sign-out-alt', color='negative')
+              q-icon(name='ph ph-sign-out', color='negative')
             q-item-section
               q-item-label.text-negative {{ t('common.header.logout') }}
       router-view
@@ -88,38 +88,38 @@ const sidenav = [
   {
     key: 'info',
     label: t('profile.title'),
-    icon: 'las la-user-circle'
+    icon: 'ph ph-user-circle'
   },
   {
     key: 'avatar',
     label: t('profile.avatar'),
-    icon: 'las la-otter'
+    icon: 'ph ph-paw-print'
   },
   {
     key: 'auth',
     label: t('profile.auth'),
-    icon: 'las la-key'
+    icon: 'ph ph-key'
   },
   {
     key: 'groups',
     label: t('profile.groups'),
-    icon: 'las la-users'
+    icon: 'ph ph-users'
   },
   {
     key: 'notifications',
     label: t('profile.notifications'),
-    icon: 'las la-bell',
+    icon: 'ph ph-bell',
     disabled: true
   },
   {
     key: 'pages',
     label: t('profile.pages'),
-    icon: 'las la-file-alt'
+    icon: 'ph ph-file-text'
   },
   {
     key: 'activity',
     label: t('profile.activity'),
-    icon: 'las la-history',
+    icon: 'ph ph-clock-counter-clockwise',
     disabled: true
   }
 ]

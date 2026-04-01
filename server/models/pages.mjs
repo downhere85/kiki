@@ -1145,8 +1145,8 @@ export class Page extends Model {
             creatorName: 'creator.name',
             creatorEmail: 'creator.email'
           },
-          'tree.navigationId',
-          'tree.navigationMode'
+          WIKI.db.knex.raw('COALESCE("tree"."navigationId", "pages"."siteId") as "navigationId"'),
+          WIKI.db.knex.raw('COALESCE("tree"."navigationMode", \'inherit\') as "navigationMode"')
         ])
         .joinRelated('author')
         .joinRelated('creator')

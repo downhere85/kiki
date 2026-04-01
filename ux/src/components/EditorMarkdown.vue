@@ -24,7 +24,7 @@
               @click='insertAssets'
               )
               q-item-section(side)
-                q-icon(name='las la-folder-open', color='positive')
+                q-icon(name='ph ph-folder-open', color='positive')
               q-item-section
                 q-item-label From File Manager...
             q-item(
@@ -33,7 +33,7 @@
               v-close-popup
               )
               q-item-section(side)
-                q-icon(name='las la-clipboard', color='brown')
+                q-icon(name='ph ph-clipboard', color='brown')
               q-item-section
                 q-item-label From Clipboard...
             q-item(
@@ -42,7 +42,7 @@
               v-close-popup
               )
               q-item-section(side)
-                q-icon(name='las la-cloud-download-alt', color='blue')
+                q-icon(name='ph ph-cloud-arrow-down', color='blue')
               q-item-section
                 q-item-label From Remote URL...
         q-tooltip(anchor='center right' self='center left') {{ t('editor.markup.insertAssets') }}

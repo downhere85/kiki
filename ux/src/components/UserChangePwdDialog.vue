@@ -33,7 +33,7 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
                   color='brown'
                   @click='randomizePassword'
                   )
-                  q-icon(name='las la-dice-d6')
+                  q-icon(name='ph ph-cube')
                   .q-pl-xs.text-caption: strong Generate
       q-item(tag='label', v-ripple)
         blueprint-icon(icon='password-reset')
@@ -44,8 +44,8 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
           q-toggle(
             v-model='state.userMustChangePassword'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
             :aria-label='t(`admin.users.mustChangePwd`)'
             )
     q-card-actions.card-actions

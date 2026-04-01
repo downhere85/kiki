@@ -8,7 +8,7 @@ q-page.admin-extensions
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.extensions.subtitle') }}
     .col-auto
       q-btn.acrylic-btn.q-mr-sm(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-extensions
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -43,7 +43,7 @@ q-page.admin-extensions
               .row
                 q-btn-group(unelevated)
                   q-btn(
-                    icon='las la-check'
+                    icon='ph ph-check'
                     size='sm'
                     color='positive'
                     padding='xs sm'
@@ -78,7 +78,7 @@ q-page.admin-extensions
                   q-btn(
                     v-else-if='ext.isCompatible'
                     :label='t(`admin.extensions.instructions`)'
-                    icon='las la-info-circle'
+                    icon='ph ph-info'
                     color='indigo'
                     outline
                     type='a'

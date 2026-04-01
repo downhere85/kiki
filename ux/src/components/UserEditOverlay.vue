@@ -12,7 +12,7 @@ q-layout(view='hHh lpR fFf', container)
         color='grey-6'
         text-color='white'
         :aria-label='t(`common.actions.refresh`)'
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         @click='fetchUser'
         :loading='state.loading > 0'
         )
@@ -23,7 +23,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='grey-7'
         :label='t(`common.actions.close`)'
         :aria-label='t(`common.actions.close`)'
-        icon='las la-times'
+        icon='ph ph-x'
         @click='close'
       )
       q-btn(
@@ -32,7 +32,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='white'
         :label='t(`common.actions.save`)'
         :aria-label='t(`common.actions.save`)'
-        icon='las la-check'
+        icon='ph ph-check'
         @click='save()'
         :disabled='state.loading > 0'
       )
@@ -295,7 +295,7 @@ q-layout(view='hHh lpR fFf', container)
                 q-item-section(side)
                   q-btn.acrylic-btn(
                     flat
-                    icon='las la-arrow-circle-right'
+                    icon='ph ph-arrow-circle-right'
                     color='primary'
                     @click='changePassword'
                     :label='t(`common.actions.proceed`)'
@@ -310,8 +310,8 @@ q-layout(view='hHh lpR fFf', container)
                   q-toggle(
                     v-model='localAuth.mustChangePwd'
                     color='primary'
-                    checked-icon='las la-check'
-                    unchecked-icon='las la-times'
+                    checked-icon='ph ph-check'
+                    unchecked-icon='ph ph-x'
                     :aria-label='t(`admin.users.mustChangePwd`)'
                   )
               q-separator.q-my-sm(inset)
@@ -324,8 +324,8 @@ q-layout(view='hHh lpR fFf', container)
                   q-toggle(
                     v-model='localAuth.restrictLogin'
                     color='primary'
-                    checked-icon='las la-check'
-                    unchecked-icon='las la-times'
+                    checked-icon='ph ph-check'
+                    unchecked-icon='ph ph-x'
                     :aria-label='t(`admin.users.pwdAuthRestrict`)'
                   )
 
@@ -341,8 +341,8 @@ q-layout(view='hHh lpR fFf', container)
                   q-toggle(
                     v-model='localAuth.isTfaRequired'
                     color='primary'
-                    checked-icon='las la-check'
-                    unchecked-icon='las la-times'
+                    checked-icon='ph ph-check'
+                    unchecked-icon='ph ph-x'
                     :aria-label='t(`admin.users.tfaRequired`)'
                   )
               q-separator.q-my-sm(inset)
@@ -355,7 +355,7 @@ q-layout(view='hHh lpR fFf', container)
                 q-item-section(side)
                   q-btn.acrylic-btn(
                     flat
-                    icon='las la-arrow-circle-right'
+                    icon='ph ph-arrow-circle-right'
                     color='primary'
                     @click='invalidateTFA'
                     :label='t(`common.actions.proceed`)'
@@ -399,7 +399,7 @@ q-layout(view='hHh lpR fFf', container)
                   q-item-section(side)
                     q-btn.acrylic-btn(
                       flat
-                      icon='las la-times'
+                      icon='ph ph-x'
                       color='accent'
                       @click='unassignGroup(grp.id)'
                       :aria-label='t(`admin.users.unassignGroup`)'
@@ -427,7 +427,7 @@ q-layout(view='hHh lpR fFf', container)
                 q-item-section(side)
                   q-btn(
                     unelevated
-                    icon='las la-plus'
+                    icon='ph ph-plus'
                     :label='t(`admin.users.assignGroup`)'
                     color='primary'
                     @click='assignGroup'
@@ -445,7 +445,7 @@ q-layout(view='hHh lpR fFf', container)
                   v-if='state.metadataInvalidJSON'
                   color='negative'
                   )
-                  q-icon.q-mr-xs(name='las la-exclamation-triangle', size='20px')
+                  q-icon.q-mr-xs(name='ph ph-warning', size='20px')
                   span {{t('admin.users.invalidJSON')}}
                 q-badge.q-py-xs(
                   v-else
@@ -476,7 +476,7 @@ q-layout(view='hHh lpR fFf', container)
                 q-item-section(side)
                   q-btn.acrylic-btn(
                     flat
-                    icon='las la-arrow-circle-right'
+                    icon='ph ph-arrow-circle-right'
                     color='primary'
                     @click='sendWelcomeEmail'
                     :label='t(`common.actions.proceed`)'
@@ -491,7 +491,7 @@ q-layout(view='hHh lpR fFf', container)
                 q-item-section(side)
                   q-btn.acrylic-btn(
                     flat
-                    icon='las la-arrow-circle-right'
+                    icon='ph ph-arrow-circle-right'
                     color='primary'
                     @click='toggleVerified'
                     :label='t(`common.actions.proceed`)'
@@ -506,7 +506,7 @@ q-layout(view='hHh lpR fFf', container)
                 q-item-section(side)
                   q-btn.acrylic-btn(
                     flat
-                    icon='las la-arrow-circle-right'
+                    icon='ph ph-arrow-circle-right'
                     color='primary'
                     @click='toggleBan'
                     :label='t(`common.actions.proceed`)'
@@ -520,7 +520,7 @@ q-layout(view='hHh lpR fFf', container)
                 q-item-section(side)
                   q-btn.acrylic-btn(
                     flat
-                    icon='las la-arrow-circle-right'
+                    icon='ph ph-arrow-circle-right'
                     color='negative'
                     @click='deleteUser'
                     :label='t(`common.actions.proceed`)'
@@ -579,12 +579,12 @@ const state = reactive({
 })
 
 const sections = [
-  { key: 'overview', text: t('admin.users.overview'), icon: 'las la-user' },
-  { key: 'activity', text: t('admin.users.activity'), icon: 'las la-chart-area', disabled: true },
-  { key: 'auth', text: t('admin.users.auth'), icon: 'las la-key' },
-  { key: 'groups', text: t('admin.users.groups'), icon: 'las la-users' },
-  { key: 'metadata', text: t('admin.users.metadata'), icon: 'las la-clipboard-list' },
-  { key: 'operations', text: t('admin.users.operations'), icon: 'las la-tools' }
+  { key: 'overview', text: t('admin.users.overview'), icon: 'ph ph-user' },
+  { key: 'activity', text: t('admin.users.activity'), icon: 'ph ph-chart-line-up', disabled: true },
+  { key: 'auth', text: t('admin.users.auth'), icon: 'ph ph-key' },
+  { key: 'groups', text: t('admin.users.groups'), icon: 'ph ph-users' },
+  { key: 'metadata', text: t('admin.users.metadata'), icon: 'ph ph-clipboard-text' },
+  { key: 'operations', text: t('admin.users.operations'), icon: 'ph ph-wrench' }
 ]
 
 const timezones = Intl.supportedValuesOf('timeZone')

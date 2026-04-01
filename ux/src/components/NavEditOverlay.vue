@@ -15,7 +15,7 @@ q-layout(view='hHh lpR fFf', container)
       rounded
       color='white'
       :aria-label='t(`common.actions.viewDocs`)'
-      icon='las la-question-circle'
+      icon='ph ph-question'
       :href='siteStore.docsBase + `/admin/editors/markdown`'
       target='_blank'
       type='a'
@@ -27,7 +27,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='grey-7'
         :label='t(`common.actions.cancel`)'
         :aria-label='t(`common.actions.cancel`)'
-        icon='las la-times'
+        icon='ph ph-x'
         @click='close'
       )
       q-btn(
@@ -36,7 +36,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='white'
         :label='t(`common.actions.save`)'
         :aria-label='t(`common.actions.save`)'
-        icon='las la-check'
+        icon='ph ph-check'
         :disabled='state.loading > 0'
         @click='save'
       )
@@ -96,37 +96,37 @@ q-layout(view='hHh lpR fFf', container)
           color='positive'
           :label='t(`common.actions.add`)'
           :aria-label='t(`common.actions.add`)'
-          icon='las la-plus-circle'
+          icon='ph ph-plus-circle'
           )
           q-menu(fit, :offset='[0, 10]', auto-close)
             q-list(separator)
               q-item(clickable, @click='addItem(`header`)')
                 q-item-section(side)
-                  q-icon(name='las la-heading')
+                  q-icon(name='ph ph-text-h')
                 q-item-section
                   q-item-label {{t('navEdit.header')}}
               q-item(clickable, @click='addItem(`link`)')
                 q-item-section(side)
-                  q-icon(name='las la-link')
+                  q-icon(name='ph ph-link')
                 q-item-section
                   q-item-label {{t('navEdit.link')}}
               q-item(clickable, @click='addItem(`separator`)')
                 q-item-section(side)
-                  q-icon(name='las la-minus')
+                  q-icon(name='ph ph-minus')
                 q-item-section
                   q-item-label {{t('navEdit.separator')}}
         q-btn.q-ml-sm.acrylic-btn(
           flat
           color='grey'
           :aria-label='t(`common.actions.add`)'
-          icon='las la-ellipsis-v'
+          icon='ph ph-dots-three-vertical'
           padding='xs sm'
           )
           q-menu(:offset='[0, 10]' anchor='bottom right' self='top right' auto-close)
             q-list(separator)
               q-item(clickable, @click='clearItems', :disable='state.items.length < 1')
                 q-item-section(side)
-                  q-icon(name='las la-trash-alt', color='negative')
+                  q-icon(name='ph ph-trash', color='negative')
                 q-item-section
                   q-item-label {{t('navEdit.clearItems')}}
               //- q-item(clickable)
@@ -140,12 +140,12 @@ q-layout(view='hHh lpR fFf', container)
       template(v-if='state.items.length < 1')
         q-card
           q-card-section
-            q-icon.q-mr-sm(name='las la-arrow-left', size='xs')
+            q-icon.q-mr-sm(name='ph ph-arrow-left', size='xs')
             span {{ t('navEdit.emptyMenuText') }}
       template(v-else-if='!state.selected')
         q-card
           q-card-section
-            q-icon.q-mr-sm(name='las la-arrow-left', size='xs')
+            q-icon.q-mr-sm(name='ph ph-arrow-left', size='xs')
             span {{ t('navEdit.noSelection') }}
 
       template(v-if='state.current.type === `header`')
@@ -199,7 +199,7 @@ q-layout(view='hHh lpR fFf', container)
           q-space
           q-btn.acrylic-btn(
             flat
-            icon='las la-trash-alt'
+            icon='ph ph-trash'
             :label='t(`common.actions.delete`)'
             color='negative'
             padding='xs md'
@@ -238,7 +238,7 @@ q-layout(view='hHh lpR fFf', container)
                 )
                 template(#append)
                   q-icon.cursor-pointer(
-                    name='las la-icons'
+                    name='ph ph-shapes'
                     color='primary'
                     )
                     q-menu(content-class='shadow-7')
@@ -257,6 +257,13 @@ q-layout(view='hHh lpR fFf', container)
                 hide-bottom-space
                 :aria-label='t(`navEdit.target`)'
                 )
+                template(#append)
+                  q-icon.cursor-pointer(
+                    name='ph ph-magnifying-glass'
+                    color='primary'
+                    @click.stop.prevent='openPagePicker'
+                    )
+                    q-tooltip Browse Pages
           q-separator.q-my-sm(inset)
           q-item(tag='label')
             blueprint-icon(icon='external-link')
@@ -267,8 +274,8 @@ q-layout(view='hHh lpR fFf', container)
               q-toggle(
                 v-model='state.current.openInNewWindow'
                 color='primary'
-                checked-icon='las la-check'
-                unchecked-icon='las la-times'
+                checked-icon='ph ph-check'
+                unchecked-icon='ph ph-x'
                 :aria-label='t(`navEdit.openInNewWindow`)'
                 )
           q-separator.q-my-sm(inset)
@@ -327,7 +334,7 @@ q-layout(view='hHh lpR fFf', container)
           q-space
           q-btn.acrylic-btn(
             flat
-            icon='las la-trash-alt'
+            icon='ph ph-trash'
             :label='t(`common.actions.delete`)'
             color='negative'
             padding='xs md'
@@ -372,7 +379,7 @@ q-layout(view='hHh lpR fFf', container)
           q-space
           q-btn.acrylic-btn(
             flat
-            icon='las la-trash-alt'
+            icon='ph ph-trash'
             :label='t(`common.actions.delete`)'
             color='negative'
             padding='xs md'
@@ -395,6 +402,7 @@ import { useSiteStore } from '@/stores/site'
 import { Sortable } from 'sortablejs-vue3'
 
 import IconPickerDialog from '@/components/IconPickerDialog.vue'
+import PagePickerDialog from '@/components/PagePickerDialog.vue'
 
 // QUASAR
 
@@ -504,6 +512,16 @@ function close () {
   siteStore.$patch({ overlay: '' })
 }
 
+function openPagePicker () {
+  $q.dialog({
+    component: PagePickerDialog
+  }).onOk(path => {
+    if (path) {
+      state.current.target = path
+    }
+  })
+}
+
 async function loadGroups () {
   state.loading++
   const resp = await APOLLO_CLIENT.query({
@@ -553,7 +571,7 @@ async function loadMenuItems () {
         }
       `,
       variables: {
-        id: pageStore.isHome ? pageStore.navigationId : pageStore.id
+        id: pageStore.isHome ? (pageStore.navigationId || siteStore.id) : pageStore.id
       },
       fetchPolicy: 'network-only'
     })

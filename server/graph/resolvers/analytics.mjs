@@ -10,10 +10,11 @@ export default {
 
       let providers = await WIKI.db.analytics.getProviders(args.isEnabled)
       providers = providers.map(stg => {
-        const providerInfo = find(WIKI.data.analytics, ['key', stg.key]) || {}
+        const providerInfo = find(WIKI.data.analytics, ['key', stg.module]) || {}
         return {
           ...providerInfo,
           ...stg,
+          key: stg.module,
           config: sortBy(transform(stg.config, (res, value, key) => {
             const configData = get(providerInfo.props, key, {})
             res.push({
@@ -43,11 +44,11 @@ export default {
               set(result, `${value.key}`, get(JSON.parse(value.value), 'v', null))
               return result
             }, {})
-          }).where('key', str.key)
+          }).where('module', str.key)
           await WIKI.cache.del('analytics')
         }
         return {
-          responseResult: generateSuccess('Providers updated successfully')
+          operation: generateSuccess('Providers updated successfully')
         }
       } catch (err) {
         return generateError(err)

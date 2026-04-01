@@ -17,7 +17,7 @@ q-page.admin-flags
       )
       q-separator.q-mr-sm(vertical)
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -27,7 +27,7 @@ q-page.admin-flags
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -56,8 +56,8 @@ q-page.admin-flags
             q-toggle(
               v-model='state.config.termHighlighting'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.search.highlighting`)'
               )
         q-separator.q-my-sm(inset)

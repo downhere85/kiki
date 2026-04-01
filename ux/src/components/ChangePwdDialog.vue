@@ -47,7 +47,7 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
                   color='brown'
                   @click='randomizePassword'
                   )
-                  q-icon(name='las la-dice-d6')
+                  q-icon(name='ph ph-cube')
                   .q-pl-xs.text-caption: strong Generate
       q-item
         blueprint-icon(icon='good-pincode')

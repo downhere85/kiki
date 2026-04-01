@@ -12,7 +12,7 @@ import quasarIconSet from 'quasar/icon-set/mdi-v7'
 // Import icon libraries
 import '@quasar/extras/roboto-font/roboto-font.css'
 import '@mdi/font/css/materialdesignicons.css'
-import '@quasar/extras/line-awesome/line-awesome.css'
+import '@phosphor-icons/web/regular'
 
 // Import Quasar css
 import 'quasar/src/css/index.sass'
@@ -44,6 +44,11 @@ app.use(Quasar, {
   },
   iconSet: quasarIconSet,
   config: {
+    iconMapFn (iconName) {
+      if (iconName.startsWith('ph ')) {
+        return { cls: iconName }
+      }
+    },
     brand: {
       header: '#000',
       sidebar: '#1976D2'
@@ -64,10 +69,10 @@ app.use(Quasar, {
       position: 'top',
       progress: true,
       color: 'green',
-      icon: 'las la-check',
+      icon: 'ph ph-check',
       actions: [
         {
-          icon: 'las la-times',
+          icon: 'ph ph-x',
           color: 'white',
           size: 'sm',
           round: true,

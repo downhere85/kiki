@@ -6,7 +6,7 @@ q-page.q-py-md(:style-fn='pageStyle')
       q-card.bg-negative.text-white.rounded-borders(flat)
         q-card-section.items-center(horizontal)
           q-card-section.col-auto.q-pr-none
-            q-icon(name='las la-ban', size='sm')
+            q-icon(name='ph ph-prohibit', size='sm')
           q-card-section
             span {{ t('profile.editDisabledTitle') }}
             .text-caption.text-red-1 {{ t('profile.editDisabledDescription') }}
@@ -164,7 +164,7 @@ q-page.q-py-md(:style-fn='pageStyle')
       )
   .actions-bar.q-mt-lg
     q-btn(
-      icon='las la-check'
+      icon='ph ph-check'
       unelevated
       :label='t(`common.actions.saveChanges`)'
       color='secondary'

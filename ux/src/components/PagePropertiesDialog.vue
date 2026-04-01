@@ -19,13 +19,13 @@ q-card.page-properties-dialog
       flat
       rounded
       color='white'
-      icon='las la-question-circle'
+      icon='ph ph-question'
       :href='siteStore.docsBase + `/editor/properties`'
       target='_blank'
       type='a'
     )
     q-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       dense
       flat
       v-close-popup
@@ -37,7 +37,7 @@ q-card.page-properties-dialog
     style='height: calc(100% - 50px);'
     )
     q-card-section(id='refCardInfo')
-      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='las la-info-circle', size='xs')] {{t('editor.props.info')}}
+      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='ph ph-info', size='xs')] {{t('editor.props.info')}}
       q-form.q-gutter-sm
         q-input(
           v-model='pageStore.title'
@@ -59,7 +59,7 @@ q-card.page-properties-dialog
           )
           template(#append)
             q-icon.cursor-pointer(
-              name='las la-icons'
+              name='ph ph-shapes'
               color='primary'
               )
               q-menu(content-class='shadow-7')
@@ -73,7 +73,7 @@ q-card.page-properties-dialog
           prefix='/a/'
         )
     q-card-section.alt-card(id='refCardPublishState')
-      .text-overline.q-pb-xs.items-center.flex #[q-icon.q-mr-sm(name='las la-power-off', size='xs')] {{t('editor.props.publishState')}}
+      .text-overline.q-pb-xs.items-center.flex #[q-icon.q-mr-sm(name='ph ph-power', size='xs')] {{t('editor.props.publishState')}}
       q-form.q-gutter-md
         div
           q-btn-toggle(
@@ -101,7 +101,7 @@ q-card.page-properties-dialog
             minimal
             )
     q-card-section(id='refCardRelations')
-      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='las la-sun', size='xs')] {{t('editor.props.relations')}}
+      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='ph ph-sun', size='xs')] {{t('editor.props.relations')}}
       q-list.rounded-borders.q-mb-sm.bg-white(
         v-if='pageStore.relations.length > 0'
         separator
@@ -123,7 +123,7 @@ q-card.page-properties-dialog
               .text-caption {{rel.position}}
           q-item-section(side)
             q-btn(
-              icon='las la-pen'
+              icon='ph ph-pen'
               dense
               flat
               padding='none'
@@ -131,7 +131,7 @@ q-card.page-properties-dialog
             )
           q-item-section(side)
             q-btn(
-              icon='las la-times'
+              icon='ph ph-x'
               dense
               flat
               padding='none'
@@ -139,7 +139,7 @@ q-card.page-properties-dialog
             )
       q-btn.full-width(
         :label='t(`editor.props.relationAdd`)'
-        icon='las la-plus'
+        icon='ph ph-plus'
         no-caps
         unelevated
         color='secondary'
@@ -147,10 +147,10 @@ q-card.page-properties-dialog
         )
         q-tooltip {{t('editor.props.relationAddHint')}}
     q-card-section.alt-card(id='refCardScripts')
-      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='las la-code', size='xs')] {{t('editor.props.scripts')}}
+      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='ph ph-code', size='xs')] {{t('editor.props.scripts')}}
       q-btn.full-width(
         :label='t(`editor.props.jsLoad`)'
-        icon='lab la-js-square'
+        icon='ph ph-file-js'
         no-caps
         unelevated
         color='secondary'
@@ -159,7 +159,7 @@ q-card.page-properties-dialog
         q-tooltip {{t('editor.props.jsLoadHint')}}
       q-btn.full-width.q-mt-sm(
         :label='t(`editor.props.jsUnload`)'
-        icon='lab la-js-square'
+        icon='ph ph-file-js'
         no-caps
         unelevated
         color='secondary'
@@ -168,7 +168,7 @@ q-card.page-properties-dialog
         q-tooltip {{t('editor.props.jsUnloadHint')}}
       q-btn.full-width.q-mt-sm(
         :label='t(`editor.props.styles`)'
-        icon='lab la-css3-alt'
+        icon='ph ph-file-css'
         no-caps
         unelevated
         color='secondary'
@@ -176,7 +176,7 @@ q-card.page-properties-dialog
         )
         q-tooltip {{t('editor.props.stylesHint')}}
     q-card-section.q-pb-lg(id='refCardSidebar')
-      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='las la-ruler-vertical', size='xs')] {{t('editor.props.sidebar')}}
+      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='ph ph-ruler', size='xs')] {{t('editor.props.sidebar')}}
       q-form.q-gutter-md.q-pt-sm
         div
           q-toggle(
@@ -184,8 +184,8 @@ q-card.page-properties-dialog
             dense
             :label='t(`editor.props.showSidebar`)'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
           )
         div
           q-toggle(
@@ -194,8 +194,8 @@ q-card.page-properties-dialog
             dense
             :label='t(`editor.props.showToc`)'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
           )
         div(
           v-if='pageStore.showSidebar && pageStore.showToc'
@@ -220,11 +220,11 @@ q-card.page-properties-dialog
             dense
             :label='t(`editor.props.showTags`)'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
           )
     q-card-section.alt-card.q-pb-lg(id='refCardSocial')
-      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='las la-comments', size='xs')] {{t('editor.props.social')}}
+      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='ph ph-chat-circle-dots', size='xs')] {{t('editor.props.social')}}
       q-form.q-gutter-md.q-pt-sm
         div
           q-toggle(
@@ -232,8 +232,8 @@ q-card.page-properties-dialog
             dense
             :label='t(`editor.props.allowComments`)'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
           )
         div
           q-toggle(
@@ -241,8 +241,8 @@ q-card.page-properties-dialog
             dense
             :label='t(`editor.props.allowContributions`)'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
           )
         div
           q-toggle(
@@ -250,14 +250,14 @@ q-card.page-properties-dialog
             dense
             :label='t(`editor.props.allowRatings`)'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
           )
     q-card-section.q-pb-lg(id='refCardTags')
-      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='las la-tags', size='xs')] {{t('editor.props.tags')}}
+      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='ph ph-tag', size='xs')] {{t('editor.props.tags')}}
       page-tags(edit)
     q-card-section.alt-card.q-pb-lg(id='refCardVisibility')
-      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='las la-eye', size='xs')] {{t('editor.props.visibility')}}
+      .text-overline.items-center.flex #[q-icon.q-mr-sm(name='ph ph-eye', size='xs')] {{t('editor.props.visibility')}}
       q-form.q-gutter-md.q-pt-sm
         div
           q-toggle(
@@ -265,8 +265,8 @@ q-card.page-properties-dialog
             dense
             :label='$t(`editor.props.showInTree`)'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
           )
         div
           q-toggle(
@@ -274,8 +274,8 @@ q-card.page-properties-dialog
             dense
             :label='$t(`editor.props.isSearchable`)'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
           )
         div
           q-toggle(
@@ -284,8 +284,8 @@ q-card.page-properties-dialog
             dense
             :label='$t(`editor.props.requirePassword`)'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
           )
         div(
           v-if='state.requirePassword'
@@ -351,14 +351,14 @@ const state = reactive({
 })
 
 const quickaccess = [
-  { key: 'refCardInfo', icon: 'las la-info-circle', label: t('editor.props.info') },
-  { key: 'refCardPublishState', icon: 'las la-power-off', label: t('editor.props.publishState') },
-  { key: 'refCardRelations', icon: 'las la-sun', label: t('editor.props.relations') },
-  { key: 'refCardScripts', icon: 'las la-code', label: t('editor.props.scripts') },
-  { key: 'refCardSidebar', icon: 'las la-ruler-vertical', label: t('editor.props.sidebar') },
-  { key: 'refCardSocial', icon: 'las la-comments', label: t('editor.props.social') },
-  { key: 'refCardTags', icon: 'las la-tags', label: t('editor.props.tags') },
-  { key: 'refCardVisibility', icon: 'las la-eye', label: t('editor.props.visibility') }
+  { key: 'refCardInfo', icon: 'ph ph-info', label: t('editor.props.info') },
+  { key: 'refCardPublishState', icon: 'ph ph-power', label: t('editor.props.publishState') },
+  { key: 'refCardRelations', icon: 'ph ph-sun', label: t('editor.props.relations') },
+  { key: 'refCardScripts', icon: 'ph ph-code', label: t('editor.props.scripts') },
+  { key: 'refCardSidebar', icon: 'ph ph-ruler', label: t('editor.props.sidebar') },
+  { key: 'refCardSocial', icon: 'ph ph-chat-circle-dots', label: t('editor.props.social') },
+  { key: 'refCardTags', icon: 'ph ph-tag', label: t('editor.props.tags') },
+  { key: 'refCardVisibility', icon: 'ph ph-eye', label: t('editor.props.visibility') }
 ]
 
 // REFS

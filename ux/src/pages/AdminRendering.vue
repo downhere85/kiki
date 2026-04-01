@@ -8,7 +8,7 @@ q-page.admin-mail
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ $t('admin.rendering.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :href='siteStore.docsBase + `/system/rendering`'
@@ -16,7 +16,7 @@ q-page.admin-mail
         type='a'
         )
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'

@@ -27,7 +27,7 @@ q-page.admin-storage
       )
       q-separator.q-mr-md(vertical)
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -141,7 +141,7 @@ q-page.admin-storage
                   )
                   q-btn(
                     unelevated
-                    icon='las la-angle-double-right'
+                    icon='ph ph-caret-double-right'
                     :label='t(`admin.storage.startSetup`)'
                     color='secondary'
                     @click='setupGitHub'
@@ -156,14 +156,14 @@ q-page.admin-storage
               q-card-section.q-pt-sm.text-right
                 q-btn.q-mr-sm(
                   unelevated
-                  icon='las la-times-circle'
+                  icon='ph ph-x-circle'
                   :label='t(`admin.storage.cancelSetup`)'
                   color='negative'
                   @click='setupDestroy'
                 )
                 q-btn(
                   unelevated
-                  icon='las la-angle-double-right'
+                  icon='ph ph-caret-double-right'
                   :label='t(`admin.storage.finishSetup`)'
                   color='secondary'
                   @click='setupGitHubStep(`verify`)'
@@ -182,7 +182,7 @@ q-page.admin-storage
               q-item-section(side)
                 q-btn.acrylic-btn(
                   flat
-                  icon='las la-arrow-circle-right'
+                  icon='ph ph-arrow-circle-right'
                   color='negative'
                   @click='setupDestroy'
                   :label='t(`admin.storage.uninstall`)'
@@ -320,8 +320,8 @@ q-page.admin-storage
                     q-toggle(
                       v-model='cfg.value'
                       color='primary'
-                      checked-icon='las la-check'
-                      unchecked-icon='las la-times'
+                      checked-icon='ph ph-check'
+                      unchecked-icon='ph ph-x'
                       :aria-label='t(`admin.general.allowComments`)'
                       :disable='cfg.readOnly'
                       )
@@ -408,7 +408,7 @@ q-page.admin-storage
                 q-item-section(side)
                   q-btn.acrylic-btn(
                     flat
-                    icon='las la-arrow-circle-right'
+                    icon='ph ph-arrow-circle-right'
                     color='primary'
                     @click=''
                     :label='t(`common.actions.proceed`)'
@@ -455,12 +455,12 @@ q-page.admin-storage
                     v-model='state.target.isEnabled'
                     :disable='state.target.module === `db` || isSetupNeeded'
                     color='primary'
-                    checked-icon='las la-check'
-                    unchecked-icon='las la-times'
+                    checked-icon='ph ph-check'
+                    unchecked-icon='ph ph-x'
                     :aria-label='t(`admin.storage.enabled`)'
                     )
                 q-inner-loading(:showing='isSetupNeeded')
-                  q-icon(name='las la-exclamation-triangle', size='sm', color='negative')
+                  q-icon(name='ph ph-warning', size='sm', color='negative')
                   .text-body2.text-negative {{ t('admin.storage.setupRequired') }}
               q-separator.q-my-sm(inset)
             q-item
@@ -486,8 +486,8 @@ q-page.admin-storage
                   v-model='state.target.versioning.enabled'
                   :disable='!state.target.versioning.isSupported || state.target.versioning.isForceEnabled'
                   color='primary'
-                  checked-icon='las la-check'
-                  unchecked-icon='las la-times'
+                  checked-icon='ph ph-check'
+                  unchecked-icon='ph ph-x'
                   :aria-label='t(`admin.storage.useVersioning`)'
                   )
 
@@ -501,13 +501,13 @@ q-page.admin-storage
         q-card-section.flex.items-center
           .text-caption.q-mr-sm {{ t('admin.storage.deliveryPathsLegend') }}
           q-chip(square, dense, color='blue-1', text-color='blue-8')
-            q-avatar(icon='las la-ellipsis-h', color='blue', text-color='white')
+            q-avatar(icon='ph ph-dots-three', color='blue', text-color='white')
             span.text-caption.q-px-sm {{ t('admin.storage.deliveryPathsUserRequest') }}
           q-chip(square, dense, color='teal-1', text-color='teal-8')
-            q-avatar(icon='las la-ellipsis-h', color='positive', text-color='white')
+            q-avatar(icon='ph ph-dots-three', color='positive', text-color='white')
             span.text-caption.q-px-sm {{ t('admin.storage.deliveryPathsPushToOrigin') }}
           q-chip(square, dense, color='red-1', text-color='red-8')
-            q-avatar(icon='las la-minus', color='negative', text-color='white')
+            q-avatar(icon='ph ph-minus', color='negative', text-color='white')
             span.text-caption.q-px-sm {{ t('admin.storage.missingOrigin') }}
         q-separator
         v-network-graph(

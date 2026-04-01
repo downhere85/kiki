@@ -4,7 +4,7 @@ q-card.page-data-dialog(style='width: 750px;')
     .text-subtitle2 {{t('editor.pageData.title')}}
     q-space
     q-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       dense
       flat
       v-close-popup
@@ -27,7 +27,7 @@ q-card.page-data-dialog(style='width: 750px;')
       )
       q-btn.acrylic-btn(
         dark
-        icon='las la-pen'
+        icon='ph ph-pen'
         :label='t(`common.actions.manage`)'
         unelevated
         no-caps
@@ -60,7 +60,7 @@ q-card.page-data-dialog(style='width: 750px;')
           outlined
           )
           template(v-slot:before)
-            q-icon(name='las la-font', color='primary')
+            q-icon(name='ph ph-text-aa', color='primary')
         q-input(
           label='Attribute Number'
           dense
@@ -68,7 +68,7 @@ q-card.page-data-dialog(style='width: 750px;')
           type='number'
           )
           template(v-slot:before)
-            q-icon(name='las la-infinity', color='primary')
+            q-icon(name='ph ph-infinity', color='primary')
         .q-py-xs
           q-checkbox(
             label='Attribute Boolean'

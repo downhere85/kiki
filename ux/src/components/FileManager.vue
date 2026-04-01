@@ -24,10 +24,10 @@ q-layout.fileman(view='hHh lpR lFr', container)
         :debounce='500'
         )
         template(#prepend)
-          q-icon(name='las la-search')
+          q-icon(name='ph ph-magnifying-glass')
         template(#append)
           q-icon.cursor-pointer(
-            name='las la-times'
+            name='ph ph-x'
             @click='state.search=``'
             v-if='state.search.length > 0'
             :color='$q.dark.isActive ? `blue` : `grey-4`'
@@ -40,7 +40,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
         no-caps
         color='red-3'
         :aria-label='t(`common.actions.close`)'
-        icon='las la-times'
+        icon='ph ph-x'
         @click='close'
         )
         q-tooltip(anchor='bottom middle', self='top middle') {{t(`common.actions.close`)}}
@@ -88,7 +88,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
               @click='insertItem()'
               :label='t(`common.actions.insert`)'
               color='primary'
-              icon='las la-plus-circle'
+              icon='ph ph-plus-circle'
               push
               padding='sm'
               )
@@ -105,7 +105,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
             no-caps
             color='negative'
             :aria-label='t(`common.actions.cancel`)'
-            icon='las la-square'
+            icon='ph ph-square'
             @click='uploadCancel'
             v-if='state.uploadPercentage < 100'
             )
@@ -117,7 +117,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
             no-caps
             color='grey'
             :aria-label='t(`fileman.viewOptions`)'
-            icon='las la-th-list'
+            icon='ph ph-list-bullets'
             )
             q-tooltip(anchor='bottom middle', self='top middle') {{ t(`fileman.viewOptions`) }}
             q-menu(
@@ -133,10 +133,10 @@ q-layout.fileman(view='hHh lpR lFr', container)
                   q-separator.q-my-sm
                   q-item(clickable)
                     q-item-section(side)
-                      q-icon(name='las la-list', color='grey', size='xs')
+                      q-icon(name='ph ph-list-bullets', color='grey', size='xs')
                     q-item-section.q-pr-sm Browse using...
                     q-item-section(side)
-                      q-icon(name='las la-angle-right', color='grey', size='xs')
+                      q-icon(name='ph ph-caret-right', color='grey', size='xs')
                     q-menu(
                       anchor='top end'
                       self='top start'
@@ -145,7 +145,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
                         q-item(clickable, @click='state.displayMode = `path`')
                           q-item-section(side)
                             q-icon(
-                              :name='state.displayMode === `path` ? `las la-check-circle` : `las la-circle`'
+                              :name='state.displayMode === `path` ? `ph ph-check-circle` : `ph ph-circle`'
                               :color='state.displayMode === `path` ? `positive` : `grey`'
                               size='xs'
                               )
@@ -153,7 +153,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
                         q-item(clickable, @click='state.displayMode = `title`')
                           q-item-section(side)
                             q-icon(
-                              :name='state.displayMode === `title` ? `las la-check-circle` : `las la-circle`'
+                              :name='state.displayMode === `title` ? `ph ph-check-circle` : `ph ph-circle`'
                               :color='state.displayMode === `title` ? `positive` : `grey`'
                               size='xs'
                               )
@@ -161,7 +161,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
                   q-item(clickable, @click='state.isCompact = !state.isCompact')
                     q-item-section(side)
                       q-icon(
-                        :name='state.isCompact ? `las la-check-square` : `las la-stop`'
+                        :name='state.isCompact ? `ph ph-check-square` : `ph ph-stop`'
                         :color='state.isCompact ? `positive` : `grey`'
                         size='xs'
                       )
@@ -169,7 +169,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
                   q-item(clickable, @click='state.shouldShowFolders = !state.shouldShowFolders')
                     q-item-section(side)
                       q-icon(
-                        :name='state.shouldShowFolders ? `las la-check-square` : `las la-stop`'
+                        :name='state.shouldShowFolders ? `ph ph-check-square` : `ph ph-stop`'
                         :color='state.shouldShowFolders ? `positive` : `grey`'
                         size='xs'
                       )
@@ -180,7 +180,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
             no-caps
             color='grey'
             :aria-label='t(`common.actions.refresh`)'
-            icon='las la-redo-alt'
+            icon='ph ph-arrow-clockwise'
             @click='reloadFolder(state.currentFolderId)'
             )
             q-tooltip(anchor='bottom middle', self='top middle') {{ t(`common.actions.refresh`) }}
@@ -192,7 +192,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
             color='blue'
             :label='t(`common.actions.new`)'
             :aria-label='t(`common.actions.new`)'
-            icon='las la-plus-circle'
+            icon='ph ph-plus-circle'
             )
             new-menu(
               :hide-asset-btn='true'
@@ -208,7 +208,7 @@ q-layout.fileman(view='hHh lpR lFr', container)
             color='positive'
             :label='t(`common.actions.upload`)'
             :aria-label='t(`common.actions.upload`)'
-            icon='las la-cloud-upload-alt'
+            icon='ph ph-cloud-arrow-up'
             @click='uploadFile'
             )
 
@@ -257,52 +257,52 @@ q-layout.fileman(view='hHh lpR lFr', container)
                     q-list(dense, style='min-width: 150px;')
                       q-item(clickable, v-if='insertMode && item.type !== `folder`', @click='insertItem(item)')
                         q-item-section(side)
-                          q-icon(name='las la-plus-circle', color='primary')
+                          q-icon(name='ph ph-plus-circle', color='primary')
                         q-item-section {{ t(`common.actions.insert`) }}
                       q-item(clickable, v-if='item.type === `page`', @click='editItem(item)')
                         q-item-section(side)
-                          q-icon(name='las la-edit', color='orange')
+                          q-icon(name='ph ph-pencil-simple', color='orange')
                         q-item-section {{ t(`common.actions.edit`) }}
                       q-item(clickable, v-if='item.type === `page`', @click='rerenderPage(item)')
                         q-item-section(side)
-                          q-icon(name='las la-magic', color='orange')
+                          q-icon(name='ph ph-magic-wand', color='orange')
                         q-item-section {{ t(`common.actions.rerender`) }}
                       q-item(clickable, v-if='item.type !== `folder`', @click='openItem(item)')
                         q-item-section(side)
-                          q-icon(name='las la-eye', color='primary')
+                          q-icon(name='ph ph-eye', color='primary')
                         q-item-section {{ t(`common.actions.view`) }}
                       template(v-if='item.type === `asset` && item.imageEdit')
                         q-item(clickable)
                           q-item-section(side)
-                            q-icon(name='las la-edit', color='orange')
+                            q-icon(name='ph ph-pencil-simple', color='orange')
                           q-item-section Edit Image...
                         q-item(clickable)
                           q-item-section(side)
-                            q-icon(name='las la-crop', color='orange')
+                            q-icon(name='ph ph-crop', color='orange')
                           q-item-section Resize Image...
                       q-item(clickable, v-if='item.type !== `folder`', @click='copyItemURL(item)')
                         q-item-section(side)
-                          q-icon(name='las la-clipboard', color='primary')
+                          q-icon(name='ph ph-clipboard', color='primary')
                         q-item-section {{ t(`common.actions.copyURL`) }}
                       q-item(clickable, v-if='item.type !== `folder`', @click='downloadItem(item)')
                         q-item-section(side)
-                          q-icon(name='las la-download', color='primary')
+                          q-icon(name='ph ph-download', color='primary')
                         q-item-section {{ t(`common.actions.download`) }}
                       q-item(clickable)
                         q-item-section(side)
-                          q-icon(name='las la-copy', color='teal')
+                          q-icon(name='ph ph-copy', color='teal')
                         q-item-section Duplicate...
                       q-item(clickable, @click='renameItem(item)')
                         q-item-section(side)
-                          q-icon(name='las la-redo', color='teal')
+                          q-icon(name='ph ph-arrow-clockwise', color='teal')
                         q-item-section Rename...
                       q-item(clickable)
                         q-item-section(side)
-                          q-icon(name='las la-arrow-right', color='teal')
+                          q-icon(name='ph ph-arrow-right', color='teal')
                         q-item-section Move to...
                       q-item(clickable, @click='delItem(item)')
                         q-item-section(side)
-                          q-icon(name='las la-trash-alt', color='negative')
+                          q-icon(name='ph ph-trash', color='negative')
                         q-item-section.text-negative {{ t(`common.actions.delete`) }}
   q-footer
     q-bar.fileman-path

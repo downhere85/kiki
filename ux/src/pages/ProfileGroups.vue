@@ -20,7 +20,7 @@ q-page.q-py-md(:style-fn='pageStyle')
           q-avatar(
             color='secondary'
             text-color='white'
-            icon='las la-users'
+            icon='ph ph-users'
             rounded
             )
         q-item-section

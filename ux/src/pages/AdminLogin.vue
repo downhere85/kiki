@@ -8,7 +8,7 @@ q-page.admin-login
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.login.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-login
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -52,7 +52,7 @@ q-page.admin-login
             q-btn(
               label='Upload'
               unelevated
-              icon='las la-upload'
+              icon='ph ph-upload'
               color='primary'
               text-color='white'
               @click='uploadBg'
@@ -67,8 +67,8 @@ q-page.admin-login
             q-toggle(
               v-model='state.config.authAutoLogin'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.login.bypassScreen`)'
               )
         q-separator.q-my-sm(inset)
@@ -81,8 +81,8 @@ q-page.admin-login
             q-toggle(
               v-model='state.config.authBypassUnauthorized'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.login.bypassUnauthorized`)'
               )
         q-separator.q-my-sm(inset)
@@ -165,8 +165,8 @@ q-page.admin-login
                   q-toggle(
                     v-model='element.isVisible'
                     color='primary'
-                    checked-icon='las la-check'
-                    unchecked-icon='las la-times'
+                    checked-icon='ph ph-check'
+                    unchecked-icon='ph ph-x'
                     label='Visible'
                     :aria-label='element.activeStrategy.displayName'
                   )
@@ -175,7 +175,7 @@ q-page.admin-login
             q-card.bg-info.text-white.rounded-borders(flat)
               q-card-section.items-center(horizontal)
                 q-card-section.col-auto.q-pr-none
-                  q-icon(name='las la-info-circle', size='sm')
+                  q-icon(name='ph ph-info', size='sm')
                 q-card-section.text-caption {{ t('admin.login.providersVisbleWarning') }}
 </template>
 
@@ -298,7 +298,12 @@ async function save () {
         id: adminStore.currentSiteId,
         patch: {
           authAutoLogin: state.config.authAutoLogin ?? false,
-          authEnforce2FA: state.config.authEnforce2FA ?? false
+          authEnforce2FA: state.config.authEnforce2FA ?? false,
+          authStrategies: state.providers.map((p, idx) => ({
+            id: p.id,
+            order: idx,
+            isVisible: p.isVisible ?? true
+          }))
         }
       }
     })

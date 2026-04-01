@@ -70,13 +70,13 @@ onMounted(async () => {
         },
         mutation: gql`
           mutation uploadAssets (
-            $folderId: UUID
+            $folderPath: String
             $locale: String
             $siteId: UUID
             $files: [Upload!]!
           ) {
             uploadAssets (
-              folderId: $folderId
+              folderPath: $folderPath
               locale: $locale
               siteId: $siteId
               files: $files
@@ -89,9 +89,9 @@ onMounted(async () => {
           }
         `,
         variables: {
-          folderId: null, // TODO: Upload to page specific folder
+          folderPath: pageStore.path || null,
           siteId: siteStore.id,
-          locale: 'en', // TODO: use current locale
+          locale: pageStore.locale || 'en',
           files: [item.file]
         }
       })

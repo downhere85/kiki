@@ -8,7 +8,7 @@ q-page.admin-webhooks
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.webhooks.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-webhooks
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.acrylic-btn.q-mr-sm(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -28,7 +28,7 @@ q-page.admin-webhooks
         q-tooltip {{ t(`common.actions.refresh`) }}
       q-btn(
         unelevated
-        icon='las la-plus'
+        icon='ph ph-plus'
         :label='t(`admin.webhooks.new`)'
         color='primary'
         @click='createHook'
@@ -42,14 +42,14 @@ q-page.admin-webhooks
         )
         q-card-section.items-center(horizontal)
           q-card-section.col-auto.q-pr-none
-            q-icon(name='las la-info-circle', size='sm')
+            q-icon(name='ph ph-info', size='sm')
           q-card-section.text-caption {{ t('admin.webhooks.none') }}
     .col-12(v-else)
       q-card
         q-list(separator)
           q-item(v-for='hook of state.hooks', :key='hook.id')
             q-item-section(side)
-              q-icon(name='las la-bolt', color='primary')
+              q-icon(name='ph ph-lightning', color='primary')
             q-item-section
               q-item-label {{hook.name}}
               q-item-label(caption) {{hook.url}}
@@ -72,7 +72,7 @@ q-page.admin-webhooks
                 q-icon.q-mr-sm(
                   color='negative'
                   size='xs'
-                  name='las la-exclamation-triangle'
+                  name='ph ph-warning'
                 )
                 .text-caption.text-negative {{t('admin.webhooks.stateError')}}
                 q-tooltip(anchor='center left', self='center right') {{t('admin.webhooks.stateErrorHint')}}
@@ -80,7 +80,7 @@ q-page.admin-webhooks
             q-item-section(side, style='flex-direction: row; align-items: center;')
               q-btn.acrylic-btn.q-mr-sm(
                 color='indigo'
-                icon='las la-pen'
+                icon='ph ph-pen'
                 label='Edit'
                 flat
                 no-caps
@@ -88,7 +88,7 @@ q-page.admin-webhooks
               )
               q-btn.acrylic-btn(
                 color='red'
-                icon='las la-trash'
+                icon='ph ph-trash'
                 flat
                 @click='deleteHook(hook)'
               )

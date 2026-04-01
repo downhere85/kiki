@@ -149,25 +149,7 @@ export const useUserStore = defineStore('user', {
     },
     logout () {
       Cookies.remove('jwt', { path: '/' })
-      this.$patch({
-        id: '10000000-0000-4000-8000-000000000001',
-        email: '',
-        name: '',
-        hasAvatar: false,
-        localeCode: '',
-        timezone: '',
-        dateFormat: 'YYYY-MM-DD',
-        timeFormat: '12h',
-        appearance: 'site',
-        cvd: 'none',
-        permissions: [],
-        iat: 0,
-        exp: null,
-        authenticated: false,
-        token: '',
-        profileLoaded: false
-      })
-      EVENT_BUS.emit('logout')
+      window.location.assign('/logout')
     },
     getAccessibleColor (base, hexBase) {
       return getAccessibleColor(base, hexBase, this.cvd)

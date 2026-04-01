@@ -26,7 +26,7 @@ q-page.admin-terminal
       )
       q-separator.q-mr-md(vertical)
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -36,7 +36,7 @@ q-page.admin-terminal
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -54,7 +54,7 @@ q-page.admin-terminal
         )
         q-card-section.items-center(horizontal)
           q-card-section.col-auto.q-pr-none
-            q-icon(name='las la-info-circle', size='sm')
+            q-icon(name='ph ph-info', size='sm')
           q-card-section.text-caption {{ t('admin.scheduler.scheduledNone') }}
       q-card(v-else)
         q-table(
@@ -111,7 +111,7 @@ q-page.admin-terminal
         )
         q-card-section.items-center(horizontal)
           q-card-section.col-auto.q-pr-none
-            q-icon(name='las la-info-circle', size='sm')
+            q-icon(name='ph ph-info', size='sm')
           q-card-section.text-caption {{ t('admin.scheduler.upcomingNone') }}
       q-card(v-else)
         q-table(
@@ -125,7 +125,7 @@ q-page.admin-terminal
           )
           template(v-slot:body-cell-id='props')
             q-td(:props='props')
-              q-icon(name='las la-clock', color='primary', size='sm')
+              q-icon(name='ph ph-clock', color='primary', size='sm')
           template(v-slot:body-cell-task='props')
             q-td(:props='props')
               strong {{props.value}}
@@ -140,10 +140,10 @@ q-page.admin-terminal
           template(v-slot:body-cell-useworker='props')
             q-td(:props='props')
               template(v-if='props.value')
-                q-icon(name='las la-microchip', color='brown', size='sm')
+                q-icon(name='ph ph-cpu', color='brown', size='sm')
                 small.q-ml-xs.text-brown Worker
               template(v-else)
-                q-icon(name='las la-leaf', color='teal', size='sm')
+                q-icon(name='ph ph-leaf', color='teal', size='sm')
                 small.q-ml-xs.text-teal In-Process
           template(v-slot:body-cell-date='props')
             q-td(:props='props')
@@ -156,7 +156,7 @@ q-page.admin-terminal
             q-td(:props='props')
               q-btn.acrylic-btn.q-px-sm(
                 flat
-                icon='las la-window-close'
+                icon='ph ph-x-square'
                 color='negative'
                 @click='cancelJob(props.row.id)'
                 )
@@ -169,7 +169,7 @@ q-page.admin-terminal
         )
         q-card-section.items-center(horizontal)
           q-card-section.col-auto.q-pr-none
-            q-icon(name='las la-info-circle', size='sm')
+            q-icon(name='ph ph-info', size='sm')
           q-card-section.text-caption {{ t('admin.scheduler.' + state.displayMode + 'None') }}
       q-card(v-else)
         q-table(
@@ -185,7 +185,7 @@ q-page.admin-terminal
             q-td(:props='props')
               q-avatar(
                 v-if='props.row.state === `completed`'
-                icon='las la-check'
+                icon='ph ph-check'
                 color='positive'
                 text-color='white'
                 size='sm'
@@ -193,7 +193,7 @@ q-page.admin-terminal
                 )
               q-avatar(
                 v-else-if='props.row.state === `failed`'
-                icon='las la-times'
+                icon='ph ph-x'
                 color='negative'
                 text-color='white'
                 size='sm'
@@ -201,7 +201,7 @@ q-page.admin-terminal
                 )
               q-avatar(
                 v-else-if='props.row.state === `interrupted`'
-                icon='las la-square-full'
+                icon='ph ph-square'
                 color='orange'
                 text-color='white'
                 size='sm'
@@ -238,10 +238,10 @@ q-page.admin-terminal
           template(v-slot:body-cell-useworker='props')
             q-td(:props='props')
               template(v-if='props.value')
-                q-icon(name='las la-microchip', color='brown', size='sm')
+                q-icon(name='ph ph-cpu', color='brown', size='sm')
                 small.q-ml-xs.text-brown Worker
               template(v-else)
-                q-icon(name='las la-leaf', color='teal', size='sm')
+                q-icon(name='ph ph-leaf', color='teal', size='sm')
                 small.q-ml-xs.text-teal In-Process
           template(v-slot:body-cell-date='props')
             q-td(:props='props')
@@ -256,7 +256,7 @@ q-page.admin-terminal
               q-btn.acrylic-btn.q-px-sm(
                 v-if='props.row.state !== `active`'
                 flat
-                icon='las la-undo-alt'
+                icon='ph ph-arrow-counter-clockwise'
                 color='orange'
                 @click='retryJob(props.row.id)'
                 :disable='props.row.state === `interrupted` || props.row.state === `failed` && props.row.attempt < props.row.maxRetries'

@@ -13,7 +13,7 @@ q-toolbar(
     ref='searchField'
     style='width: 100%;'
     label='Search...'
-    @keyup.enter='onSearchEnter'
+    @keydown='onSearchKeyDown'
     @focus='state.searchIsFocused = true'
     @blur='checkSearchFocus'
     )
@@ -26,15 +26,15 @@ q-toolbar(
         color='primary'
         size='20px'
         )
-      q-icon(v-else, name='las la-search')
+      q-icon(v-else, name='ph ph-magnifying-glass')
     template(v-slot:append)
       q-badge.search-kbdbadge.q-mr-sm(
         v-if='!state.searchIsFocused'
         label='Ctrl+K'
         color='custom-color'
         outline
-        @click='searchField.focus()'
         )
+        q-tooltip Ctrl+K to open command palette
       q-badge.q-mr-sm(
         v-else-if='siteStore.search && siteStore.search !== siteStore.searchLastQuery'
         label='Press Enter'
@@ -43,7 +43,7 @@ q-toolbar(
         @click='searchField.focus()'
         )
       q-icon.cursor-pointer(
-        name='las la-times'
+        name='ph ph-x'
         size='20px'
         @click='siteStore.search=``'
         v-if='siteStore.search.length > 0'
@@ -57,14 +57,15 @@ q-toolbar(
       .searchpanel-header Quick Results
       q-list(dense)
         q-item(
-          v-for='item of state.suggestions'
+          v-for='(item, idx) of state.suggestions'
           :key='item.id'
           clickable
           @mousedown.prevent='goToPage(item)'
           dense
+          :class='{ "searchpanel-item--active": idx === state.activeIndex }'
           )
           q-item-section(avatar)
-            q-icon(name='las la-file-alt', size='xs', color='grey')
+            q-icon(name='ph ph-file-text', size='xs', color='grey')
           q-item-section
             q-item-label {{ item.title }}
             q-item-label(caption) /{{ item.path }}
@@ -86,7 +87,7 @@ q-toolbar(
           square
           color='grey-8'
           text-color='white'
-          icon='las la-hashtag'
+          icon='ph ph-hash'
           size='sm'
           clickable
           @click='addTag(tag)'
@@ -101,7 +102,7 @@ q-toolbar(
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
-import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { orderBy, debounce } from 'lodash-es'
 import gql from 'graphql-tag'
@@ -129,7 +130,8 @@ const { t } = useI18n()
 
 const state = reactive({
   searchIsFocused: false,
-  suggestions: []
+  suggestions: [],
+  activeIndex: -1
 })
 
 const searchPanel = ref(null)
@@ -181,27 +183,34 @@ const fetchSuggestions = debounce(async (query) => {
 }, 300)
 
 watch(() => siteStore.search, (val) => {
+  state.activeIndex = -1
   fetchSuggestions(val)
 })
 
 // METHODS
 
-function handleKeyPress (ev) {
-  if (siteStore.features.search) {
-    if (ev.ctrlKey && ev.key === 'k') {
-      ev.preventDefault()
-      searchField.value.focus()
+function onSearchKeyDown (ev) {
+  if (ev.key === 'ArrowDown') {
+    ev.preventDefault()
+    state.activeIndex = Math.min(state.activeIndex + 1, state.suggestions.length - 1)
+  } else if (ev.key === 'ArrowUp') {
+    ev.preventDefault()
+    state.activeIndex = Math.max(state.activeIndex - 1, -1)
+  } else if (ev.key === 'Escape') {
+    state.searchIsFocused = false
+    searchField.value.blur()
+  } else if (ev.key === 'Enter') {
+    if (state.activeIndex >= 0 && state.suggestions[state.activeIndex]) {
+      goToPage(state.suggestions[state.activeIndex])
+    } else {
+      if (!siteStore.search) { return }
+      if (route.path === '/_search') {
+        router.replace({ path: '/_search', query: { q: siteStore.search } })
+      } else {
+        siteStore.searchIsLoading = true
+        router.push({ path: '/_search', query: { q: siteStore.search } })
+      }
     }
-  }
-}
-
-function onSearchEnter () {
-  if (!siteStore.search) { return }
-  if (route.path === '/_search') {
-    router.replace({ path: '/_search', query: { q: siteStore.search } })
-  } else {
-    siteStore.searchIsLoading = true
-    router.push({ path: '/_search', query: { q: siteStore.search } })
   }
 }
 
@@ -228,16 +237,8 @@ function addTag (tag) {
 // MOUNTED
 
 onMounted(() => {
-  if (!import.meta.env.SSR) {
-    window.addEventListener('keydown', handleKeyPress)
-  }
   if (route.path.startsWith('/_search')) {
     searchField.value.focus()
-  }
-})
-onBeforeUnmount(() => {
-  if (!import.meta.env.SSR) {
-    window.removeEventListener('keydown', handleKeyPress)
   }
 })
 
@@ -277,6 +278,11 @@ onBeforeUnmount(() => {
     font-weight: 700;
     border-radius: 4px;
   }
+}
+
+.searchpanel-item--active {
+  background-color: rgba(255,255,255,.15);
+  border-radius: 4px;
 }
 
 .search-kbdbadge {

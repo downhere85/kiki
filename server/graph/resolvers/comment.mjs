@@ -13,10 +13,11 @@ export default {
 
       const providers = await WIKI.db.commentProviders.getProviders()
       return providers.map(provider => {
-        const providerInfo = _.find(WIKI.data.commentProviders, ['key', provider.key]) || {}
+        const providerInfo = _.find(WIKI.data.commentProviders, ['key', provider.module]) || {}
         return {
           ...providerInfo,
           ...provider,
+          key: provider.module,
           config: _.sortBy(_.transform(provider.config, (res, value, key) => {
             const configData = _.get(providerInfo.props, key, false)
             if (configData) {
@@ -94,7 +95,7 @@ export default {
           ip: context.req.ip
         })
         return {
-          responseResult: generateSuccess('New comment posted successfully'),
+          operation: generateSuccess('New comment posted successfully'),
           id: cmId
         }
       } catch (err) {
@@ -112,7 +113,7 @@ export default {
           ip: context.req.ip
         })
         return {
-          responseResult: generateSuccess('Comment updated successfully'),
+          operation: generateSuccess('Comment updated successfully'),
           render: cmRender
         }
       } catch (err) {
@@ -130,7 +131,7 @@ export default {
           ip: context.req.ip
         })
         return {
-          responseResult: generateSuccess('Comment deleted successfully')
+          operation: generateSuccess('Comment deleted successfully')
         }
       } catch (err) {
         return generateError(err)
@@ -152,11 +153,11 @@ export default {
               _.set(result, `${value.key}`, _.get(JSON.parse(value.value), 'v', null))
               return result
             }, {})
-          }).where('key', provider.key)
+          }).where('module', provider.key)
         }
         await WIKI.db.commentProviders.initProvider()
         return {
-          responseResult: generateSuccess('Comment Providers updated successfully')
+          operation: generateSuccess('Comment Providers updated successfully')
         }
       } catch (err) {
         return generateError(err)

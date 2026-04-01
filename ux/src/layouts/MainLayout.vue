@@ -10,7 +10,7 @@ q-layout(view='hHh Lpr lff')
     .sidebar-mini.column.items-stretch(v-if='isSidebarMini')
       q-btn.q-py-sm(
         flat
-        icon='las la-globe'
+        icon='ph ph-globe'
         color='white'
         aria-label='Switch Locale'
         )
@@ -18,7 +18,7 @@ q-layout(view='hHh Lpr lff')
         q-tooltip(anchor='center right' self='center left') Switch Locale
       q-btn.q-py-sm(
         flat
-        icon='las la-sitemap'
+        icon='ph ph-tree-structure'
         color='white'
         aria-label='Browse'
         @click='browsePages'
@@ -27,7 +27,7 @@ q-layout(view='hHh Lpr lff')
       q-separator.q-my-sm(inset, dark)
       q-btn.q-py-sm(
         flat
-        icon='las la-bookmark'
+        icon='ph ph-bookmark'
         color='white'
         aria-label='Bookmarks'
         @click='openBookmarks'
@@ -35,8 +35,9 @@ q-layout(view='hHh Lpr lff')
         q-tooltip(anchor='center right' self='center left') Bookmarks
       q-space
       q-btn.q-py-xs(
+        v-if='userStore.can(`manage:navigation`) || userStore.can(`manage:system`)'
         flat
-        icon='las la-dharmachakra'
+        icon='ph ph-gear-six'
         color='white'
         aria-label='Edit Nav'
         size='sm'
@@ -56,7 +57,7 @@ q-layout(view='hHh Lpr lff')
         q-btn.q-px-sm.col(
           flat
           dense
-          icon='las la-globe'
+          icon='ph ph-globe'
           color='blue-7'
           text-color='custom-color'
           :label='commonStore.locale'
@@ -68,7 +69,7 @@ q-layout(view='hHh Lpr lff')
         q-btn.q-px-sm.col(
           flat
           dense
-          icon='las la-sitemap'
+          icon='ph ph-tree-structure'
           color='blue-7'
           text-color='custom-color'
           label='Browse'
@@ -77,12 +78,26 @@ q-layout(view='hHh Lpr lff')
           @click='browsePages'
           )
       nav-sidebar
+      .sidebar-recent(v-if='pageStore.recentPages.length > 0 && !editorStore.isActive')
+        .sidebar-recent-header Recent
+        q-list(dense)
+          q-item.sidebar-recent-item(
+            v-for='page of pageStore.recentPages'
+            :key='page.id'
+            clickable
+            dense
+            :to='`/${page.path}`'
+            )
+            q-item-section(side)
+              q-icon(:name='page.icon || `ph ph-file-text`', size='xs', color='grey-5')
+            q-item-section
+              q-item-label.text-caption(lines='1') {{ page.title }}
       q-bar.sidebar-footerbtns.text-white(
-        v-if='userStore.authenticated'
+        v-if='userStore.can(`manage:navigation`) || userStore.can(`manage:system`)'
         dense
         )
         q-btn.col(
-          icon='las la-dharmachakra'
+          icon='ph ph-gear-six'
           label='Edit Nav'
           flat
           )
@@ -98,7 +113,7 @@ q-layout(view='hHh Lpr lff')
               )
         q-separator(vertical)
         q-btn.col(
-          icon='las la-bookmark'
+          icon='ph ph-bookmark'
           label='Bookmarks'
           flat
           @click='openBookmarks'
@@ -111,18 +126,19 @@ q-layout(view='hHh Lpr lff')
       :offset='[15, 15]'
       )
       q-btn(
-        icon='las la-arrow-up'
+        icon='ph ph-arrow-up'
         color='primary'
         round
         size='md'
       )
   main-overlay-dialog
+  command-palette(v-model='state.showCommandPalette')
   footer-nav(v-if='!editorStore.isActive')
 </template>
 
 <script setup>
 import { useMeta, useQuasar } from 'quasar'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
@@ -141,6 +157,7 @@ import LocaleSelectorMenu from '@/components/LocaleSelectorMenu.vue'
 import NavSidebar from '@/components/NavSidebar.vue'
 import NavEditMenu from '@/components/NavEditMenu.vue'
 import MainOverlayDialog from '@/components/MainOverlayDialog.vue'
+import CommandPalette from '@/components/CommandPalette.vue'
 
 // QUASAR
 
@@ -170,6 +187,12 @@ useMeta({
   titleTemplate: title => `${title} - ${siteStore.title}`
 })
 
+// DATA
+
+const state = reactive({
+  showCommandPalette: false
+})
+
 // REFS
 
 const navEditMenu = ref(null)
@@ -195,6 +218,25 @@ function browsePages () {
   siteStore.$patch({ overlay: 'BrowsePages' })
 }
 
+function handleGlobalKeyDown (ev) {
+  if ((ev.ctrlKey || ev.metaKey) && ev.key === 'k') {
+    ev.preventDefault()
+    state.showCommandPalette = true
+  }
+}
+
+onMounted(() => {
+  if (!import.meta.env.SSR) {
+    window.addEventListener('keydown', handleGlobalKeyDown)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (!import.meta.env.SSR) {
+    window.removeEventListener('keydown', handleGlobalKeyDown)
+  }
+})
+
 </script>
 
 <style lang="scss">
@@ -214,6 +256,31 @@ function browsePages () {
 
 .sidebar-footerbtns {
   background-color: rgba(255,255,255,.1);
+}
+
+.sidebar-recent {
+  padding: 8px 0 4px;
+  border-top: 1px solid rgba(255,255,255,.1);
+
+  &-header {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: rgba(255,255,255,.4);
+    padding: 0 12px 4px;
+  }
+
+  &-item {
+    padding: 2px 8px;
+    min-height: 28px;
+    border-radius: 4px;
+    margin: 0 4px;
+
+    &:hover {
+      background-color: rgba(255,255,255,.1);
+    }
+  }
 }
 
 body.body--dark {

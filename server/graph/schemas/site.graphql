@@ -187,6 +187,21 @@ input SiteUpdateInput {
   uploads: SiteUploadsInput
   editors: SiteEditorsInput
   theme: SiteThemeInput
+  locales: SiteLocalesInput
+  authAutoLogin: Boolean
+  authEnforce2FA: Boolean
+  authStrategies: [SiteAuthStrategyInput]
+}
+
+input SiteAuthStrategyInput {
+  id: UUID!
+  order: Int!
+  isVisible: Boolean!
+}
+
+input SiteLocalesInput {
+  primary: String
+  active: [String]!
 }
 
 input SiteRobotsInput {

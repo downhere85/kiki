@@ -8,7 +8,7 @@ q-page.admin-mail
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.mail.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-mail
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -124,8 +124,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.secure'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.mail.smtpTLS`)'
               )
         q-separator.q-my-sm(inset)
@@ -138,8 +138,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.verifySSL'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.mail.smtpVerifySSL`)'
               )
         q-separator.q-my-sm(inset)
@@ -193,7 +193,7 @@ q-page.admin-mail
             q-card.bg-info.text-white.rounded-borders(flat)
               q-card-section.items-center(horizontal)
                 q-card-section.col-auto.q-pr-none
-                  q-icon(name='las la-info-circle', size='sm')
+                  q-icon(name='ph ph-info', size='sm')
                 q-card-section.text-caption {{ t('admin.mail.dkimHint') }}
         q-item(tag='label')
           blueprint-icon(icon='received')
@@ -204,8 +204,8 @@ q-page.admin-mail
             q-toggle(
               v-model='state.config.useDKIM'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.mail.dkimUse`)'
               )
         template(v-if='state.config.useDKIM')
@@ -266,7 +266,7 @@ q-page.admin-mail
               q-btn(
                 outline
                 no-caps
-                icon='las la-edit'
+                icon='ph ph-pencil-simple'
                 color='primary'
                 @click='editTemplate(`welcome`)'
                 :label='t(`common.actions.edit`)'
@@ -280,7 +280,7 @@ q-page.admin-mail
               q-btn(
                 outline
                 no-caps
-                icon='las la-edit'
+                icon='ph ph-pencil-simple'
                 color='primary'
                 @click='editTemplate(`pwdreset`)'
                 :label='t(`common.actions.edit`)'
@@ -306,7 +306,7 @@ q-page.admin-mail
           q-btn(
             unelevated
             color='primary'
-            icon='las la-paper-plane'
+            icon='ph ph-paper-plane-tilt'
             :label='t(`admin.mail.testSend`)'
             @click='sendTest'
             :loading='state.testLoading'

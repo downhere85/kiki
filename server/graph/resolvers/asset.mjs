@@ -149,10 +149,12 @@ export default {
      */
     async uploadAssets (obj, args, context) {
       try {
-        // FIXME: Perm
+        if (!WIKI.auth.checkAccess(context.req.user, ['write:assets'])) {
+          throw new Error('ERR_FORBIDDEN')
+        }
         // -> Get Folder
         let folder = {}
-        if (args.folderId || args.folderPath) {
+        if (args.folderId) {
           // Get Folder by ID
           folder = await WIKI.db.tree.getFolder({ id: args.folderId })
           if (!folder) {

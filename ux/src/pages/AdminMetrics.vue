@@ -16,7 +16,7 @@ q-page.admin-api
           .text-caption.text-red {{t('admin.metrics.disabled')}}
     .col-auto
       q-btn.q-mr-sm.q-ml-md.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -26,7 +26,7 @@ q-page.admin-api
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.acrylic-btn.q-mr-sm(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -36,7 +36,7 @@ q-page.admin-api
         q-tooltip {{ t(`common.actions.refresh`) }}
       q-btn.q-mr-sm(
         unelevated
-        icon='las la-power-off'
+        icon='ph ph-power'
         :label='!state.enabled ? t(`common.actions.activate`) : t(`common.actions.deactivate`)'
         :color='!state.enabled ? `positive` : `negative`'
         @click='globalSwitch'
@@ -52,7 +52,7 @@ q-page.admin-api
         )
         q-card-section.items-center(horizontal)
           q-card-section.col-auto.q-pr-none
-            q-icon(name='las la-info-circle', size='sm')
+            q-icon(name='ph ph-info', size='sm')
           q-card-section
             i18n-t(tag='span', keypath='admin.metrics.endpoint', scope='global')
               template(#endpoint)
@@ -64,7 +64,7 @@ q-page.admin-api
         )
         q-card-section.items-center(horizontal)
           q-card-section.col-auto.q-pr-none
-            q-icon(name='las la-key', size='sm')
+            q-icon(name='ph ph-key', size='sm')
           q-card-section
             i18n-t(tag='span', keypath='admin.metrics.auth', scope='global')
               template(#headerName)

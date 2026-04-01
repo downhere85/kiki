@@ -70,7 +70,7 @@ export class Analytics extends Model {
       const providers = await WIKI.db.analytics.getProviders(true)
 
       for (let provider of providers) {
-        const def = await fs.readFile(path.join(WIKI.SERVERPATH, 'modules/analytics', provider.key, 'code.yml'), 'utf8')
+        const def = await fs.readFile(path.join(WIKI.SERVERPATH, 'modules/analytics', provider.module, 'code.yml'), 'utf8')
         let code = yaml.safeLoad(def)
         code.head = defaultTo(code.head, '')
         code.bodyStart = defaultTo(code.bodyStart, '')

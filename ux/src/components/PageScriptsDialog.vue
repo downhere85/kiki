@@ -21,7 +21,7 @@ q-card.page-scripts-dialog(style='width: 860px; max-width: 90vw;')
   q-card-actions.card-actions
     q-space
     q-btn.acrylic-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       :label='t(`common.actions.discard`)'
       color='grey-7'
       padding='xs md'
@@ -29,7 +29,7 @@ q-card.page-scripts-dialog(style='width: 860px; max-width: 90vw;')
       flat
     )
     q-btn(
-      icon='las la-check'
+      icon='ph ph-check'
       :label='t(`common.actions.save`)'
       unelevated
       color='primary'

@@ -9,7 +9,7 @@ q-layout(view='hHh lpR fFf', container)
       rounded
       color='white'
       :aria-label='t(`common.actions.refresh`)'
-      icon='las la-question-circle'
+      icon='ph ph-question'
       :href='siteStore.docsBase + `/editor/markdown`'
       target='_blank'
       type='a'
@@ -20,7 +20,7 @@ q-layout(view='hHh lpR fFf', container)
         color='grey-6'
         text-color='white'
         :aria-label='t(`common.actions.refresh`)'
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         @click='load'
         :loading='state.loading > 0'
         )
@@ -31,7 +31,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='grey-7'
         :label='t(`common.actions.cancel`)'
         :aria-label='t(`common.actions.cancel`)'
-        icon='las la-times'
+        icon='ph ph-x'
         @click='close'
       )
       q-btn(
@@ -40,7 +40,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='white'
         :label='t(`common.actions.apply`)'
         :aria-label='t(`common.actions.apply`)'
-        icon='las la-check'
+        icon='ph ph-check'
         @click='save'
         :disabled='state.loading > 0'
       )
@@ -56,8 +56,8 @@ q-layout(view='hHh lpR fFf', container)
             q-toggle(
               v-model='state.config.previewShown'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`editor.settings.markdownPreviewShown`)'
               )
         q-separator.q-my-sm(inset)

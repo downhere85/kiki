@@ -10,9 +10,9 @@ q-page.column
         )
         template(v-slot:separator)
           q-icon(
-            name='las la-angle-right'
+            name='ph ph-caret-right'
           )
-        q-breadcrumbs-el(icon='las la-home', to='/', aria-label='Home')
+        q-breadcrumbs-el(icon='ph ph-house', to='/', aria-label='Home')
           q-tooltip Home
         q-breadcrumbs-el(
           v-for='brd of pageStore.breadcrumbs'
@@ -92,12 +92,12 @@ q-page.column
       template(v-if='pageStore.showToc')
         //- TOC
         .q-pa-md.flex.items-center
-          q-icon.q-mr-sm(name='las la-stream', color='grey')
+          q-icon.q-mr-sm(name='ph ph-rows', color='grey')
           .text-caption.text-grey-7 Contents
         .q-px-md.q-pb-sm
           q-tree.page-toc(
             :nodes='pageStore.toc'
-            icon='las la-caret-right'
+            icon='ph ph-caret-right'
             node-key='key'
             dense
             v-model:expanded='state.tocExpanded'
@@ -111,7 +111,7 @@ q-page.column
           @mouseleave='state.showTagsEditBtn = false'
           )
           .flex.items-center
-            q-icon.q-mr-sm(name='las la-tags', color='grey')
+            q-icon.q-mr-sm(name='ph ph-tag', color='grey')
             .text-caption.text-grey-7 Tags
             q-space
             transition(name='fade')
@@ -119,7 +119,7 @@ q-page.column
                 v-show='state.showTagsEditBtn'
                 size='sm'
                 padding='none xs'
-                icon='las la-pen'
+                icon='ph ph-pen'
                 color='deep-orange-9'
                 flat
                 label='Edit'
@@ -131,25 +131,25 @@ q-page.column
         q-separator(v-if='pageStore.showToc || pageStore.showTags')
         //- Rating
         .q-pa-md.flex.items-center
-          q-icon.q-mr-sm(name='las la-star-half-alt', color='grey')
+          q-icon.q-mr-sm(name='ph ph-star-half', color='grey')
           .text-caption.text-grey-7 Rate this page
         .q-px-md
           q-rating(
             v-if='siteStore.features.ratingsMode === `stars`'
             v-model='state.currentRating'
-            icon='las la-star'
+            icon='ph ph-star'
             color='secondary'
             size='sm'
           )
           .flex.items-center(v-else-if='siteStore.features.ratingsMode === `thumbs`')
             q-btn.acrylic-btn(
               flat
-              icon='las la-thumbs-down'
+              icon='ph ph-thumbs-down'
               color='secondary'
             )
             q-btn.acrylic-btn.q-ml-sm(
               flat
-              icon='las la-thumbs-up'
+              icon='ph ph-thumbs-up'
               color='secondary'
             )
     page-actions-col
@@ -159,11 +159,12 @@ q-page.column
 
 <script setup>
 import { useMeta, useQuasar } from 'quasar'
-import { computed, defineAsyncComponent, nextTick, onMounted, reactive, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { DateTime } from 'luxon'
 import gql from 'graphql-tag'
+import Cookies from 'js-cookie'
 
 import { renderMermaidDiagrams } from '@/helpers/mermaid'
 import { useCommonStore } from '@/stores/common'
@@ -408,7 +409,12 @@ watch(() => route.path, async (newValue) => {
       }
     })
   } catch (err) {
-    if (err.message === 'ERR_PAGE_NOT_FOUND') {
+    const errMsg = err.message || ''
+    const isForbidden = errMsg.includes('ERR_FORBIDDEN') || err.graphQLErrors?.some(e => e.message?.includes('ERR_FORBIDDEN'))
+    if (isForbidden && !userStore.authenticated) {
+      Cookies.set('loginRedirect', newValue)
+      router.push('/login')
+    } else if (errMsg === 'ERR_PAGE_NOT_FOUND') {
       if (newValue === '/') {
         if (!userStore.authenticated) {
           router.push('/login')
@@ -423,10 +429,12 @@ watch(() => route.path, async (newValue) => {
           message: 'This page does not exist (yet)!'
         })
       }
+    } else if (isForbidden) {
+      router.replace('/_error/unauthorized')
     } else {
       $q.notify({
         type: 'negative',
-        message: err.message
+        message: errMsg
       })
     }
   }
@@ -436,6 +444,36 @@ watch(() => pageStore.toc, () => { refreshTocExpanded() }, { immediate: true })
 watch(() => pageStore.tocDepth, () => { refreshTocExpanded() })
 
 // METHODS
+
+// KEYBOARD SHORTCUTS
+
+function handleGlobalKeyDown (ev) {
+  if (ev.ctrlKey || ev.metaKey) {
+    if (ev.key === 's') {
+      if (editorStore.isActive) {
+        ev.preventDefault()
+        pageStore.pageSave()
+      }
+    } else if (ev.key === 'e') {
+      if (!editorStore.isActive && pageStore.id && userStore.can('write:pages')) {
+        ev.preventDefault()
+        router.push(`/_edit/${pageStore.path}`)
+      }
+    }
+  }
+}
+
+onMounted(() => {
+  if (!import.meta.env.SSR) {
+    window.addEventListener('keydown', handleGlobalKeyDown)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (!import.meta.env.SSR) {
+    window.removeEventListener('keydown', handleGlobalKeyDown)
+  }
+})
 
 function refreshTocExpanded (baseToc, lvl) {
   const toExpand = []

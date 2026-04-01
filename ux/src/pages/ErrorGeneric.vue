@@ -11,7 +11,7 @@
         push
         color='primary'
         label='Go to home'
-        icon='las la-home'
+        icon='ph ph-house'
         to='/'
       )
       q-btn.q-ml-md(
@@ -19,7 +19,7 @@
         push
         color='primary'
         label='Login As...'
-        icon='las la-sign-in-alt'
+        icon='ph ph-sign-in'
         to='/login'
       )
 

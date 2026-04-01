@@ -8,7 +8,7 @@ q-page.admin-locale
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.sites.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         type='a'
@@ -18,7 +18,7 @@ q-page.admin-locale
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :aria-label='t(`common.actions.refresh`)'
@@ -27,7 +27,7 @@ q-page.admin-locale
         q-tooltip {{ t(`common.actions.refresh`) }}
       q-btn(
         unelevated
-        icon='las la-plus'
+        icon='ph ph-plus'
         :label='t(`admin.sites.new`)'
         color='primary'
         @click='createSite'
@@ -42,7 +42,7 @@ q-page.admin-locale
             :key='site.id'
             )
             q-item-section(side)
-              q-icon(name='las la-chalkboard', color='primary')
+              q-icon(name='ph ph-presentation', color='primary')
             q-item-section
               strong {{site.title}}
             q-item-section
@@ -55,7 +55,7 @@ q-page.admin-locale
                   size='sm'
                   )
                   q-avatar(
-                    icon='las la-angle-right'
+                    icon='ph ph-caret-right'
                     color='blue-5'
                     text-color='white'
                   )
@@ -68,7 +68,7 @@ q-page.admin-locale
                   size='sm'
                   )
                   q-avatar(
-                    icon='las la-asterisk'
+                    icon='ph ph-asterisk'
                     color='indigo-5'
                     text-color='white'
                   )
@@ -77,8 +77,8 @@ q-page.admin-locale
               q-toggle(
                 :model-value='site.isEnabled'
                 color='primary'
-                checked-icon='las la-check'
-                unchecked-icon='las la-times'
+                checked-icon='ph ph-check'
+                unchecked-icon='ph ph-x'
                 :label='t(`admin.sites.isActive`)'
                 :aria-label='t(`admin.sites.isActive`)'
                 @update:model-value ='(val) => { toggleSiteState(site, val) }'
@@ -88,14 +88,14 @@ q-page.admin-locale
               q-btn.acrylic-btn.q-mr-sm(
                 flat
                 @click='editSite(site)'
-                icon='las la-pen'
+                icon='ph ph-pen'
                 color='indigo'
                 :label='t(`common.actions.edit`)'
                 no-caps
                 )
               q-btn.acrylic-btn(
                 flat
-                icon='las la-trash'
+                icon='ph ph-trash'
                 color='negative'
                 @click='deleteSite(site)'
                 :aria-label='t(`common.actions.delete`)'

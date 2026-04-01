@@ -8,7 +8,7 @@ q-page.admin-system
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.system.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-system
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -348,7 +348,7 @@ Total RAM: ${state.info.ramTotal}`
     $q.notify({
       type: 'positive',
       message: 'Info copied successfully',
-      icon: 'las la-clipboard'
+      icon: 'ph ph-clipboard'
     })
   })
   clip.on('error', () => {

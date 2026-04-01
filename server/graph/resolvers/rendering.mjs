@@ -42,7 +42,7 @@ export default {
           }).where('key', rdr.key)
         }
         return {
-          responseResult: generateSuccess('Renderers updated successfully')
+          operation: generateSuccess('Renderers updated successfully')
         }
       } catch (err) {
         return generateError(err)

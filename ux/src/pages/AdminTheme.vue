@@ -8,7 +8,7 @@ q-page.admin-theme
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.theme.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         type='a'
@@ -18,7 +18,7 @@ q-page.admin-theme
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -45,7 +45,7 @@ q-page.admin-theme
           .text-subtitle1 {{t('admin.theme.appearance')}}
           q-space
           q-btn.acrylic-btn(
-            icon='las la-redo-alt'
+            icon='ph ph-arrow-clockwise'
             :label='t(`admin.theme.resetDefaults`)'
             flat
             size='sm'
@@ -61,8 +61,8 @@ q-page.admin-theme
             q-toggle(
               v-model='state.config.dark'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.theme.darkMode`)'
               )
         template(v-for='cl of colorKeys', :key='cl')
@@ -84,7 +84,7 @@ q-page.admin-theme
                 :style='`background-color: ` + state.config[`color` + startCase(cl)] + `;`'
                 text-color='white'
                 )
-                q-icon(name='las la-fill', size='xs', left)
+                q-icon(name='ph ph-paint-bucket', size='xs', left)
                 span Pick...
                 q-menu
                   q-color(
@@ -99,7 +99,7 @@ q-page.admin-theme
           .text-subtitle1 {{t('admin.theme.codeBlocks')}}
           q-space
           q-btn.acrylic-btn(
-            icon='las la-redo-alt'
+            icon='ph ph-arrow-clockwise'
             :label='t(`admin.theme.resetDefaults`)'
             flat
             size='sm'
@@ -187,8 +187,8 @@ q-page.admin-theme
             q-toggle(
               v-model='state.config.showSharingMenu'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.theme.showSharingMenu`)'
               )
         q-separator.q-my-sm(inset)
@@ -201,8 +201,8 @@ q-page.admin-theme
             q-toggle(
               v-model='state.config.showPrintBtn'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.theme.showPrintBtn`)'
               )
 
@@ -215,7 +215,7 @@ q-page.admin-theme
           .text-subtitle1 {{t('admin.theme.fonts')}}
           q-space
           q-btn.acrylic-btn(
-            icon='las la-redo-alt'
+            icon='ph ph-arrow-clockwise'
             :label='t(`admin.theme.resetDefaults`)'
             flat
             size='sm'

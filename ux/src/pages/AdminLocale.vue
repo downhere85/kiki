@@ -8,7 +8,7 @@ q-page.admin-locale
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.locale.subtitle') }}
     .col-auto.flex
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-locale
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -70,8 +70,8 @@ q-page.admin-locale
             q-toggle(
               v-model='state.forcePrefix'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.locale.forcePrefixHint`)'
               )
 
@@ -98,8 +98,8 @@ q-page.admin-locale
               v-model='state.active'
               :val='lc.code'
               :color='lc.code === state.primary ? `secondary` : `primary`'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='lc.name'
               )
 
@@ -154,11 +154,6 @@ const state = reactive({
 watch(() => adminStore.currentSiteId, (newValue) => {
   load()
 })
-watch(() => state.selectedLocale, (newValue) => {
-  if (!state.namespaces.includes(newValue)) {
-    state.namespaces.push(newValue)
-  }
-})
 
 // METHODS
 
@@ -209,52 +204,51 @@ async function load () {
 }
 
 async function save () {
-  state.loading = true
-  const respRaw = await APOLLO_CLIENT.mutate({
-    mutation: gql`
-      mutation saveLocaleSettings (
-        $locale: String!
-        $autoUpdate: Boolean!
-        $namespacing: Boolean!
-        $namespaces: [String]!
+  state.loading++
+  try {
+    const respRaw = await APOLLO_CLIENT.mutate({
+      mutation: gql`
+        mutation saveSite (
+          $id: UUID!
+          $patch: SiteUpdateInput!
         ) {
-        localization {
-          updateLocale(
-            locale: $locale
-            autoUpdate: $autoUpdate
-            namespacing: $namespacing
-            namespaces: $namespaces
-            ) {
-            responseResult {
+          updateSite (
+            id: $id
+            patch: $patch
+          ) {
+            operation {
               succeeded
-              errorCode
-              slug
               message
             }
           }
         }
+      `,
+      variables: {
+        id: adminStore.currentSiteId,
+        patch: {
+          locales: {
+            primary: state.primary,
+            active: state.active
+          }
+        }
       }
-    `,
-    variables: {
-      locale: state.selectedLocale,
-      autoUpdate: state.autoUpdate,
-      namespacing: state.namespacing,
-      namespaces: state.namespaces
-    }
-  })
-  const resp = respRaw?.data?.localization?.updateLocale?.responseResult || {}
-  if (resp.succeeded) {
-    $q.notify({
-      type: 'positive',
-      message: 'Locale settings updated successfully.'
     })
-  } else {
+    if (respRaw?.data?.updateSite?.operation?.succeeded) {
+      $q.notify({
+        type: 'positive',
+        message: 'Locale settings updated successfully.'
+      })
+    } else {
+      throw new Error(respRaw?.data?.updateSite?.operation?.message || 'An unexpected error occurred.')
+    }
+  } catch (err) {
     $q.notify({
       type: 'negative',
-      message: resp.message
+      message: 'Failed to save locale settings.',
+      caption: err.message
     })
   }
-  state.loading = false
+  state.loading--
 }
 
 // MOUNTED

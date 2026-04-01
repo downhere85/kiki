@@ -194,7 +194,7 @@ export const usePageStore = defineStore('page', {
     createdAt: '',
     description: '',
     editor: '',
-    icon: 'las la-file-alt',
+    icon: 'ph ph-file-text',
     id: '',
     isBrowsable: true,
     isSearchable: true,
@@ -231,7 +231,7 @@ export const usePageStore = defineStore('page', {
         result.push({
           id: key,
           title: value,
-          icon: 'las la-file-alt',
+          icon: 'ph ph-file-text',
           locale: 'en',
           path: (last(result)?.path || pathPrefix) + `/${value}`
         })
@@ -242,6 +242,13 @@ export const usePageStore = defineStore('page', {
     },
     isHome: (state) => {
       return ['', 'home'].includes(state.path)
+    },
+    recentPages: () => {
+      try {
+        return JSON.parse(localStorage.getItem('wiki_recent_pages') || '[]')
+      } catch {
+        return []
+      }
     }
   },
   actions: {
@@ -273,6 +280,10 @@ export const usePageStore = defineStore('page', {
           relations: pageData.relations.map(r => pick(r, ['id', 'position', 'label', 'caption', 'icon', 'target'])),
           tocDepth: pick(pageData.tocDepth, ['min', 'max'])
         })
+        // Track recent page
+        if (!withContent && pageData.id) {
+          this.trackRecentPage({ id: pageData.id, title: pageData.title, path: pageData.path, icon: pageData.icon })
+        }
         // Update editor state timestamps
         const curDate = DateTime.utc()
         editorStore.$patch({
@@ -283,6 +294,19 @@ export const usePageStore = defineStore('page', {
         console.warn(err)
         throw err
       }
+    },
+    /**
+     * TRACK RECENT PAGE
+     */
+    trackRecentPage ({ id, title, path, icon }) {
+      try {
+        const MAX = 8
+        const key = 'wiki_recent_pages'
+        const existing = JSON.parse(localStorage.getItem(key) || '[]')
+        const filtered = existing.filter(p => p.id !== id)
+        const updated = [{ id, title, path, icon: icon || 'ph ph-file-text' }, ...filtered].slice(0, MAX)
+        localStorage.setItem(key, JSON.stringify(updated))
+      } catch {}
     },
     /**
      * PAGE - GET PATH FROM ALIAS
@@ -368,7 +392,7 @@ export const usePageStore = defineStore('page', {
         path: newPath,
         title: title ?? '',
         description: description ?? '',
-        icon: 'las la-file-alt',
+        icon: 'ph ph-file-text',
         alias: '',
         publishState: 'published',
         relations: [],

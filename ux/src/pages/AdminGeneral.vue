@@ -8,7 +8,7 @@ q-page.admin-general
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.general.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-general
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -151,8 +151,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.features.browse'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.allowBrowse`)'
               )
         q-separator.q-my-sm(inset)
@@ -165,8 +165,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.features.comments'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.allowComments`)'
               )
         q-separator.q-my-sm(inset)
@@ -179,8 +179,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.features.contributions'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.allowContributions`)'
               )
         q-separator.q-my-sm(inset)
@@ -193,8 +193,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.features.profile'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.allowProfile`)'
               )
         q-separator.q-my-sm(inset)
@@ -222,8 +222,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.features.search'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.allowSearch`)'
               )
         q-separator.q-my-sm(inset)
@@ -285,7 +285,7 @@ q-page.admin-general
                 q-btn(
                   label='Upload'
                   unelevated
-                  icon='las la-upload'
+                  icon='ph ph-upload'
                   color='primary'
                   text-color='white'
                   @click='uploadLogo'
@@ -317,8 +317,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.logoText'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.displaySiteTitle`)'
               )
         q-separator.q-my-sm(inset)
@@ -333,7 +333,7 @@ q-page.admin-general
                 q-btn(
                   label='Upload'
                   unelevated
-                  icon='las la-upload'
+                  icon='ph ph-upload'
                   color='primary'
                   text-color='white'
                   @click='uploadFavicon'
@@ -348,10 +348,10 @@ q-page.admin-general
                   img(:src='`/_site/` + adminStore.currentSiteId + `/favicon?` + state.assetTimestamp')
                 .text-caption.q-ml-sm {{state.config.title}}
               div
-                q-icon(name='las la-otter', size='24px', color='grey')
+                q-icon(name='ph ph-paw-print', size='24px', color='grey')
                 .text-caption.q-ml-sm Lorem ipsum
               div
-                q-icon(name='las la-mountain', size='24px', color='grey')
+                q-icon(name='ph ph-mountains', size='24px', color='grey')
                 .text-caption.q-ml-sm Dolor sit amet...
 
       //- -----------------------
@@ -369,8 +369,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.discoverable'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.discoverable`)'
               )
 
@@ -409,8 +409,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.uploads.normalizeFilename'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.uploadNormalizeFilename`)'
               )
 
@@ -442,8 +442,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.pageCasing'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.pageCasing`)'
               )
 
@@ -462,8 +462,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.robots.index'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.searchAllowIndexing`)'
               )
         q-separator.q-my-sm(inset)
@@ -476,8 +476,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.robots.follow'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.searchAllowFollow`)'
               )
         q-separator.q-my-sm(inset)
@@ -490,8 +490,8 @@ q-page.admin-general
             q-toggle(
               v-model='state.config.sitemap'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.general.sitemap`)'
               )
 

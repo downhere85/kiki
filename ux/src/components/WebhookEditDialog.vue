@@ -26,7 +26,7 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
         q-icon.q-mr-sm(
           color='white'
           size='xs'
-          name='las la-exclamation-triangle'
+          name='ph ph-warning'
         )
         .text-caption {{t('admin.webhooks.stateErrorExplain')}}
       .text-caption.q-pl-lg.q-ml-xs.text-red-2 {{state.hook.lastErrorMessage}}
@@ -119,8 +119,8 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
           q-toggle(
             v-model='state.hook.includeMetadata'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
             :aria-label='t(`admin.webhooks.includeMetadata`)'
             )
       q-item(tag='label', v-ripple)
@@ -132,8 +132,8 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
           q-toggle(
             v-model='state.hook.includeContent'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
             :aria-label='t(`admin.webhooks.includeContent`)'
             )
       q-item(tag='label', v-ripple)
@@ -145,8 +145,8 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
           q-toggle(
             v-model='state.hook.acceptUntrusted'
             color='primary'
-            checked-icon='las la-check'
-            unchecked-icon='las la-times'
+            checked-icon='ph ph-check'
+            unchecked-icon='ph ph-x'
             :aria-label='t(`admin.webhooks.acceptUntrusted`)'
             )
       q-item

@@ -88,7 +88,7 @@ export default function () {
     req.logout((err) => {
       if (err) { return next(err) }
       res.clearCookie('jwt')
-      res.redirect(redirURL)
+      res.redirect('/login')
     })
   })
 

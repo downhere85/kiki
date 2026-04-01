@@ -9,7 +9,7 @@ q-layout(view='hHh lpR fFf', container)
       rounded
       color='white'
       :aria-label='t(`common.actions.refresh`)'
-      icon='las la-question-circle'
+      icon='ph ph-question'
       :href='siteStore.docsBase + `/admin/editors/markdown`'
       target='_blank'
       type='a'
@@ -20,7 +20,7 @@ q-layout(view='hHh lpR fFf', container)
         color='grey-6'
         text-color='white'
         :aria-label='t(`common.actions.refresh`)'
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         @click='load'
         :loading='state.loading > 0'
         )
@@ -31,7 +31,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='grey-7'
         :label='t(`common.actions.cancel`)'
         :aria-label='t(`common.actions.cancel`)'
-        icon='las la-times'
+        icon='ph ph-x'
         @click='close'
       )
       q-btn(
@@ -40,7 +40,7 @@ q-layout(view='hHh lpR fFf', container)
         text-color='white'
         :label='t(`common.actions.save`)'
         :aria-label='t(`common.actions.save`)'
-        icon='las la-check'
+        icon='ph ph-check'
         @click='save'
         :disabled='state.loading > 0'
       )
@@ -58,8 +58,8 @@ q-layout(view='hHh lpR fFf', container)
             q-toggle(
               v-model='state.config.allowHTML'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.editors.markdown.allowHTML`)'
               )
         q-separator.q-my-sm(inset)
@@ -72,8 +72,8 @@ q-layout(view='hHh lpR fFf', container)
             q-toggle(
               v-model='state.config.linkify'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.editors.markdown.linkify`)'
               )
         q-separator.q-my-sm(inset)
@@ -86,8 +86,8 @@ q-layout(view='hHh lpR fFf', container)
             q-toggle(
               v-model='state.config.lineBreaks'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.editors.markdown.lineBreaks`)'
               )
         q-separator.q-my-sm(inset)
@@ -132,8 +132,8 @@ q-layout(view='hHh lpR fFf', container)
             q-toggle(
               v-model='state.config.multimdTable'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.editors.markdown.multimdTable`)'
               )
         q-separator.q-my-sm(inset)
@@ -146,8 +146,8 @@ q-layout(view='hHh lpR fFf', container)
             q-toggle(
               v-model='state.config.typographer'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.editors.markdown.typographer`)'
               )
         template(v-if='state.config.typographer')
@@ -179,8 +179,8 @@ q-layout(view='hHh lpR fFf', container)
             q-toggle(
               v-model='state.config.underline'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.editors.markdown.underline`)'
               )
 
@@ -196,8 +196,8 @@ q-layout(view='hHh lpR fFf', container)
             q-toggle(
               v-model='state.config.plantuml'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.editors.markdown.plantuml`)'
               )
         template(v-if='state.config.plantuml')
@@ -228,8 +228,8 @@ q-layout(view='hHh lpR fFf', container)
             q-toggle(
               v-model='state.config.kroki'
               color='primary'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.editors.markdown.kroki`)'
               )
         template(v-if='state.config.kroki')

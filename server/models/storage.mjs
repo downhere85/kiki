@@ -1,6 +1,7 @@
 import { Model } from 'objection'
 import path from 'node:path'
 import fs from 'node:fs/promises'
+import { createRequire } from 'node:module'
 import { capitalize, find, has, hasIn, remove, uniq } from 'lodash-es'
 import yaml from 'js-yaml'
 
@@ -68,7 +69,12 @@ export class Storage extends Model {
   static async ensureModule (moduleName) {
     if (!has(WIKI.storage.modules, moduleName)) {
       try {
-        WIKI.storage.modules[moduleName] = (await import(`../modules/storage/${moduleName}/storage.mjs`)).default
+        try {
+          WIKI.storage.modules[moduleName] = (await import(`../modules/storage/${moduleName}/storage.mjs`)).default
+        } catch {
+          const require = createRequire(import.meta.url)
+          WIKI.storage.modules[moduleName] = require(`../modules/storage/${moduleName}/storage.js`)
+        }
         WIKI.logger.debug(`Activated storage module ${moduleName}: [ OK ]`)
         return true
       } catch (err) {

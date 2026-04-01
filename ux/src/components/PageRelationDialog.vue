@@ -81,7 +81,7 @@ q-card.page-relation-dialog(style='width: 500px;')
   q-card-actions.card-actions
     q-space
     q-btn.acrylic-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       :label='t(`common.actions.discard`)'
       color='grey-7'
       padding='xs md'
@@ -91,7 +91,7 @@ q-card.page-relation-dialog(style='width: 500px;')
     q-btn(
       v-if='isEditMode'
       :disabled='!canSubmit'
-      icon='las la-check'
+      icon='ph ph-check'
       :label='t(`common.actions.save`)'
       unelevated
       color='primary'
@@ -102,7 +102,7 @@ q-card.page-relation-dialog(style='width: 500px;')
     q-btn(
       v-else
       :disabled='!canSubmit'
-      icon='las la-plus'
+      icon='ph ph-plus'
       :label='t(`common.actions.create`)'
       unelevated
       color='primary'
@@ -152,7 +152,7 @@ const state = reactive({
   pos: 'left',
   label: '',
   caption: '',
-  icon: 'las la-arrow-left',
+  icon: 'ph ph-arrow-left',
   target: ''
 })
 
@@ -170,15 +170,15 @@ const isEditMode = computed(() => Boolean(props.editId))
 watch(() => state.pos, (newValue) => {
   switch (newValue) {
     case 'left': {
-      state.icon = 'las la-arrow-left'
+      state.icon = 'ph ph-arrow-left'
       break
     }
     case 'center': {
-      state.icon = 'las la-book'
+      state.icon = 'ph ph-book'
       break
     }
     case 'right': {
-      state.icon = 'las la-arrow-right'
+      state.icon = 'ph ph-arrow-right'
       break
     }
   }

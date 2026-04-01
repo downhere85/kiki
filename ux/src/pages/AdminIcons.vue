@@ -8,7 +8,7 @@ q-page.admin-icons
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.icons.subtitle') }}
     .col-auto
       q-btn.acrylic-btn.q-mr-sm(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-icons
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.acrylic-btn.q-mr-sm(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -42,7 +42,7 @@ q-page.admin-icons
           q-card.bg-negative.text-white.rounded-borders(flat)
             q-card-section.items-center(horizontal)
               q-card-section.col-auto.q-pr-none
-                q-icon(name='las la-exclamation-triangle', size='sm')
+                q-icon(name='ph ph-warning', size='sm')
               q-card-section
                 span {{ t('admin.icons.warnLabel') }}
                 .text-caption.text-red-1 {{ t('admin.icons.warnHint') }}
@@ -58,7 +58,7 @@ q-page.admin-icons
                 side
                 )
                 q-btn(
-                  icon='las la-cog'
+                  icon='ph ph-gear'
                   :label='t(`admin.editors.configuration`)'
                   :color='$q.dark.isActive ? `blue-grey-3` : `blue-grey-8`'
                   outline
@@ -71,7 +71,7 @@ q-page.admin-icons
               )
               q-btn(
                 type='a'
-                icon='las la-external-link-square-alt'
+                icon='ph ph-arrow-square-out'
                 :label='t(`admin.icons.reference`)'
                 color='indigo'
                 outline
@@ -87,8 +87,8 @@ q-page.admin-icons
                 :modelValue='pack.isActive'
                 @update:model-value='newValue => setPackState(pack.key, newValue)'
                 :color='pack.isDisabled ? `grey` : `primary`'
-                checked-icon='las la-check'
-                unchecked-icon='las la-times'
+                checked-icon='ph ph-check'
+                unchecked-icon='ph ph-x'
                 :label='t(`admin.sites.isActive`)'
                 :aria-label='t(`admin.sites.isActive`)'
                 :disabled='pack.isMandatory'

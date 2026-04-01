@@ -5,7 +5,7 @@ q-card.icon-picker(flat, style='width: 500px; max-height: 520px;')
     q-icon.q-mr-sm(name='mdi-emoticon-outline')
     .text-subtitle2 Icon Picker
     q-space
-    q-btn(icon='las la-times', flat, dense, round, v-close-popup)
+    q-btn(icon='ph ph-x', flat, dense, round, v-close-popup)
   q-card-section.q-pb-none
     q-input(
       v-model='state.search'
@@ -51,14 +51,14 @@ q-card.icon-picker(flat, style='width: 500px; max-height: 520px;')
       .text-caption.text-grey-7 {{ 'mdi-' + state.selIcon }}
     q-space
     q-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       label='Discard'
       outline
       color='grey-7'
       v-close-popup
     )
     q-btn(
-      icon='las la-check'
+      icon='ph ph-check'
       label='Apply'
       unelevated
       color='secondary'

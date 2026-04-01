@@ -14,9 +14,9 @@ q-page.admin-groups
         :class='$q.dark.isActive ? `bg-dark` : `bg-white`'
         )
         template(#prepend)
-          q-icon(name='las la-search')
+          q-icon(name='ph ph-magnifying-glass')
       q-btn.acrylic-btn.q-mr-sm(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         type='a'
@@ -26,7 +26,7 @@ q-page.admin-groups
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :aria-label='t(`common.actions.refresh`)'
@@ -36,7 +36,7 @@ q-page.admin-groups
         q-tooltip {{ t(`common.actions.refresh`) }}
       q-btn(
         unelevated
-        icon='las la-plus'
+        icon='ph ph-plus'
         :label='t(`admin.groups.create`)'
         color='primary'
         @click='createGroup'
@@ -58,14 +58,14 @@ q-page.admin-groups
           )
           template(v-slot:body-cell-id='props')
             q-td(:props='props')
-              q-icon(name='las la-users', color='primary', size='sm')
+              q-icon(name='ph ph-users', color='primary', size='sm')
           template(v-slot:body-cell-name='props')
             q-td(:props='props')
               .flex.items-center
                 strong {{props.value}}
                 q-icon.q-ml-sm(
                   v-if='props.row.isSystem'
-                  name='las la-lock'
+                  name='ph ph-lock'
                   color='pink'
                   )
           template(v-slot:body-cell-usercount='props')
@@ -81,14 +81,14 @@ q-page.admin-groups
               q-btn.acrylic-btn.q-mr-sm(
                 flat
                 :to='`/_admin/groups/` + props.row.id'
-                icon='las la-pen'
+                icon='ph ph-pen'
                 color='indigo'
                 :label='t(`common.actions.edit`)'
                 no-caps
                 )
               q-btn.acrylic-btn(
                 flat
-                icon='las la-trash'
+                icon='ph ph-trash'
                 :color='props.row.isSystem ? `grey` : `negative`'
                 :disabled='props.row.isSystem'
                 @click='deleteGroup(props.row)'

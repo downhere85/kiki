@@ -1,11 +1,11 @@
 <template lang="pug">
 q-layout(view='hHh lpR fFf', container)
   q-header.card-header.q-px-md.q-py-sm
-    q-icon(name='las la-sitemap', left, size='md')
+    q-icon(name='ph ph-tree-structure', left, size='md')
     span Browse Pages
     q-space
     q-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       color='pink-2'
       dense
       flat
@@ -43,7 +43,7 @@ q-layout(view='hHh lpR fFf', container)
                 rounded
                 size='sm'
                 )
-                q-icon(name='las la-file-alt', size='xs')
+                q-icon(name='ph ph-file-text', size='xs')
             q-item-section
               q-item-label {{ page.title }}
               q-item-label(caption) /{{ page.path }}

@@ -346,13 +346,14 @@ export default {
    * @access private
    */
   _applyPageRuleSpecificity ({ rule, checkState, higherPriority = [] }) {
+    const isDeny = rule.deny === true || rule.mode === 'DENY'
     if (rule.path.length === checkState.specificity.length) {
       // Do not override higher priority rules
       if (_.includes(higherPriority, checkState.match)) {
         return checkState
       }
       // Do not override a previous DENY rule with same match
-      if (rule.match === checkState.match && checkState.deny && !rule.deny) {
+      if (rule.match === checkState.match && checkState.deny && !isDeny) {
         return checkState
       }
     } else if (rule.path.length < checkState.specificity.length) {
@@ -361,7 +362,7 @@ export default {
     }
 
     return {
-      deny: rule.deny,
+      deny: isDeny,
       match: rule.match,
       specificity: rule.path
     }

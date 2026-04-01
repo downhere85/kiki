@@ -10,7 +10,7 @@ q-page.admin-terminal
       q-btn.acrylic-btn.q-mr-sm(
         v-if='!state.connected || state.connecting'
         flat
-        icon='las la-link'
+        icon='ph ph-link'
         :label='t(`admin.terminal.connect`)'
         color='positive'
         @click='connect'
@@ -20,21 +20,21 @@ q-page.admin-terminal
       q-btn.acrylic-btn.q-mr-sm(
         v-else
         flat
-        icon='las la-unlink'
+        icon='ph ph-link-break'
         :label='t(`admin.terminal.disconnect`)'
         color='negative'
         @click='disconnect'
       )
       q-btn.acrylic-btn.q-mr-md(
         flat
-        icon='las la-ban'
+        icon='ph ph-prohibit'
         :label='t(`admin.terminal.clear`)'
         color='primary'
         @click='clearTerminal'
       )
       q-separator.q-mr-md(vertical)
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -59,6 +59,7 @@ import { Terminal } from '@xterm/xterm'
 import '@xterm/xterm/css/xterm.css'
 
 import { useSiteStore } from '@/stores/site'
+import { useUserStore } from '@/stores/user'
 
 // QUASAR
 
@@ -67,6 +68,7 @@ const $q = useQuasar()
 // STORES
 
 const siteStore = useSiteStore()
+const userStore = useUserStore()
 
 // I18N
 
@@ -120,11 +122,10 @@ onMounted(() => {
   term.writeln(`> ${t('admin.terminal.connecting')}`)
   state.connecting = true
 
-  // socket = io(window.location.host, {
   socket = io(window.location.host, {
     path: '/_ws/',
     auth: {
-      token: 'TEST' // TODO: Use active token
+      token: userStore.token
     },
     autoConnect: false
   })

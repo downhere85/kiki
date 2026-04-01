@@ -127,13 +127,6 @@ export class User extends Model {
 
   static async processProfile({ profile, providerKey }) {
     const provider = get(WIKI.auth.strategies, providerKey, {})
-    provider.info = find(WIKI.data.authentication, ['key', provider.stategyKey])
-
-    // Find existing user
-    let user = await WIKI.db.users.query().findOne({
-      providerId: toString(profile.id),
-      providerKey
-    })
 
     // Parse email
     let primaryEmail = ''
@@ -153,20 +146,6 @@ export class User extends Model {
     }
     primaryEmail = primaryEmail.toLowerCase()
 
-    // Find pending social user
-    if (!user) {
-      user = await WIKI.db.users.query().findOne({
-        email: primaryEmail,
-        providerId: null,
-        providerKey
-      })
-      if (user) {
-        user = await user.$query().patchAndFetch({
-          providerId: toString(profile.id)
-        })
-      }
-    }
-
     // Parse display name
     let displayName = ''
     if (isString(profile.displayName) && profile.displayName.length > 0) {
@@ -177,16 +156,8 @@ export class User extends Model {
       displayName = primaryEmail.split('@')[0]
     }
 
-    // Parse picture URL / Data
-    let pictureUrl = ''
-    if (profile.picture && Buffer.isBuffer(profile.picture)) {
-      pictureUrl = 'internal'
-    } else {
-      pictureUrl = truncate(get(profile, 'picture', get(user, 'pictureUrl', null)), {
-        length: 255,
-        omission: ''
-      })
-    }
+    // Find existing user by email
+    let user = await WIKI.db.users.query().findOne({ email: primaryEmail })
 
     // Update existing user
     if (user) {
@@ -197,51 +168,53 @@ export class User extends Model {
         throw new Error('This is a system reserved account and cannot be used.')
       }
 
-      user = await user.$query().patchAndFetch({
-        email: primaryEmail,
-        name: displayName,
-        pictureUrl: pictureUrl
-      })
-
-      if (pictureUrl === 'internal') {
-        await WIKI.db.users.updateUserAvatarData(user.id, profile.picture)
+      // Ensure auth entry exists for this strategy
+      const authData = user.auth || {}
+      if (!authData[providerKey]) {
+        authData[providerKey] = { providerId: toString(profile.id) }
+        await user.$query().patch({ auth: authData, name: displayName })
+        user = await WIKI.db.users.query().findById(user.id)
+      } else {
+        await user.$query().patch({ name: displayName })
+        user = await WIKI.db.users.query().findById(user.id)
       }
 
       return user
     }
 
     // Self-registration
-    if (provider.selfRegistration) {
-      // Check if email domain is whitelisted
-      if (get(provider, 'domainWhitelist', []).length > 0) {
-        const emailDomain = last(primaryEmail.split('@'))
-        if (!provider.domainWhitelist.includes(emailDomain)) {
+    if (provider.registration) {
+      // Check if email matches allowed regex
+      const emailRegex = get(provider, 'allowedEmailRegex', '')
+      if (emailRegex) {
+        const re = new RegExp(emailRegex)
+        if (!re.test(primaryEmail)) {
           throw new WIKI.Error.AuthRegistrationDomainUnauthorized()
         }
       }
 
       // Create account
       user = await WIKI.db.users.query().insertAndFetch({
-        providerKey: providerKey,
-        providerId: toString(profile.id),
         email: primaryEmail,
         name: displayName,
-        pictureUrl: pictureUrl,
-        locale: WIKI.config.lang.code,
-        defaultEditor: 'markdown',
-        tfaIsActive: false,
+        auth: {
+          [providerKey]: {
+            providerId: toString(profile.id),
+            tfaIsActive: false,
+            mustChangePwd: false,
+            restrictLogin: false
+          }
+        },
+        meta: {},
+        prefs: {},
         isSystem: false,
         isActive: true,
         isVerified: true
       })
 
       // Assign to group(s)
-      if (provider.autoEnrollGroups.length > 0) {
+      if (provider.autoEnrollGroups && provider.autoEnrollGroups.length > 0) {
         await user.$relatedQuery('groups').relate(provider.autoEnrollGroups)
-      }
-
-      if (pictureUrl === 'internal') {
-        await WIKI.db.users.updateUserAvatarData(user.id, profile.picture)
       }
 
       return user

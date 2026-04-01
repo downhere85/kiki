@@ -8,7 +8,7 @@ q-page.admin-flags
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.flags.subtitle') }}
     .col-auto
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-flags
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -43,7 +43,7 @@ q-page.admin-flags
             q-card.bg-negative.text-white.rounded-borders(flat)
               q-card-section.items-center(horizontal)
                 q-card-section.col-auto.q-pr-none
-                  q-icon(name='las la-exclamation-triangle', size='sm')
+                  q-icon(name='ph ph-warning', size='sm')
                 q-card-section
                   span {{ t('admin.flags.warn.label') }}
                   .text-caption.text-red-1 {{ t('admin.flags.warn.hint') }}
@@ -56,8 +56,8 @@ q-page.admin-flags
             q-toggle(
               v-model='state.flags.experimental'
               color='negative'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.flags.experimental.label`)'
               )
         q-separator.q-my-sm(inset)
@@ -70,8 +70,8 @@ q-page.admin-flags
             q-toggle(
               v-model='state.flags.authDebug'
               color='negative'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.flags.authDebug.label`)'
               )
         q-separator.q-my-sm(inset)
@@ -84,8 +84,8 @@ q-page.admin-flags
             q-toggle(
               v-model='state.flags.sqlLog'
               color='negative'
-              checked-icon='las la-check'
-              unchecked-icon='las la-times'
+              checked-icon='ph ph-check'
+              unchecked-icon='ph ph-x'
               :aria-label='t(`admin.flags.sqlLog.label`)'
               )
       q-card.q-py-sm.q-mt-md
@@ -98,7 +98,7 @@ q-page.admin-flags
             q-btn(
               :label='t(`common.actions.edit`)'
               unelevated
-              icon='las la-code'
+              icon='ph ph-code'
               color='primary'
               text-color='white'
               disabled
@@ -115,7 +115,7 @@ q-page.admin-flags
               ref='copyTokenBtn'
               :label='t(`common.actions.copy`)'
               unelevated
-              icon='las la-clipboard'
+              icon='ph ph-clipboard'
               color='primary'
               text-color='white'
             )
@@ -239,7 +239,7 @@ onMounted(async () => {
     $q.notify({
       type: 'positive',
       message: 'Token copied successfully',
-      icon: 'las la-clipboard'
+      icon: 'ph ph-clipboard'
     })
   })
   clip.on('error', () => {

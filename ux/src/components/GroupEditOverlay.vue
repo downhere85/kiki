@@ -12,7 +12,7 @@ q-layout(view='hHh lpR fFf', container)
         color='grey-6'
         text-color='white'
         :aria-label='t(`common.actions.refresh`)'
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         @click='refresh'
         )
         q-tooltip(anchor='center left', self='center right') {{ t(`common.actions.refresh`) }}
@@ -21,7 +21,7 @@ q-layout(view='hHh lpR fFf', container)
         color='white'
         text-color='grey-7'
         :label='t(`common.actions.close`)'
-        icon='las la-times'
+        icon='ph ph-x'
         @click='close'
       )
       q-btn(
@@ -29,7 +29,7 @@ q-layout(view='hHh lpR fFf', container)
         color='positive'
         text-color='white'
         :label='t(`common.actions.save`)'
-        icon='las la-check'
+        icon='ph ph-check'
       )
   q-drawer.bg-dark-6(:model-value='true', :width='250', dark)
     q-list(padding, v-show='!state.isLoading')
@@ -149,7 +149,7 @@ q-layout(view='hHh lpR fFf', container)
         .text-subtitle1 {{ t('admin.groups.rules') }}
         q-space
         q-btn.acrylic-btn.q-mr-sm(
-          icon='las la-question-circle'
+          icon='ph ph-question'
           flat
           color='grey'
           type='a'
@@ -159,21 +159,21 @@ q-layout(view='hHh lpR fFf', container)
         q-btn.acrylic-btn.q-mr-sm(
           flat
           color='indigo'
-          icon='las la-file-export'
+          icon='ph ph-file-arrow-up'
           @click='exportRules'
           )
           q-tooltip {{ t('admin.groups.exportRules') }}
         q-btn.acrylic-btn.q-mr-sm(
           flat
           color='indigo'
-          icon='las la-file-import'
+          icon='ph ph-file-arrow-down'
           @click='importRules'
           )
           q-tooltip {{ t('admin.groups.importRules') }}
         q-btn(
           unelevated
           color='primary'
-          icon='las la-plus'
+          icon='ph ph-plus'
           label='New Rule'
           @click='newRule'
         )
@@ -238,8 +238,8 @@ q-layout(view='hHh lpR fFf', container)
                             :model-value='selected'
                             @update:model-value='toggleOption(opt)'
                             color='primary'
-                            checked-icon='las la-check'
-                            unchecked-icon='las la-times'
+                            checked-icon='ph ph-check'
+                            unchecked-icon='ph ph-x'
                             :aria-label='opt.label'
                           )
                         //- q-item-section(side, style='flex-basis: 150px;')
@@ -254,7 +254,7 @@ q-layout(view='hHh lpR fFf', container)
                           q-item-label(caption) {{opt.hint}}
                   q-btn.acrylic-btn.q-ml-md(
                     flat
-                    icon='las la-trash'
+                    icon='ph ph-trash'
                     color='negative'
                     padding='sm sm'
                     size='md',
@@ -286,8 +286,8 @@ q-layout(view='hHh lpR fFf', container)
                               :model-value='selected'
                               @update:model-value='toggleOption(opt)'
                               color='primary'
-                              checked-icon='las la-check'
-                              unchecked-icon='las la-times'
+                              checked-icon='ph ph-check'
+                              unchecked-icon='ph ph-x'
                               :aria-label='opt.label'
                             )
                     q-select.q-mt-sm(
@@ -313,8 +313,8 @@ q-layout(view='hHh lpR fFf', container)
                               :model-value='selected'
                               @update:model-value='toggleOption(opt)'
                               color='primary'
-                              checked-icon='las la-check'
-                              unchecked-icon='las la-times'
+                              checked-icon='ph ph-check'
+                              unchecked-icon='ph ph-x'
                               :aria-label='opt.name'
                             )
                   q-card-section.admin-groups-rule-card-pattern
@@ -356,7 +356,7 @@ q-layout(view='hHh lpR fFf', container)
                   .text-subtitle1 {{ t(`admin.groups.permissions`) }}
                 q-card-section
                   q-btn.acrylic-btn(
-                    icon='las la-question-circle'
+                    icon='ph ph-question'
                     flat
                     color='grey'
                     type='a'
@@ -367,7 +367,7 @@ q-layout(view='hHh lpR fFf', container)
                 q-item(tag='label', v-ripple)
                   q-item-section.items-center(style='flex: 0 0 40px;')
                     q-icon(
-                      name='las la-comments'
+                      name='ph ph-chat-circle-dots'
                       color='primary'
                       size='sm'
                       )
@@ -379,8 +379,8 @@ q-layout(view='hHh lpR fFf', container)
                       v-model='state.group.permissions'
                       :val='perm.permission'
                       color='primary'
-                      checked-icon='las la-check'
-                      unchecked-icon='las la-times'
+                      checked-icon='ph ph-check'
+                      unchecked-icon='ph ph-x'
                       :aria-label='t(`admin.general.allowComments`)'
                       )
                 q-separator.q-my-sm(inset, v-if='idx < permissions.length - 1')
@@ -394,7 +394,7 @@ q-layout(view='hHh lpR fFf', container)
         .text-subtitle1 {{ t('admin.groups.users') }}
         q-space
         q-btn.acrylic-btn.q-mr-sm(
-          icon='las la-question-circle'
+          icon='ph ph-question'
           flat
           color='grey'
           type='a'
@@ -408,16 +408,16 @@ q-layout(view='hHh lpR fFf', container)
           dense
           )
           template(#prepend)
-            q-icon(name='las la-search')
+            q-icon(name='ph ph-magnifying-glass')
         q-btn.q-mr-sm.acrylic-btn(
-          icon='las la-redo-alt'
+          icon='ph ph-arrow-clockwise'
           flat
           color='secondary'
           @click='refreshUsers'
           )
         q-btn.q-mr-xs(
           unelevated
-          icon='las la-user-plus'
+          icon='ph ph-user-plus'
           :label='t(`admin.groups.assignUser`)'
           color='primary'
           @click='assignUser'
@@ -442,19 +442,19 @@ q-layout(view='hHh lpR fFf', container)
             )
             template(#body-cell-id='props')
               q-td(:props='props')
-                q-icon(name='las la-user', color='primary', size='sm')
+                q-icon(name='ph ph-user', color='primary', size='sm')
             template(#body-cell-name='props')
               q-td(:props='props')
                 .flex.items-center
                   strong {{ props.value }}
                   q-icon.q-ml-sm(
                     v-if='props.row.isSystem'
-                    name='las la-lock'
+                    name='ph ph-lock'
                     color='pink'
                     )
                   q-icon.q-ml-sm(
                     v-if='!props.row.isActive'
-                    name='las la-ban'
+                    name='ph ph-prohibit'
                     color='pink'
                     )
             template(#body-cell-email='props')
@@ -478,7 +478,7 @@ q-layout(view='hHh lpR fFf', container)
                   v-if='!props.row.isSystem'
                   flat
                   :to='`/_admin/users/` + props.row.id'
-                  icon='las la-pen'
+                  icon='ph ph-pen'
                   color='indigo'
                   :label='t(`common.actions.edit`)'
                   no-caps
@@ -486,7 +486,7 @@ q-layout(view='hHh lpR fFf', container)
                 q-btn.acrylic-btn(
                   v-if='!props.row.isSystem'
                   flat
-                  icon='las la-user-minus'
+                  icon='ph ph-user-minus'
                   color='accent'
                   @click='unassignUser(props.row)'
                   )
@@ -550,10 +550,10 @@ const state = reactive({
 })
 
 const sections = [
-  { key: 'overview', text: t('admin.groups.overview'), icon: 'las la-users' },
-  { key: 'rules', text: t('admin.groups.rules'), icon: 'las la-file-invoice', rulesTotal: true },
-  { key: 'permissions', text: t('admin.groups.permissions'), icon: 'las la-list-alt', excludeGuests: true },
-  { key: 'users', text: t('admin.groups.users'), icon: 'las la-user', usersTotal: true, excludeGuests: true }
+  { key: 'overview', text: t('admin.groups.overview'), icon: 'ph ph-users' },
+  { key: 'rules', text: t('admin.groups.rules'), icon: 'ph ph-file-text', rulesTotal: true },
+  { key: 'permissions', text: t('admin.groups.permissions'), icon: 'ph ph-list-dashes', excludeGuests: true },
+  { key: 'users', text: t('admin.groups.users'), icon: 'ph ph-user', usersTotal: true, excludeGuests: true }
 ]
 
 const usersHeaders = [
@@ -832,10 +832,10 @@ function getRuleModeClass (mode) {
 
 function getRuleModeIcon (mode) {
   return ({
-    DENY: 'las la-ban',
-    ALLOW: 'las la-check',
-    FORCEALLOW: 'las la-check-double'
-  })[mode] || 'las la-frog'
+    DENY: 'ph ph-prohibit',
+    ALLOW: 'ph ph-check',
+    FORCEALLOW: 'ph ph-checks'
+  })[mode] || 'ph ph-bug'
 }
 
 function getNextRuleMode (mode) {

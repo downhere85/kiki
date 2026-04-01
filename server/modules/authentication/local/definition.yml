@@ -1,12 +1,12 @@
 key: local
 title: Local Database
-description: Built-in authentication for Wiki.js
-author: requarks.io
-logo: https://static.requarks.io/logo/wikijs.svg
+description: Built-in local authentication for Kiki
+author: Kiki
+logo: /_assets/icons/ultraviolet-data-protection.svg
 icon: /_assets/icons/ultraviolet-data-protection.svg
 color: primary
-vendor: 'Wiki.js'
-website: 'https://js.wiki'
+vendor: 'Kiki'
+website: 'https://kiki.gdfm.sg'
 isAvailable: true
 useForm: true
 usernameType: email

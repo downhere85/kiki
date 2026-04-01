@@ -634,44 +634,44 @@ export default {
         for (const str of args.strategies) {
           const newStr = {
             displayName: str.displayName,
+            order: str.order ?? 0,
             isEnabled: str.isEnabled,
-            config: _.reduce(str.config, (result, value, key) => {
-              _.set(result, `${value.key}`, _.get(JSON.parse(value.value), 'v', null))
-              return result
-            }, {}),
-            selfRegistration: str.selfRegistration,
-            domainWhitelist: { v: str.domainWhitelist },
-            autoEnrollGroups: { v: str.autoEnrollGroups }
+            config: str.config,
+            registration: str.registration ?? false,
+            allowedEmailRegex: str.allowedEmailRegex ?? ''
           }
+          const groups = str.autoEnrollGroups ?? []
 
-          if (_.some(previousStrategies, ['key', str.key])) {
-            await WIKI.db.authentication.query().patch({
-              key: str.key,
-              strategyKey: str.strategyKey,
-              ...newStr
-            }).where('key', str.key)
+          if (_.some(previousStrategies, ['id', str.key])) {
+            await WIKI.db.knex('authentication')
+              .where('id', str.key)
+              .update({
+                ...newStr,
+                autoEnrollGroups: WIKI.db.knex.raw('?::uuid[]', [groups])
+              })
           } else {
-            await WIKI.db.authentication.query().insert({
-              key: str.key,
-              strategyKey: str.strategyKey,
-              ...newStr
-            })
+            await WIKI.db.knex('authentication')
+              .insert({
+                module: str.strategyKey,
+                ...newStr,
+                autoEnrollGroups: WIKI.db.knex.raw('?::uuid[]', [groups])
+              })
           }
         }
 
-        for (const str of _.differenceBy(previousStrategies, args.strategies, 'key')) {
-          const hasUsers = await WIKI.db.users.query().count('* as total').where({ providerKey: str.key }).first()
+        for (const str of _.differenceBy(previousStrategies, args.strategies.map(s => ({ id: s.key })), 'id')) {
+          const hasUsers = await WIKI.db.users.query().count('* as total').where({ providerKey: str.id }).first()
           if (_.toSafeInteger(hasUsers.total) > 0) {
             throw new Error(`Cannot delete ${str.displayName} as 1 or more users are still using it.`)
           } else {
-            await WIKI.db.authentication.query().delete().where('key', str.key)
+            await WIKI.db.authentication.query().delete().where('id', str.id)
           }
         }
 
         await WIKI.auth.activateStrategies()
         WIKI.events.outbound.emit('reloadAuthStrategies')
         return {
-          responseResult: generateSuccess('Strategies updated successfully')
+          operation: generateSuccess('Strategies updated successfully')
         }
       } catch (err) {
         return generateError(err)
@@ -688,7 +688,7 @@ export default {
 
         await WIKI.auth.regenerateCertificates()
         return {
-          responseResult: generateSuccess('Certificates have been regenerated successfully.')
+          operation: generateSuccess('Certificates have been regenerated successfully.')
         }
       } catch (err) {
         return generateError(err)
@@ -705,7 +705,7 @@ export default {
 
         await WIKI.auth.resetGuestUser()
         return {
-          responseResult: generateSuccess('Guest user has been reset successfully.')
+          operation: generateSuccess('Guest user has been reset successfully.')
         }
       } catch (err) {
         return generateError(err)

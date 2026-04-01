@@ -4,7 +4,7 @@ q-card.page-datatmpl-dialog(style='width: 1100px; max-width: 1100px;')
     .text-subtitle2 {{t('editor.pageData.manageTemplates')}}
     q-space
     q-btn(
-      icon='las la-times'
+      icon='ph ph-x'
       dense
       flat
       v-close-popup
@@ -23,7 +23,7 @@ q-card.page-datatmpl-dialog(style='width: 1100px; max-width: 1100px;')
         emit-value
       )
       q-btn(
-        icon='las la-plus'
+        icon='ph ph-plus'
         :label='t(`common.actions.new`)'
         unelevated
         color='primary'
@@ -35,7 +35,7 @@ q-card.page-datatmpl-dialog(style='width: 1100px; max-width: 1100px;')
       .q-pa-md
         q-btn.acrylic-btn.full-width(
           :label='t(`common.actions.howItWorks`)'
-          icon='las la-question-circle'
+          icon='ph ph-question'
           flat
           color='pink'
           no-caps
@@ -94,7 +94,7 @@ q-card.page-datatmpl-dialog(style='width: 1100px; max-width: 1100px;')
               v-model='state.tmpl.label'
             )
             q-btn.acrylic-btn(
-              icon='las la-check'
+              icon='ph ph-check'
               :label='t(`common.actions.commit`)'
               no-caps
               flat
@@ -102,7 +102,7 @@ q-card.page-datatmpl-dialog(style='width: 1100px; max-width: 1100px;')
               @click='commit'
             )
             q-btn.acrylic-btn(
-              icon='las la-trash'
+              icon='ph ph-trash'
               :aria-label='t(`common.actions.delete`)'
               flat
               color='negative'
@@ -124,7 +124,7 @@ q-card.page-datatmpl-dialog(style='width: 1100px; max-width: 1100px;')
                 template(#item='{element}')
                   q-item
                     q-item-section(side)
-                      q-icon.handle(name='las la-bars')
+                      q-icon.handle(name='ph ph-list')
                     q-item-section(side)
                       q-icon(:name='element.icon', color='primary')
                     q-item-section
@@ -146,7 +146,7 @@ q-card.page-datatmpl-dialog(style='width: 1100px; max-width: 1100px;')
                         color='negative'
                         :aria-label='t(`common.actions.delete`)'
                         padding='xs'
-                        icon='las la-times'
+                        icon='ph ph-x'
                         flat
                         @click='removeItem(item)'
                       )
@@ -203,12 +203,12 @@ const inventoryMisc = [
   {
     key: 'header',
     label: t('editor.pageData.fieldTypeHeader'),
-    icon: 'las la-heading'
+    icon: 'ph ph-text-h'
   },
   {
     key: 'image',
     label: t('editor.pageData.fieldTypeImage'),
-    icon: 'las la-image'
+    icon: 'ph ph-image'
   }
 ]
 
@@ -216,22 +216,22 @@ const inventoryKV = [
   {
     key: 'text',
     label: t('editor.pageData.fieldTypeText'),
-    icon: 'las la-font'
+    icon: 'ph ph-text-aa'
   },
   {
     key: 'number',
     label: t('editor.pageData.fieldTypeNumber'),
-    icon: 'las la-infinity'
+    icon: 'ph ph-infinity'
   },
   {
     key: 'boolean',
     label: t('editor.pageData.fieldTypeBoolean'),
-    icon: 'las la-check-square'
+    icon: 'ph ph-check-square'
   },
   {
     key: 'link',
     label: t('editor.pageData.fieldTypeLink'),
-    icon: 'las la-link'
+    icon: 'ph ph-link'
   }
 ]
 

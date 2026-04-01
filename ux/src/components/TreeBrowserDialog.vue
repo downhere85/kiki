@@ -69,7 +69,7 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
             //-   q-badge(outline, color='grey', label='valid')
     q-card-actions.card-actions.q-px-md
       q-btn.acrylic-btn(
-        icon='las la-ellipsis-h'
+        icon='ph ph-dots-three'
         color='blue-grey'
         padding='xs sm'
         flat
@@ -87,7 +87,7 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
               q-item(clickable, @click='state.displayMode = `path`')
                 q-item-section(side)
                   q-icon(
-                    :name='state.displayMode === `path` ? `las la-check-circle` : `las la-circle`'
+                    :name='state.displayMode === `path` ? `ph ph-check-circle` : `ph ph-circle`'
                     :color='state.displayMode === `path` ? `positive` : `grey`'
                     size='xs'
                     )
@@ -95,14 +95,14 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
               q-item(clickable, @click='state.displayMode = `title`')
                 q-item-section(side)
                   q-icon(
-                    :name='state.displayMode === `title` ? `las la-check-circle` : `las la-circle`'
+                    :name='state.displayMode === `title` ? `ph ph-check-circle` : `ph ph-circle`'
                     :color='state.displayMode === `title` ? `positive` : `grey`'
                     size='xs'
                     )
                 q-item-section.q-pr-sm {{ t('pageSaveDialog.displayModeTitle') }}
       q-space
       q-btn.acrylic-btn(
-        icon='las la-times'
+        icon='ph ph-x'
         :label='t(`common.actions.cancel`)'
         color='grey-7'
         padding='xs md'
@@ -110,7 +110,7 @@ q-dialog(ref='dialogRef', @hide='onDialogHide')
         flat
       )
       q-btn(
-        icon='las la-check'
+        icon='ph ph-check'
         :label='t(`common.actions.save`)'
         unelevated
         color='primary'

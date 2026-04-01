@@ -4,7 +4,7 @@ q-layout(view='hHh Lpr lff')
   q-page-container.layout-search
     .layout-search-card
       q-btn.layout-search-back(
-        icon='las la-arrow-circle-left'
+        icon='ph ph-arrow-circle-left'
         color='white'
         flat
         round
@@ -43,7 +43,7 @@ q-layout(view='hHh Lpr lff')
             v-model='state.params.filterPath'
             )
             template(v-slot:prepend)
-              q-icon(name='las la-caret-square-right', size='xs')
+              q-icon(name='ph ph-play', size='xs')
           q-select.q-mt-sm(
             outlined
             v-model='state.selectedTags'
@@ -61,7 +61,7 @@ q-layout(view='hHh Lpr lff')
             :loading='state.loading > 0'
             )
             template(v-slot:prepend)
-              q-icon(name='las la-hashtag', size='xs')
+              q-icon(name='ph ph-hash', size='xs')
             template(v-slot:option='scope')
               q-item(v-bind='scope.itemProps')
                 q-item-section(side)
@@ -75,14 +75,14 @@ q-layout(view='hHh Lpr lff')
           //-   placeholder='Last updated...'
           //-   )
           //-   template(v-slot:prepend)
-          //-     q-icon(name='las la-calendar', size='xs')
+          //-     q-icon(name='ph ph-calendar', size='xs')
           //- q-input.q-mt-sm(
           //-   outlined
           //-   dense
           //-   placeholder='Last edited by...'
           //-   )
           //-   template(v-slot:prepend)
-          //-     q-icon(name='las la-user-edit', size='xs')
+          //-     q-icon(name='ph ph-user-list', size='xs')
           q-select.q-mt-sm(
             outlined
             v-model='state.params.filterLocale'
@@ -98,7 +98,7 @@ q-layout(view='hHh Lpr lff')
             :display-value='t(`search.filterLocaleDisplay`, { n: state.params.filterLocale.length > 0 ? state.params.filterLocale[0].toUpperCase() : state.params.filterLocale.length }, state.params.filterLocale.length)'
             )
             template(v-slot:prepend)
-              q-icon(name='las la-language', size='xs')
+              q-icon(name='ph ph-translate', size='xs')
             template(v-slot:option='scope')
               q-item(v-bind='scope.itemProps')
                 q-item-section(side)
@@ -116,7 +116,7 @@ q-layout(view='hHh Lpr lff')
             :options='editors'
             )
             template(v-slot:prepend)
-              q-icon(name='las la-pen-nib', size='xs')
+              q-icon(name='ph ph-pen-nib', size='xs')
           q-select.q-mt-sm(
             outlined
             v-model='state.params.filterPublishState'
@@ -127,7 +127,7 @@ q-layout(view='hHh Lpr lff')
             :options='publishStates'
             )
             template(v-slot:prepend)
-              q-icon(name='las la-traffic-light', size='xs')
+              q-icon(name='ph ph-traffic-signal', size='xs')
       q-page(:style-fn='pageStyle')
         .text-header.flex
           span {{t('search.results')}}
@@ -165,7 +165,7 @@ q-layout(view='hHh Lpr lff')
                   square
                   color='secondary'
                   text-color='white'
-                  icon='las la-hashtag'
+                  icon='ph ph-hash'
                   size='sm'
                   ) {{ tag }}
               .flex
@@ -241,9 +241,9 @@ const state = reactive({
 
 const orderByOptions = computed(() => {
   return [
-    { label: t('search.sortByRelevance'), value: 'relevancy', icon: 'las la-stream' },
-    { label: t('search.sortByTitle'), value: 'title', icon: 'las la-heading' },
-    { label: t('search.sortByLastUpdated'), value: 'updatedAt', icon: 'las la-calendar' }
+    { label: t('search.sortByRelevance'), value: 'relevancy', icon: 'ph ph-rows' },
+    { label: t('search.sortByTitle'), value: 'title', icon: 'ph ph-text-h' },
+    { label: t('search.sortByLastUpdated'), value: 'updatedAt', icon: 'ph ph-calendar' }
   ]
 })
 

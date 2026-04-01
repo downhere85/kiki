@@ -16,7 +16,7 @@ q-page.admin-api
           .text-caption.text-red {{t('admin.api.disabled')}}
     .col-auto
       q-btn.q-mr-sm.q-ml-md.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -26,7 +26,7 @@ q-page.admin-api
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.acrylic-btn.q-mr-sm(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -36,7 +36,7 @@ q-page.admin-api
         q-tooltip {{ t(`common.actions.refresh`) }}
       q-btn.q-mr-sm(
         unelevated
-        icon='las la-power-off'
+        icon='ph ph-power'
         :label='!state.enabled ? t(`admin.api.enableButton`) : t(`admin.api.disableButton`)'
         :color='!state.enabled ? `positive` : `negative`'
         @click='globalSwitch'
@@ -45,7 +45,7 @@ q-page.admin-api
       )
       q-btn(
         unelevated
-        icon='las la-plus'
+        icon='ph ph-plus'
         :label='t(`admin.api.newKeyButton`)'
         color='primary'
         @click='newKey'
@@ -60,14 +60,14 @@ q-page.admin-api
         )
         q-card-section.items-center(horizontal)
           q-card-section.col-auto.q-pr-none
-            q-icon(name='las la-info-circle', size='sm')
+            q-icon(name='ph ph-info', size='sm')
           q-card-section.text-caption {{ t('admin.api.none') }}
     .col-12(v-else)
       q-card
         q-list(separator)
           q-item(v-for='key of state.keys', :key='key.id')
             q-item-section(side)
-              q-icon(name='las la-key', :color='key.isRevoked ? `negative` : `positive`')
+              q-icon(name='ph ph-key', :color='key.isRevoked ? `negative` : `positive`')
             q-item-section
               q-item-label {{key.name}}
               q-item-label(caption) Ending in {{key.keyShort}}
@@ -81,7 +81,7 @@ q-page.admin-api
               q-icon.q-mr-sm(
                 color='negative'
                 size='xs'
-                name='las la-exclamation-triangle'
+                name='ph ph-warning'
               )
               .text-caption.text-negative {{t('admin.api.revoked')}}
               q-tooltip(anchor='center left', self='center right') {{t('admin.api.revokedHint')}}
@@ -89,7 +89,7 @@ q-page.admin-api
             q-item-section(side, style='flex-direction: row; align-items: center;')
               q-btn.acrylic-btn(
                 :color='key.isRevoked ? `gray` : `red`'
-                icon='las la-ban'
+                icon='ph ph-prohibit'
                 flat
                 @click='revoke(key)'
                 :disable='key.isRevoked'

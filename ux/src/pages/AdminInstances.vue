@@ -8,7 +8,7 @@ q-page.admin-terminal
       .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.instances.subtitle') }}
     .col-auto.flex
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-question-circle'
+        icon='ph ph-question'
         flat
         color='grey'
         :aria-label='t(`common.actions.viewDocs`)'
@@ -18,7 +18,7 @@ q-page.admin-terminal
         )
         q-tooltip {{ t(`common.actions.viewDocs`) }}
       q-btn.q-mr-sm.acrylic-btn(
-        icon='las la-redo-alt'
+        icon='ph ph-arrow-clockwise'
         flat
         color='secondary'
         :loading='state.loading > 0'
@@ -40,7 +40,7 @@ q-page.admin-terminal
         )
         template(v-slot:body-cell-icon='props')
           q-td(:props='props')
-            q-icon(name='las la-server', color='positive', size='sm')
+            q-icon(name='ph ph-hard-drives', color='positive', size='sm')
         template(v-slot:body-cell-id='props')
           q-td(:props='props')
             strong {{props.value}}
@@ -49,7 +49,7 @@ q-page.admin-terminal
         template(v-slot:body-cell-cons='props')
           q-td(:props='props')
             q-chip(
-              icon='las la-plug'
+              icon='ph ph-plug'
               square
               size='md'
               color='blue'
@@ -59,7 +59,7 @@ q-page.admin-terminal
         template(v-slot:body-cell-subs='props')
           q-td(:props='props')
             q-chip(
-              icon='las la-broadcast-tower'
+              icon='ph ph-broadcast'
               square
               size='md'
               color='green'

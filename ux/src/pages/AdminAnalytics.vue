@@ -1,181 +1,260 @@
 <template lang='pug'>
-  v-container(fluid, grid-list-lg)
-    v-layout(row, wrap)
-      v-flex(xs12)
-        .admin-header
-          img.animated.fadeInUp(src='/_assets/svg/icon-line-chart.svg', alt='Analytics', style='width: 80px;')
-          .admin-header-title
-            .headline.primary--text.animated.fadeInLeft {{ $t('admin.analytics.title') }}
-            .subtitle-1.grey--text.animated.fadeInLeft.wait-p4s {{ $t('admin.analytics.subtitle') }}
-          v-spacer
-          v-btn.animated.fadeInDown.wait-p2s.mr-3(icon, outlined, color='grey', @click='refresh')
-            v-icon mdi-refresh
-          v-btn.animated.fadeInDown(color='success', @click='save', depressed, large)
-            v-icon(left) mdi-check
-            span {{$t('common.actions.apply')}}
-
-      v-flex(lg3, xs12)
-        v-card.animated.fadeInUp
-          v-toolbar(flat, color='primary', dark, dense)
-            .subtitle-1 {{$t('admin.analytics.providers')}}
-          v-list(two-line, dense).py-0
-            template(v-for='(str, idx) in providers')
-              v-list-item(:key='str.key', @click='selectedProvider = str.key', :disabled='!str.isAvailable')
-                v-list-item-avatar(size='24')
-                  v-icon(color='grey', v-if='!str.isAvailable') mdi-minus-box-outline
-                  v-icon(color='primary', v-else-if='str.isEnabled', v-ripple, @click='str.isEnabled = false') mdi-checkbox-marked-outline
-                  v-icon(color='grey', v-else, v-ripple, @click='str.isEnabled = true') mdi-checkbox-blank-outline
-                v-list-item-content
-                  v-list-item-title.body-2(:class='!str.isAvailable ? `grey--text` : (selectedProvider === str.key ? `primary--text` : ``)') {{ str.title }}
-                  v-list-item-subtitle: .caption(:class='!str.isAvailable ? `grey--text text--lighten-1` : (selectedProvider === str.key ? `blue--text ` : ``)') {{ str.description }}
-                v-list-item-avatar(v-if='selectedProvider === str.key', size='24')
-                  v-icon.animated.fadeInLeft(color='primary', large) mdi-chevron-right
-              v-divider(v-if='idx < providers.length - 1')
-
-      v-flex(xs12, lg9)
-
-        v-card.animated.fadeInUp.wait-p2s
-          v-toolbar(color='primary', dense, flat, dark)
-            .subtitle-1 {{provider.title}}
-            v-spacer
-            v-switch(
-              dark
-              color='blue lighten-5'
-              label='Active'
-              v-model='provider.isEnabled'
-              hide-details
-              inset
-              )
-          v-card-info(color='blue')
-            div
-              div {{provider.description}}
-              span.caption: a(:href='provider.website') {{provider.website}}
-            v-spacer
-            .admin-providerlogo
-              img(:src='provider.logo', :alt='provider.title')
-          v-card-text
-            v-form
-              .overline.pb-5 {{$t('admin.analytics.providerConfiguration')}}
-              .body-1.ml-3(v-if='!provider.config || provider.config.length < 1'): em {{$t('admin.analytics.providerNoConfiguration')}}
-              template(v-else, v-for='cfg in provider.config')
-                v-select(
-                  v-if='cfg.value.type === "string" && cfg.value.enum'
-                  outlined
-                  :items='cfg.value.enum'
-                  :key='cfg.key'
-                  :label='cfg.value.title'
-                  v-model='cfg.value.value'
-                  prepend-icon='mdi-cog-box'
-                  :hint='cfg.value.hint ? cfg.value.hint : ""'
-                  persistent-hint
-                  :class='cfg.value.hint ? "mb-2" : ""'
+q-page.admin-analytics
+  .row.q-pa-md.items-center
+    .col-auto
+      img.admin-icon.animated.fadeInLeft(src='/_assets/icons/fluent-combo-chart.svg')
+    .col.q-pl-md
+      .text-h5.text-primary.animated.fadeInLeft {{ t('admin.analytics.title') }}
+      .text-subtitle1.text-grey.animated.fadeInLeft.wait-p2s {{ t('admin.analytics.subtitle') }}
+    .col-auto
+      q-btn.q-mr-sm.acrylic-btn(
+        icon='ph ph-question'
+        flat
+        color='grey'
+        :aria-label='t(`common.actions.viewDocs`)'
+        :href='siteStore.docsBase + `/admin/analytics`'
+        target='_blank'
+        type='a'
+        )
+        q-tooltip {{ t(`common.actions.viewDocs`) }}
+      q-btn.q-mr-sm.acrylic-btn(
+        icon='ph ph-arrow-clockwise'
+        flat
+        color='secondary'
+        :loading='state.loading > 0'
+        :aria-label='t(`common.actions.refresh`)'
+        @click='load'
+        )
+        q-tooltip {{ t(`common.actions.refresh`) }}
+      q-btn(
+        unelevated
+        icon='mdi-check'
+        :label='t(`common.actions.apply`)'
+        color='secondary'
+        @click='save'
+        :disabled='state.loading > 0'
+      )
+  q-separator(inset)
+  .row.q-pa-md.q-col-gutter-md
+    .col-auto
+      q-card.rounded-borders.bg-dark(style='min-width: 300px;')
+        q-list(padding, dark)
+          q-item(
+            v-for='p of state.providers'
+            :key='p.key'
+            clickable
+            :active='state.selectedKey === p.key'
+            active-class='bg-primary text-white'
+            @click='state.selectedKey = p.key'
+            :disable='!p.isAvailable'
+            )
+            q-item-section(side)
+              q-icon(
+                :name='p.isEnabled ? `ph ph-check-square` : `ph ph-square`'
+                :color='!p.isAvailable ? `grey` : (p.isEnabled ? `positive` : `grey-5`)'
+                @click.stop='p.isEnabled = !p.isEnabled'
                 )
-                v-switch.mb-3(
-                  v-else-if='cfg.value.type === "boolean"'
-                  :key='cfg.key'
-                  :label='cfg.value.title'
-                  v-model='cfg.value.value'
-                  color='primary'
-                  prepend-icon='mdi-cog-box'
-                  :hint='cfg.value.hint ? cfg.value.hint : ""'
-                  persistent-hint
-                  inset
-                  )
-                v-textarea(
-                  v-else-if='cfg.value.type === "string" && cfg.value.multiline'
-                  outlined
-                  :key='cfg.key'
-                  :label='cfg.value.title'
-                  v-model='cfg.value.value'
-                  prepend-icon='mdi-cog-box'
-                  :hint='cfg.value.hint ? cfg.value.hint : ""'
-                  persistent-hint
-                  :class='cfg.value.hint ? "mb-2" : ""'
-                  )
-                v-text-field(
-                  v-else
-                  outlined
-                  :key='cfg.key'
-                  :label='cfg.value.title'
-                  v-model='cfg.value.value'
-                  prepend-icon='mdi-cog-box'
-                  :hint='cfg.value.hint ? cfg.value.hint : ""'
-                  persistent-hint
-                  :class='cfg.value.hint ? "mb-2" : ""'
-                  )
-
+            q-item-section
+              q-item-label {{ p.title }}
+              q-item-label(caption) {{ p.description }}
+            q-item-section(v-if='state.selectedKey === p.key', side)
+              q-icon(name='ph ph-caret-right', color='white')
+    .col(v-if='selectedProvider')
+      q-card
+        q-bar.bg-primary.text-white
+          span {{ selectedProvider.title }}
+          q-space
+          q-toggle(
+            v-model='selectedProvider.isEnabled'
+            color='white'
+            dark
+            label='Active'
+            left-label
+            )
+        q-card-section.bg-blue-1(v-if='selectedProvider.description')
+          .row.items-center
+            .col
+              .text-body2 {{ selectedProvider.description }}
+              a.text-caption(:href='selectedProvider.website', target='_blank') {{ selectedProvider.website }}
+            .col-auto(v-if='selectedProvider.logo')
+              img(:src='selectedProvider.logo', :alt='selectedProvider.title', style='max-height: 40px; max-width: 100px;')
+        q-card-section
+          .text-overline.q-mb-md {{ t('admin.analytics.providerConfiguration') }}
+          .text-body2.text-grey(v-if='!selectedProvider.config || selectedProvider.config.length < 1')
+            em {{ t('admin.analytics.providerNoConfiguration') }}
+          template(v-else)
+            template(v-for='cfg in selectedProvider.config', :key='cfg.key')
+              q-select.q-mb-md(
+                v-if='cfg.value.type === "string" && cfg.value.enum'
+                outlined
+                :options='cfg.value.enum'
+                :label='cfg.value.title'
+                v-model='cfg.value.value'
+                :hint='cfg.value.hint || ""'
+                )
+              q-toggle.q-mb-md(
+                v-else-if='cfg.value.type === "boolean"'
+                :label='cfg.value.title'
+                v-model='cfg.value.value'
+                color='primary'
+                )
+                template(v-if='cfg.value.hint')
+                  .text-caption.text-grey {{ cfg.value.hint }}
+              q-input.q-mb-md(
+                v-else-if='cfg.value.type === "string" && cfg.value.multiline'
+                outlined
+                type='textarea'
+                :label='cfg.value.title'
+                v-model='cfg.value.value'
+                :hint='cfg.value.hint || ""'
+                )
+              q-input.q-mb-md(
+                v-else
+                outlined
+                :label='cfg.value.title'
+                v-model='cfg.value.value'
+                :hint='cfg.value.hint || ""'
+                )
 </template>
 
-<script>
-import _ from 'lodash'
+<script setup>
+import { useMeta, useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
+import { computed, onMounted, reactive, watch } from 'vue'
+import gql from 'graphql-tag'
+import { cloneDeep, pick, sortBy } from 'lodash-es'
 
-import providersQuery from 'gql/admin/analytics/analytics-query-providers.gql'
-import providersSaveMutation from 'gql/admin/analytics/analytics-mutation-save-providers.gql'
+import { useAdminStore } from '@/stores/admin'
+import { useSiteStore } from '@/stores/site'
 
-export default {
-  data() {
-    return {
-      providers: [],
-      selectedProvider: '',
-      provider: {}
-    }
-  },
-  watch: {
-    selectedProvider(newValue, oldValue) {
-      this.provider = _.find(this.providers, ['key', newValue]) || {}
-    },
-    providers(newValue, oldValue) {
-      this.selectedProvider = 'google'
-    }
-  },
-  methods: {
-    async refresh() {
-      await this.$apollo.queries.providers.refetch()
-      this.$store.commit('showNotification', {
-        message: this.$t('admin.analytics.refreshSuccess'),
-        style: 'success',
-        icon: 'cached'
-      })
-    },
-    async save() {
-      this.$store.commit(`loadingStart`, 'admin-analytics-saveproviders')
-      try {
-        await this.$apollo.mutate({
-          mutation: providersSaveMutation,
-          variables: {
-            providers: this.providers.map(str => _.pick(str, [
-              'isEnabled',
-              'key',
-              'config'
-            ])).map(str => ({...str, config: str.config.map(cfg => ({...cfg, value: JSON.stringify({ v: cfg.value.value })}))}))
+// QUASAR
+
+const $q = useQuasar()
+
+// STORES
+
+const adminStore = useAdminStore()
+const siteStore = useSiteStore()
+
+// I18N
+
+const { t } = useI18n()
+
+// META
+
+useMeta({
+  title: t('admin.analytics.title')
+})
+
+// STATE
+
+const state = reactive({
+  loading: 0,
+  providers: [],
+  selectedKey: ''
+})
+
+const selectedProvider = computed(() => {
+  return state.providers.find(p => p.key === state.selectedKey) || null
+})
+
+// METHODS
+
+async function load () {
+  state.loading++
+  try {
+    const resp = await APOLLO_CLIENT.query({
+      query: gql`
+        query {
+          analyticsProviders {
+            isEnabled
+            key
+            title
+            description
+            isAvailable
+            logo
+            website
+            config {
+              key
+              value
+            }
           }
-        })
-        this.$store.commit('showNotification', {
-          message: this.$t('admin.analytics.saveSuccess'),
-          style: 'success',
-          icon: 'check'
-        })
-      } catch (err) {
-        this.$store.commit('pushGraphError', err)
-      }
-      this.$store.commit(`loadingStop`, 'admin-analytics-saveproviders')
-    }
-  },
-  apollo: {
-    providers: {
-      query: providersQuery,
-      fetchPolicy: 'network-only',
-      update: (data) => _.cloneDeep(data.analytics.providers).map(str => ({
-        ...str,
-        config: _.sortBy(str.config.map(cfg => ({
+        }
+      `,
+      fetchPolicy: 'network-only'
+    })
+    state.providers = cloneDeep(resp?.data?.analyticsProviders || []).map(p => ({
+      ...p,
+      config: sortBy(
+        (p.config || []).map(cfg => ({
           ...cfg,
           value: JSON.parse(cfg.value)
-        })), [t => t.value.order])
-      })),
-      watchLoading (isLoading) {
-        this.$store.commit(`loading${isLoading ? 'Start' : 'Stop'}`, 'admin-analytics-refresh')
-      }
+        })),
+        [c => c.value.order]
+      )
+    }))
+    if (!state.selectedKey && state.providers.length > 0) {
+      state.selectedKey = state.providers[0].key
     }
+  } catch (err) {
+    $q.notify({
+      type: 'negative',
+      message: 'Failed to load analytics providers.',
+      caption: err.message
+    })
   }
+  state.loading--
 }
+
+async function save () {
+  state.loading++
+  try {
+    const resp = await APOLLO_CLIENT.mutate({
+      mutation: gql`
+        mutation ($providers: [AnalyticsProviderInput]!) {
+          updateAnalyticsProviders(providers: $providers) {
+            operation {
+              succeeded
+              message
+            }
+          }
+        }
+      `,
+      variables: {
+        providers: state.providers.map(p => ({
+          isEnabled: p.isEnabled,
+          key: p.key,
+          config: (p.config || []).map(cfg => ({
+            key: cfg.key,
+            value: JSON.stringify({ v: cfg.value.value })
+          }))
+        }))
+      }
+    })
+    if (resp?.data?.updateAnalyticsProviders?.operation?.succeeded) {
+      $q.notify({
+        type: 'positive',
+        message: t('admin.analytics.saveSuccess')
+      })
+    } else {
+      throw new Error(resp?.data?.updateAnalyticsProviders?.operation?.message || 'An unexpected error occurred.')
+    }
+  } catch (err) {
+    $q.notify({
+      type: 'negative',
+      message: 'Failed to save analytics providers.',
+      caption: err.message
+    })
+  }
+  state.loading--
+}
+
+// MOUNTED
+
+onMounted(() => {
+  load()
+})
 </script>
+
+<style lang='scss'>
+</style>

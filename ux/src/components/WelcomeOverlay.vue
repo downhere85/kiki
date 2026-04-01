@@ -11,7 +11,7 @@
         push
         color='primary'
         :label='t(`welcome.createHome`)'
-        icon='las la-plus'
+        icon='ph ph-plus'
         no-caps
         )
         q-menu.translucent-menu(
@@ -48,7 +48,7 @@
         push
         color='primary'
         :label='t(`welcome.admin`)'
-        icon='las la-cog'
+        icon='ph ph-gear'
         no-caps
         @click='loadAdmin'
       )

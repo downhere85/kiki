@@ -118,10 +118,14 @@ export default {
           args.patch.pageExtensions = args.patch.pageExtensions.split(',').map(ext => ext.trim().toLowerCase()).filter(ext => ext.length > 0)
         }
         // -> Update site
+        const patchConfig = _.omit(args.patch, ['hostname', 'isEnabled'])
         await WIKI.db.sites.updateSite(args.id, {
           hostname: args.patch.hostname ?? site.hostname,
           isEnabled: args.patch.isEnabled ?? site.isEnabled,
-          config: _.defaultsDeep(_.omit(args.patch, ['hostname', 'isEnabled']), site.config)
+          config: _.mergeWith({}, site.config, patchConfig, (objVal, srcVal) => {
+            // Arrays should be replaced, not merged
+            if (_.isArray(srcVal)) { return srcVal }
+          })
         })
 
         return {

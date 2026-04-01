@@ -26,7 +26,7 @@ ul.treeview-level
               q-item-section(:class='action.labelColor && (`text-` + action.labelColor)') {{action.label}}
       q-icon(
         v-if='!selection'
-        name='las la-angle-right'
+        name='ph ph-caret-right'
         :color='$q.dark.isActive ? `purple-4` : `purple`'
         )
   //- NORMAL NODES

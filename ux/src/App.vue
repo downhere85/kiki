@@ -163,7 +163,7 @@ EVENT_BUS.on('logout', () => {
   router.push('/')
   $q.notify({
     type: 'positive',
-    icon: 'las la-sign-out-alt',
+    icon: 'ph ph-sign-out',
     message: i18n.t('auth.logoutSuccess')
   })
 })
