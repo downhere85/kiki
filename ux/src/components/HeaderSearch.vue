@@ -4,12 +4,11 @@ q-toolbar(
   dark
   v-if='siteStore.features.search'
   )
-  q-input(
+  q-input.header-search-input(
     dark
     v-model='siteStore.search'
     standout='bg-white text-dark'
     dense
-    rounded
     ref='searchField'
     style='width: 100%;'
     label='Search...'
@@ -287,5 +286,9 @@ onMounted(() => {
 
 .search-kbdbadge {
   color: rgba(255,255,255,.5);
+}
+
+.header-search-input .q-field__control {
+  border-radius: 6px !important;
 }
 </style>

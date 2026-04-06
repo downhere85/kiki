@@ -83,7 +83,7 @@
   //-   :bar-style='barStyle'
   //-   style='height: 100%;'
   //-   )
-  editor-content(:editor='editor')
+  editor-content.page-contents(:editor='editor')
 </template>
 
 <script setup>
@@ -109,7 +109,7 @@ import TextAlign from '@tiptap/extension-text-align'
 import TextStyle from '@tiptap/extension-text-style'
 import Typography from '@tiptap/extension-typography'
 import { common, createLowlight } from 'lowlight'
-import { onBeforeUnmount, onMounted, reactive, shallowRef } from 'vue'
+import { defineAsyncComponent, onBeforeUnmount, onMounted, reactive, shallowRef } from 'vue'
 // import * as Y from 'yjs'
 // import { IndexeddbPersistence } from 'y-indexeddb'
 // import { WebsocketProvider } from 'y-websocket'
@@ -119,6 +119,8 @@ import { useI18n } from 'vue-i18n'
 import { DateTime } from 'luxon'
 
 import { useEditorStore } from '@/stores/editor'
+
+const DocumentImportDialog = defineAsyncComponent(() => import('@/components/DocumentImportDialog.vue'))
 import { usePageStore } from '@/stores/page'
 import { useSiteStore } from '@/stores/site'
 
@@ -669,10 +671,42 @@ const menuBar = [
     title: 'Redo',
     action: () => editor.value.chain().focus().redo().run(),
     disabled: () => !editor.value.can().redo()
+  },
+  { type: 'divider' },
+  {
+    key: 'import',
+    icon: 'ph ph-file-arrow-up',
+    title: 'Import Document (DOCX, HTML, TXT)',
+    action: () => importDocument()
   }
 ]
 
 // METHODS
+
+function importDocument () {
+  $q.dialog({
+    component: DocumentImportDialog,
+    componentProps: { mode: 'html' }
+  }).onOk(({ html, markdown }) => {
+    const content = html || markdown
+    if (!content || !editor.value) return
+    // Replace entire editor content with imported HTML
+    editor.value.commands.setContent(content)
+    // Explicitly sync to page store in case onUpdate doesn't fire
+    const outputHtml = editor.value.getHTML()
+    pageStore.$patch({
+      content: outputHtml,
+      render: outputHtml
+    })
+    // Ensure save button is enabled (hasPendingChanges requires both timestamps to differ)
+    const now = DateTime.utc()
+    editorStore.$patch({
+      lastChangeTimestamp: now,
+      lastSaveTimestamp: editorStore.lastSaveTimestamp || now.minus({ seconds: 1 })
+    })
+    $q.notify({ type: 'positive', message: 'Document imported successfully' })
+  })
+}
 
 function init () {
   // -> Setup Editor View
@@ -812,8 +846,11 @@ init()
     background: linear-gradient(to top, $grey-1 0%, #FFF 100%);
   }
 
+  // The editor-content element has .page-contents class applied,
+  // so it inherits the same styles as rendered pages (from _page-contents.scss
+  // and notebook.scss). Only editor-specific overrides are defined here.
   .ProseMirror {
-    padding: 16px;
+    padding: 20px 28px;
     min-height: 75vh;
 
     &-focused {
@@ -821,87 +858,8 @@ init()
       outline: none;
     }
 
-    > * + * {
-      margin-top: 0.75em;
-    }
-
-    ul,
-    ol {
-      padding: 0 1rem;
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      line-height: 1.1;
-    }
-
-    code {
-      background-color: rgba(#616161, 0.1);
-      color: #616161;
-    }
-
-    pre {
-      background: #0D0D0D;
-      color: #FFF;
-      font-family: 'JetBrainsMono', monospace;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-
-      code {
-        color: inherit;
-        padding: 0;
-        background: none;
-        font-size: 0.8rem;
-      }
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-
-    blockquote {
-      padding-left: 1rem;
-      border-left: 2px solid rgba(#0D0D0D, 0.1);
-    }
-
-    hr {
-      border: none;
-      border-top: 2px solid rgba(#0D0D0D, 0.1);
-      margin: 2rem 0;
-    }
-
+    // Editor-specific: table cell selection
     table {
-      border-collapse: collapse;
-      table-layout: fixed;
-      width: 100%;
-      margin: 0;
-      overflow: hidden;
-
-      td,
-      th {
-        min-width: 1em;
-        border: 2px solid #ced4da;
-        padding: 3px 5px;
-        vertical-align: top;
-        box-sizing: border-box;
-        position: relative;
-
-        > * {
-          margin-bottom: 0;
-        }
-      }
-
-      th {
-        font-weight: bold;
-        text-align: left;
-        background-color: #f1f3f5;
-      }
-
       .selectedCell:after {
         z-index: 2;
         position: absolute;
@@ -920,6 +878,10 @@ init()
         background-color: #adf;
         pointer-events: none;
       }
+
+      td, th {
+        position: relative;
+      }
     }
 
     .tableWrapper {
@@ -931,6 +893,7 @@ init()
       cursor: col-resize;
     }
 
+    // Editor-specific: task list checkboxes
     ul[data-type="taskList"] {
       list-style: none;
       padding: 0;
@@ -946,6 +909,7 @@ init()
       }
     }
 
+    // Editor-specific: placeholder text
     p.is-editor-empty:first-child::before {
       content: attr(data-placeholder);
       float: left;

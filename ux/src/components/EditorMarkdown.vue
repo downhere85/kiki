@@ -272,6 +272,7 @@ import { find, get, last, times, startsWith, debounce } from 'lodash-es'
 import { DateTime } from 'luxon'
 import * as monaco from 'monaco-editor'
 import { Position, Range } from 'monaco-editor'
+import gql from 'graphql-tag'
 
 import { useCommonStore } from '@/stores/common'
 import { useEditorStore } from '@/stores/editor'
@@ -866,6 +867,67 @@ onMounted(async () => {
     label: 'Save',
     precondition: '',
     run (ed) {
+    }
+  })
+
+  // -> Wikilink autocomplete provider
+  monaco.languages.registerCompletionItemProvider('markdown', {
+    triggerCharacters: ['['],
+    provideCompletionItems: async (model, position) => {
+      const lineContent = model.getLineContent(position.lineNumber)
+      const textBefore = lineContent.substring(0, position.column - 1)
+
+      // Find unclosed [[ before cursor
+      const openIdx = textBefore.lastIndexOf('[[')
+      if (openIdx < 0) return { suggestions: [] }
+
+      // Make sure there's no ]] between [[ and cursor
+      const between = textBefore.substring(openIdx + 2)
+      if (between.includes(']]')) return { suggestions: [] }
+
+      // Extract query (strip pipe text for [[path|... variant)
+      let query = between
+      const pipeIdx = query.indexOf('|')
+      if (pipeIdx >= 0) {
+        query = query.substring(0, pipeIdx)
+      }
+
+      if (query.length < 1) return { suggestions: [] }
+
+      try {
+        const resp = await APOLLO_CLIENT.query({
+          query: gql`
+            query wikilinkSearch ($query: String!, $siteId: UUID!) {
+              searchPages(query: $query, siteId: $siteId, limit: 10) {
+                results { id, title, path }
+              }
+            }
+          `,
+          variables: { query, siteId: siteStore.id },
+          fetchPolicy: 'network-only'
+        })
+
+        const results = resp.data?.searchPages?.results ?? []
+        const replaceRange = new Range(
+          position.lineNumber,
+          openIdx + 3, // after [[
+          position.lineNumber,
+          position.column
+        )
+
+        return {
+          suggestions: results.map(page => ({
+            label: `${page.title} — /${page.path}`,
+            kind: monaco.languages.CompletionItemKind.Reference,
+            insertText: `${page.path}|${page.title}]]`,
+            range: replaceRange,
+            detail: `/${page.path}`,
+            sortText: page.title
+          }))
+        }
+      } catch {
+        return { suggestions: [] }
+      }
     }
   })
 

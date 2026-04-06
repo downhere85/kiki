@@ -440,6 +440,21 @@ export default {
       }, [])
     },
     /**
+     * FETCH BACKLINKS (pages that link to a given page)
+     */
+    async pageBacklinks (obj, args, context, info) {
+      const results = await WIKI.db.knex('pageLinks')
+        .join('pages', 'pages.id', 'pageLinks.pageId')
+        .where('pageLinks.path', args.path)
+        .where('pageLinks.locale', args.locale)
+        .select('pages.id', 'pages.path', 'pages.title', 'pages.locale')
+        .orderBy('pages.title')
+
+      return results.filter(r =>
+        WIKI.auth.checkAccess(context.req.user, ['read:pages'], { path: r.path, locale: r.locale })
+      )
+    },
+    /**
      * CHECK FOR EDITING CONFLICT
      */
     async checkConflicts (obj, args, context, info) {
@@ -778,6 +793,24 @@ export default {
         min: page.extra?.tocDepth?.min ?? 1,
         max: page.extra?.tocDepth?.max ?? 2
       }
+    },
+    showSidebar (page) {
+      return page.config?.showSidebar ?? true
+    },
+    showTags (page) {
+      return page.config?.showTags ?? true
+    },
+    showToc (page) {
+      return page.config?.showToc ?? true
+    },
+    allowComments (page) {
+      return page.config?.allowComments ?? true
+    },
+    allowContributions (page) {
+      return page.config?.allowContributions ?? true
+    },
+    allowRatings (page) {
+      return page.config?.allowRatings ?? true
     }
   }
 }

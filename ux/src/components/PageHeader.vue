@@ -1,7 +1,7 @@
 <template lang="pug">
-.page-header.row
+.page-header.row.items-center
   //- PAGE ICON
-  .col-auto.q-pl-md.flex.items-center
+  .col-auto.q-pl-md
     q-btn.rounded-borders(
       v-if='editorStore.isActive'
       padding='none'
@@ -21,7 +21,7 @@
       color='grey-7'
     )
   //- PAGE HEADER
-  .col.q-pa-sm.q-pl-md
+  .col.q-py-sm.q-pl-md
     .text-h6.page-header-title
       span {{pageStore.title}}
       template(v-if='editorStore.isActive')
@@ -46,7 +46,7 @@
               @keyup.enter='scope.set'
               :label='t(`editor.props.title`)'
               )
-    .text-subtitle2.page-header-subtitle
+    .text-subtitle2.page-header-subtitle(v-if='pageStore.description || editorStore.isActive')
       span {{ pageStore.description }}
       template(v-if='editorStore.isActive')
         span.text-grey(v-if='!pageStore.description') {{ t(`editor.props.shortDescription`)}}
@@ -71,7 +71,7 @@
               :label='t(`editor.props.shortDescription`)'
               )
   //- PAGE ACTIONS
-  .col-auto.q-pa-md.flex.items-center.justify-end
+  .col-auto.q-pr-md.flex.items-center.justify-end
     template(v-if='!editorStore.isActive')
       q-btn.q-ml-md(
         v-if='userStore.authenticated'

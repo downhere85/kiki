@@ -75,16 +75,15 @@ const { t } = useI18n()
 // DATA
 
 const thumbStyle = {
-  right: '2px',
-  borderRadius: '5px',
-  backgroundColor: '#FFF',
-  width: '5px',
-  opacity: 0.5
+  right: '1px',
+  borderRadius: '3px',
+  backgroundColor: 'rgba(255,255,255,0.2)',
+  width: '4px',
+  opacity: 0
 }
 const barStyle = {
-  backgroundColor: '#000',
-  width: '9px',
-  opacity: 0.1
+  width: '0px',
+  opacity: 0
 }
 
 // WATCHERS
@@ -100,7 +99,31 @@ watch(() => pageStore.navigationId, (newValue) => {
 <style lang="scss">
 .sidebar-nav {
   border-top: 1px solid rgba(255,255,255,.15);
-  height: calc(100% - 38px - 24px);
+  min-height: 0; // allow flex shrinking
+
+  // Hide all scrollbars completely
+  .q-scrollarea__thumb,
+  .q-scrollarea__bar {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+  &:hover .q-scrollarea__thumb--v {
+    opacity: 0.3 !important;
+    visibility: visible !important;
+  }
+  // Hide horizontal scrollbar entirely
+  .q-scrollarea__thumb--h,
+  .q-scrollarea__bar--h {
+    display: none !important;
+  }
+  // Hide native scrollbars as fallback
+  .q-scrollarea__container {
+    scrollbar-width: none !important;
+    &::-webkit-scrollbar {
+      display: none !important;
+    }
+  }
 
   &-list > .q-separator {
     margin-top: 10px;

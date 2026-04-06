@@ -7,7 +7,7 @@ import { URL } from 'node:url'
 const mustacheRegExp = /(\{|&#x7b;?){2}(.+?)(\}|&#x7d;?){2}/i
 
 export async function render () {
-  const $ = cheerio.load(this.input, {
+  const $ = cheerio.load(this.input || '', {
     decodeEntities: true
   })
 

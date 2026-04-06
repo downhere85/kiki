@@ -14,6 +14,8 @@ import mdMdc from 'markdown-it-mdc'
 import katex from 'katex'
 import mdImsize from './modules/markdown-it-imsize.mjs'
 import mdUnderline from './modules/markdown-it-underline.mjs'
+import mdWikilinks from './modules/markdown-it-wikilinks.mjs'
+import mdYoutube from './modules/markdown-it-youtube.mjs'
 // import 'katex/dist/contrib/mhchem'
 import twemoji from 'twemoji'
 import plantuml from './modules/plantuml.mjs'
@@ -59,6 +61,8 @@ export async function render (input, config) {
       }
     }
     })
+    .use(mdWikilinks)
+    .use(mdYoutube)
     .use(mdAttrs, {
       allowedAttributes: ['id', 'class', 'target']
     })

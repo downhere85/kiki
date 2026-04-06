@@ -43,7 +43,12 @@ q-page.column
         style='height: 100%;'
         )
         .q-pa-md
-          .page-contents(ref='pageContents', v-html='pageStore.render')
+          .page-contents(
+            ref='pageContents'
+            v-html='pageStore.render'
+            @mouseover='handleLinkMouseOver'
+            @mouseout='handleLinkMouseOut'
+            )
           template(v-if='pageStore.relations && pageStore.relations.length > 0')
             q-separator.q-my-lg
             .row.align-center
@@ -127,6 +132,10 @@ q-page.column
                 @click='state.tagEditMode = !state.tagEditMode'
               )
           page-tags.q-mt-sm(:edit='state.tagEditMode')
+      //- Backlinks
+      template(v-if='!editorStore.isActive')
+        q-separator(v-if='pageStore.showToc || pageStore.showTags')
+        page-backlinks
       template(v-if='siteStore.features.ratingsMode !== `off` && pageStore.allowRatings')
         q-separator(v-if='pageStore.showToc || pageStore.showTags')
         //- Rating
@@ -155,6 +164,12 @@ q-page.column
     page-actions-col
 
   side-dialog
+  page-link-preview(
+    :visible='state.linkPreview.visible'
+    :x='state.linkPreview.x'
+    :y='state.linkPreview.y'
+    :page-data='state.linkPreview.pageData'
+    )
 </template>
 
 <script setup>
@@ -180,6 +195,8 @@ import LoadingGeneric from '@/components/LoadingGeneric.vue'
 import PageActionsCol from '@/components/PageActionsCol.vue'
 import PageComments from '@/components/PageComments.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import PageBacklinks from '@/components/PageBacklinks.vue'
+import PageLinkPreview from '@/components/PageLinkPreview.vue'
 import PageTags from '@/components/PageTags.vue'
 import SideDialog from '@/components/SideDialog.vue'
 
@@ -233,7 +250,8 @@ const state = reactive({
   tagEditMode: false,
   tocExpanded: ['h1-0', 'h1-1'],
   tocSelected: [],
-  currentRating: 3
+  currentRating: 3,
+  linkPreview: { visible: false, x: 0, y: 0, pageData: null }
 })
 // -> Scroll to heading when TOC item is selected
 watch(() => state.tocSelected, (newVal) => {
@@ -463,6 +481,56 @@ function handleGlobalKeyDown (ev) {
   }
 }
 
+// LINK PREVIEW HOVER
+
+const linkPreviewCache = new Map()
+let linkPreviewTimer = null
+
+function handleLinkMouseOver (ev) {
+  const link = ev.target.closest('a.is-internal-link.is-valid-page')
+  if (!link) return
+
+  clearTimeout(linkPreviewTimer)
+  linkPreviewTimer = setTimeout(async () => {
+    const href = link.getAttribute('href')
+    if (!href) return
+    const path = href.replace(/^\//, '')
+
+    if (linkPreviewCache.has(path)) {
+      state.linkPreview = { visible: true, x: ev.clientX, y: ev.clientY, pageData: linkPreviewCache.get(path) }
+      return
+    }
+
+    try {
+      const resp = await APOLLO_CLIENT.query({
+        query: gql`
+          query linkPreview ($siteId: UUID!, $path: String!) {
+            pageByPath(siteId: $siteId, path: $path) {
+              title
+              description
+              path
+            }
+          }
+        `,
+        variables: { siteId: siteStore.id, path },
+        fetchPolicy: 'cache-first'
+      })
+      const data = resp.data?.pageByPath
+      if (data) {
+        linkPreviewCache.set(path, data)
+        state.linkPreview = { visible: true, x: ev.clientX, y: ev.clientY, pageData: data }
+      }
+    } catch {}
+  }, 300)
+}
+
+function handleLinkMouseOut (ev) {
+  const link = ev.target.closest('a.is-internal-link')
+  if (!link) return
+  clearTimeout(linkPreviewTimer)
+  state.linkPreview.visible = false
+}
+
 onMounted(() => {
   if (!import.meta.env.SSR) {
     window.addEventListener('keydown', handleGlobalKeyDown)
@@ -472,6 +540,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (!import.meta.env.SSR) {
     window.removeEventListener('keydown', handleGlobalKeyDown)
+    clearTimeout(linkPreviewTimer)
   }
 })
 

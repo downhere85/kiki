@@ -53,45 +53,47 @@ q-layout(view='hHh Lpr lff')
             )
         q-tooltip(anchor='center right' self='center left') Edit Nav
     template(v-else)
-      .sidebar-actions.flex.items-stretch
-        q-btn.q-px-sm.col(
-          flat
-          dense
-          icon='ph ph-globe'
-          color='blue-7'
-          text-color='custom-color'
-          :label='commonStore.locale'
-          :aria-label='commonStore.locale'
-          size='sm'
-          )
-          locale-selector-menu(:offset='[-5, 5]')
-        q-separator(vertical)
-        q-btn.q-px-sm.col(
-          flat
-          dense
-          icon='ph ph-tree-structure'
-          color='blue-7'
-          text-color='custom-color'
-          label='Browse'
-          aria-label='Browse'
-          size='sm'
-          @click='browsePages'
-          )
-      nav-sidebar
-      .sidebar-recent(v-if='pageStore.recentPages.length > 0 && !editorStore.isActive')
-        .sidebar-recent-header Recent
-        q-list(dense)
-          q-item.sidebar-recent-item(
-            v-for='page of pageStore.recentPages'
-            :key='page.id'
-            clickable
+      .sidebar-expanded.column.full-height
+        .sidebar-actions.flex.items-stretch
+          q-btn.q-px-sm.col(
+            flat
             dense
-            :to='`/${page.path}`'
+            icon='ph ph-globe'
+            color='blue-7'
+            text-color='custom-color'
+            :label='commonStore.locale'
+            :aria-label='commonStore.locale'
+            size='sm'
             )
-            q-item-section(side)
-              q-icon(:name='page.icon || `ph ph-file-text`', size='xs', color='grey-5')
-            q-item-section
-              q-item-label.text-caption(lines='1') {{ page.title }}
+            locale-selector-menu(:offset='[-5, 5]')
+          q-separator(vertical)
+          q-btn.q-px-sm.col(
+            flat
+            dense
+            icon='ph ph-tree-structure'
+            color='blue-7'
+            text-color='custom-color'
+            label='Browse'
+            aria-label='Browse'
+            size='sm'
+            @click='browsePages'
+            )
+        .col.relative-position
+          nav-sidebar.absolute.fit
+        .sidebar-recent.flex-none(v-if='pageStore.recentPages.length > 0 && !editorStore.isActive')
+          .sidebar-recent-header Recent
+          q-list(dense)
+            q-item.sidebar-recent-item(
+              v-for='page of pageStore.recentPages'
+              :key='page.id'
+              clickable
+              dense
+              :to='`/${page.path}`'
+              )
+              q-item-section(side)
+                q-icon(:name='page.icon || `ph ph-file-text`', size='xs', color='grey-5')
+              q-item-section
+                q-item-label.text-caption.text-white(lines='1', style='opacity: 0.8') {{ page.title }}
       q-bar.sidebar-footerbtns.text-white(
         v-if='userStore.can(`manage:navigation`) || userStore.can(`manage:system`)'
         dense
@@ -240,10 +242,16 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss">
+// Prevent native scrollbar on drawer content — only q-scroll-area should scroll
+.q-drawer__content {
+  overflow: hidden !important;
+}
+
 .sidebar-actions {
   background: linear-gradient(to bottom, rgba(255,255,255,.1) 0%, rgba(0,0,0, .05) 100%);
   border-bottom: 1px solid rgba(0,0,0,.2);
   height: 38px;
+  flex-shrink: 0;
 
   .q-btn {
     color: rgba(255,255,255,.8);
@@ -254,13 +262,20 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 
+.sidebar-expanded {
+  overflow: hidden;
+}
+
 .sidebar-footerbtns {
   background-color: rgba(255,255,255,.1);
+  flex-shrink: 0;
 }
 
 .sidebar-recent {
   padding: 8px 0 4px;
   border-top: 1px solid rgba(255,255,255,.1);
+  flex-shrink: 0;
+  overflow: hidden;
 
   &-header {
     font-size: 10px;

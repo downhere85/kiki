@@ -161,6 +161,7 @@ export class Storage extends Model {
 
   static async pageEvent({ event, page }) {
     try {
+      if (!this.targets) return
       for (let target of this.targets) {
         await target.fn[event](page)
       }
@@ -172,6 +173,7 @@ export class Storage extends Model {
 
   static async assetEvent({ event, asset }) {
     try {
+      if (!this.targets) return
       for (let target of this.targets) {
         await target.fn[`asset${capitalize(event)}`](asset)
       }
@@ -183,7 +185,7 @@ export class Storage extends Model {
 
   static async getLocalLocations({ asset }) {
     const locations = []
-    const promises = this.targets.map(async (target) => {
+    const promises = (this.targets || []).map(async (target) => {
       try {
         const path = await target.fn.getLocalLocation(asset)
         locations.push({

@@ -1,9 +1,9 @@
 import { JSDOM } from 'jsdom'
 import createDOMPurify from 'dompurify'
 
-export async function render () {
-  const config = this.config
-  let output = this.input
+export async function render (input, config) {
+  config = config ?? {}
+  let output = input ?? this?.input ?? ''
 
   if (config.safeHTML) {
     const window = new JSDOM('').window

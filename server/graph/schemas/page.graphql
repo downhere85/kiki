@@ -108,6 +108,11 @@ extend type Query {
     locale: String!
   ): [PageLinkItem]
 
+  pageBacklinks(
+    path: String!
+    locale: String!
+  ): [PageBacklinkItem]
+
   pathFromAlias(
     siteId: UUID!
     alias: String!
@@ -368,6 +373,13 @@ type PageLinkItem {
   path: String
   title: String
   links: [String]
+}
+
+type PageBacklinkItem {
+  id: UUID
+  path: String
+  title: String
+  locale: String
 }
 
 type PageConflictLatest {

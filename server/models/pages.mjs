@@ -430,18 +430,18 @@ export class Page extends Model {
     }
 
     if ('description' in opts.patch) {
-      patch.description = opts.patch.description.trim()
+      patch.description = (opts.patch.description || '').trim()
       historyData.affectedFields.push('description')
       shouldUpdateSearch = true
     }
 
     if ('icon' in opts.patch) {
-      patch.icon = opts.patch.icon.trim()
+      patch.icon = (opts.patch.icon || '').trim()
       historyData.affectedFields.push('icon')
     }
 
     if ('alias' in opts.patch) {
-      patch.alias = opts.patch.alias.trim()
+      patch.alias = (opts.patch.alias || '').trim()
       historyData.affectedFields.push('alias')
 
       if (patch.alias.length > 255) {
@@ -739,7 +739,7 @@ export class Page extends Model {
 
     // -> Check content type
     const sourceContentType = ogPage.contentType
-    const targetContentType = get(find(WIKI.data.editors, ['key', opts.editor]), 'contentType', 'text')
+    const targetContentType = WIKI.data.editors[opts.editor]?.contentType ?? 'text'
     const shouldConvert = sourceContentType !== targetContentType
     let convertedContent = null
 
