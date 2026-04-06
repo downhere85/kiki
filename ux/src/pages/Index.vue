@@ -107,6 +107,7 @@ q-page.column
             dense
             v-model:expanded='state.tocExpanded'
             v-model:selected='state.tocSelected'
+            @update:selected='scrollToTocHeading'
           )
       //- Tags
       template(v-if='pageStore.showTags')
@@ -249,36 +250,35 @@ const state = reactive({
   showTagsEditBtn: false,
   tagEditMode: false,
   tocExpanded: ['h1-0', 'h1-1'],
-  tocSelected: [],
+  tocSelected: null,
   currentRating: 3,
   linkPreview: { visible: false, x: 0, y: 0, pageData: null }
 })
-// -> Scroll to heading when TOC item is selected
-watch(() => state.tocSelected, (newVal) => {
-  if (newVal && newVal.length > 0 && pageContents.value) {
-    const key = newVal[0]
-    // Try to find heading by id matching the key
-    const heading = pageContents.value.querySelector(`[id="${key}"], h1, h2, h3, h4, h5, h6`)
-    // Find all headings and match by index
-    const allHeadings = pageContents.value.querySelectorAll('h1, h2, h3, h4, h5, h6')
+// -> Scroll to heading when TOC item is clicked
+function scrollToTocHeading (key) {
+  if (!key || !pageContents.value) return
+  // Try to find heading by id matching the key
+  const allHeadings = pageContents.value.querySelectorAll('h1, h2, h3, h4, h5, h6')
+  for (const h of allHeadings) {
+    if (h.id === key) {
+      h.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      // Clear selection so clicking the same item again still works
+      nextTick(() => { state.tocSelected = null })
+      return
+    }
+  }
+  // Fallback: match by TOC node label text
+  const tocNode = findTocNode(pageStore.toc, key)
+  if (tocNode) {
     for (const h of allHeadings) {
-      if (h.id === key) {
+      if (h.textContent.trim().replace(/^¶\s*/, '') === tocNode.label) {
         h.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        nextTick(() => { state.tocSelected = null })
         return
       }
     }
-    // Fallback: match by TOC node label text
-    const tocNode = findTocNode(pageStore.toc, key)
-    if (tocNode) {
-      for (const h of allHeadings) {
-        if (h.textContent.trim() === tocNode.label) {
-          h.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          return
-        }
-      }
-    }
   }
-})
+}
 
 function findTocNode (nodes, key) {
   for (const n of nodes) {

@@ -54,19 +54,7 @@ q-layout(view='hHh Lpr lff')
         q-tooltip(anchor='center right' self='center left') Edit Nav
     template(v-else)
       .sidebar-expanded.column.full-height
-        .sidebar-actions.flex.items-stretch
-          q-btn.q-px-sm.col(
-            flat
-            dense
-            icon='ph ph-globe'
-            color='blue-7'
-            text-color='custom-color'
-            :label='commonStore.locale'
-            :aria-label='commonStore.locale'
-            size='sm'
-            )
-            locale-selector-menu(:offset='[-5, 5]')
-          q-separator(vertical)
+        .sidebar-actions.flex.no-wrap.items-stretch
           q-btn.q-px-sm.col(
             flat
             dense
@@ -78,6 +66,18 @@ q-layout(view='hHh Lpr lff')
             size='sm'
             @click='browsePages'
             )
+          q-separator(vertical)
+          q-btn.q-px-sm.col(
+            flat
+            dense
+            icon='ph ph-globe'
+            color='blue-7'
+            text-color='custom-color'
+            :label='commonStore.locale'
+            :aria-label='commonStore.locale'
+            size='sm'
+            )
+            locale-selector-menu(:offset='[-5, 5]')
         .col.relative-position
           nav-sidebar.absolute.fit
         .sidebar-recent.flex-none(v-if='pageStore.recentPages.length > 0 && !editorStore.isActive')
@@ -252,9 +252,13 @@ onBeforeUnmount(() => {
   border-bottom: 1px solid rgba(0,0,0,.2);
   height: 38px;
   flex-shrink: 0;
+  overflow: hidden;
 
   .q-btn {
     color: rgba(255,255,255,.8);
+    min-width: 0;
+    overflow: hidden;
+    flex-basis: 0;
   }
 }
 

@@ -17,69 +17,70 @@
           :text-color='str.id === state.selectedStrategyId || $q.dark.isActive ? `white` : `blue-grey-9`'
           @click='selectStrategy(str)'
           )
-    q-form(ref='loginForm', @submit='login')
-      q-input(
-        ref='loginEmailIpt'
-        v-model='state.username'
-        autofocus
-        outlined
-        :label='t(`auth.fields.` + (selectedStrategy.activeStrategy?.strategy?.usernameType ?? `email`))'
-        :rules='selectedStrategy.activeStrategy?.strategy?.usernameType === `username` ? loginUsernameValidation : userEmailValidation'
-        lazy-rules='ondemand'
-        hide-bottom-space
-        :autocomplete='selectedStrategy.activeStrategy?.strategy?.usernameType ?? `email`'
+    template(v-if='selectedStrategy.activeStrategy?.strategy?.useForm')
+      q-form(ref='loginForm', @submit='login')
+        q-input(
+          ref='loginEmailIpt'
+          v-model='state.username'
+          autofocus
+          outlined
+          :label='t(`auth.fields.` + (selectedStrategy.activeStrategy?.strategy?.usernameType ?? `email`))'
+          :rules='selectedStrategy.activeStrategy?.strategy?.usernameType === `username` ? loginUsernameValidation : userEmailValidation'
+          lazy-rules='ondemand'
+          hide-bottom-space
+          :autocomplete='selectedStrategy.activeStrategy?.strategy?.usernameType ?? `email`'
+          )
+          template(#prepend)
+            i.las.la-user
+        q-input.q-mt-sm(
+          v-model='state.password'
+          outlined
+          :label='t(`auth.fields.password`)'
+          :rules='loginPasswordValidation'
+          lazy-rules='ondemand'
+          hide-bottom-space
+          type='password'
+          autocomplete='current-password'
+          )
+          template(#prepend)
+            i.las.la-key
+        q-btn.full-width.q-mt-sm(
+          type='submit'
+          push
+          color='primary'
+          :label='t(`auth.actions.login`)'
+          no-caps
+          icon='ph ph-sign-in'
         )
-        template(#prepend)
-          i.las.la-user
-      q-input.q-mt-sm(
-        v-model='state.password'
-        outlined
-        :label='t(`auth.fields.password`)'
-        :rules='loginPasswordValidation'
-        lazy-rules='ondemand'
-        hide-bottom-space
-        type='password'
-        autocomplete='current-password'
+      template(v-if='canUsePasskeys')
+        q-separator.q-my-md
+        q-btn.acrylic-btn.full-width(
+          flat
+          color='primary'
+          :label='t(`auth.passkeys.signin`)'
+          no-caps
+          icon='ph ph-key'
+          @click='switchTo(`passkey`)'
         )
-        template(#prepend)
-          i.las.la-key
-      q-btn.full-width.q-mt-sm(
-        type='submit'
-        push
-        color='primary'
-        :label='t(`auth.actions.login`)'
-        no-caps
-        icon='ph ph-sign-in'
-      )
-    template(v-if='canUsePasskeys')
-      q-separator.q-my-md
-      q-btn.acrylic-btn.full-width(
-        flat
-        color='primary'
-        :label='t(`auth.passkeys.signin`)'
-        no-caps
-        icon='ph ph-key'
-        @click='switchTo(`passkey`)'
-      )
-    template(v-if='selectedStrategy.activeStrategy?.strategy?.key === `local`')
-      q-separator.q-my-md
-      q-btn.acrylic-btn.full-width.q-mb-sm(
-        v-if='selectedStrategy.activeStrategy.registration'
-        flat
-        color='primary'
-        :label='t(`auth.switchToRegister.link`)'
-        no-caps
-        icon='ph ph-user-plus'
-        @click='switchTo(`register`)'
-      )
-      q-btn.acrylic-btn.full-width(
-        flat
-        color='primary'
-        :label='t(`auth.forgotPasswordLink`)'
-        no-caps
-        icon='ph ph-lifebuoy'
-        @click='switchTo(`forgot`)'
-      )
+      template(v-if='selectedStrategy.activeStrategy?.strategy?.key === `local`')
+        q-separator.q-my-md
+        q-btn.acrylic-btn.full-width.q-mb-sm(
+          v-if='selectedStrategy.activeStrategy.registration'
+          flat
+          color='primary'
+          :label='t(`auth.switchToRegister.link`)'
+          no-caps
+          icon='ph ph-user-plus'
+          @click='switchTo(`register`)'
+        )
+        q-btn.acrylic-btn.full-width(
+          flat
+          color='primary'
+          :label='t(`auth.forgotPasswordLink`)'
+          no-caps
+          icon='ph ph-lifebuoy'
+          @click='switchTo(`forgot`)'
+        )
 
   //- -----------------------------------------------------
   //- PASSKEY LOGIN SCREEN
