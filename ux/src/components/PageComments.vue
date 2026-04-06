@@ -147,7 +147,7 @@ async function postComment () {
   try {
     await APOLLO_CLIENT.mutate({
       mutation: gql`
-        mutation postComment ($pageId: Int!, $content: String!) {
+        mutation postComment ($pageId: UUID!, $content: String!) {
           createComment(pageId: $pageId, content: $content) {
             operation {
               succeeded

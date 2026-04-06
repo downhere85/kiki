@@ -76,7 +76,9 @@ export async function render (input, config) {
     .use(mdMark)
     .use(mdFootnote)
     .use(mdImsize)
-    .use(mdMdc)
+    // mdMdc (Nuxt Markdown Components) disabled — not used by Kiki and causes
+    // parse crashes on pages with citation brackets like [1], [4] etc.
+    // .use(mdMdc)
 
   if (config.underline) {
     md.use(mdUnderline)
