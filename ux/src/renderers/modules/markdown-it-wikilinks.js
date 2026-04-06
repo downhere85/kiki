@@ -12,15 +12,25 @@ function wikilinkRule (state, silent) {
   if (src.charCodeAt(pos) !== 0x5B || src.charCodeAt(pos + 1) !== 0x5B) return false
 
   let end = pos + 2
+  let found = false
   while (end < max - 1) {
     if (src.charCodeAt(end) === 0x5D && src.charCodeAt(end + 1) === 0x5D) {
+      found = true
       break
     }
-    if (src.charCodeAt(end) === 0x0A) return false
+    if (src.charCodeAt(end) === 0x0A) break
     end++
   }
 
-  if (end >= max - 1) return false
+  // Closing ]] not found — emit first [ as text to advance past it
+  if (!found) {
+    if (!silent) {
+      const token = state.push('text', '', 0)
+      token.content = '['
+      state.pos = pos + 1
+    }
+    return !silent
+  }
 
   const content = src.slice(pos + 2, end).trim()
   if (content.length === 0) return false

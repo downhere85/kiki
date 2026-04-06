@@ -19,17 +19,26 @@ function wikilinkRule (state, silent) {
 
   // Scan for closing ]]
   let end = pos + 2
+  let found = false
   while (end < max - 1) {
     if (src.charCodeAt(end) === 0x5D /* ] */ && src.charCodeAt(end + 1) === 0x5D /* ] */) {
+      found = true
       break
     }
     // No newlines inside wikilinks
-    if (src.charCodeAt(end) === 0x0A /* \n */) return false
+    if (src.charCodeAt(end) === 0x0A /* \n */) break
     end++
   }
 
-  // Closing ]] not found
-  if (end >= max - 1) return false
+  // Closing ]] not found — emit first [ as text to advance past it
+  if (!found) {
+    if (!silent) {
+      const token = state.push('text', '', 0)
+      token.content = '['
+      state.pos = pos + 1
+    }
+    return !silent
+  }
 
   const content = src.slice(pos + 2, end).trim()
   if (content.length === 0) return false

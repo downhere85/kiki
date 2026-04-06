@@ -159,5 +159,10 @@ export async function render (input, config) {
     })
   }
 
-  return md.render(input)
+  try {
+    return md.render(input)
+  } catch (err) {
+    console.warn(`Markdown render error: ${err.message}. Falling back to escaped HTML.`)
+    return `<p>${escape(input)}</p>`
+  }
 }
