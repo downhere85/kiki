@@ -110,6 +110,25 @@ export async function init () {
   // ----------------------------------------
 
   app.use(favicon(path.join(WIKI.ROOTPATH, 'assets', 'favicon.ico')))
+
+  // Serve DB-stored assets by UUID (uploaded images etc.)
+  app.get(/^\/_assets\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/, async (req, res) => {
+    try {
+      const uuid = req.params[0]
+      const asset = await WIKI.db.knex('assets').where('id', uuid).first('data', 'fileExt', 'mimeType', 'fileName')
+      if (asset && asset.data) {
+        res.set('Content-Type', asset.mimeType || `image/${asset.fileExt}`)
+        res.set('Cache-Control', 'public, max-age=604800')
+        res.send(asset.data)
+      } else {
+        res.sendStatus(404)
+      }
+    } catch (err) {
+      WIKI.logger.warn(`Asset serve error: ${err.message}`)
+      res.sendStatus(500)
+    }
+  })
+
   app.use('/_assets', express.static(path.join(WIKI.ROOTPATH, 'assets/_assets'), {
     index: false,
     maxAge: '7d'
