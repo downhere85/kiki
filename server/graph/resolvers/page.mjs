@@ -218,6 +218,9 @@ export default {
         .select(WIKI.db.knex.raw("COALESCE((config->>'viewCount')::int, 0) AS \"viewCount\""))
         .where('siteId', args.siteId)
         .where('isSearchableComputed', true)
+        .whereRaw("lower(title) NOT LIKE '%index%'")
+        .whereRaw("lower(title) NOT LIKE '%overview%'")
+        .whereRaw("path NOT LIKE '%/home'")
         .orderByRaw("COALESCE((config->>'viewCount')::int, 0) DESC")
         .limit(limit * 2) // over-fetch for permission filtering
 
