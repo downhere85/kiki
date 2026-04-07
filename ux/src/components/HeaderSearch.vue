@@ -7,7 +7,7 @@ q-toolbar(
   q-input.header-search-input(
     dark
     v-model='siteStore.search'
-    standout='bg-white text-dark'
+    standout='bg-transparent text-white'
     dense
     ref='searchField'
     style='width: 100%;'

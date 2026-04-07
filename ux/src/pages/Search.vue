@@ -159,7 +159,7 @@ q-layout(view='hHh Lpr lff')
             :to='`/` + item.path'
             )
             q-item-section(avatar)
-              q-avatar(color='primary' text-color='white' rounded :icon='item.icon || `ph ph-file-text`')
+              q-icon(:name='item.icon || `ph ph-file-text`' size='sm' color='grey-6')
             q-item-section
               q-item-label.text-weight-bold.search-result-title {{ item.title }}
               .search-result-path.text-caption.text-grey /{{ item.path }}
