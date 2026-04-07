@@ -208,6 +208,30 @@ export default {
       return results.slice(0, limit)
     },
 
+    /**
+     * POPULAR PAGES (by view count, accessible to all authenticated users)
+     */
+    async popularPages (obj, args, context) {
+      const limit = Math.min(args.limit || 20, 50)
+      const results = await WIKI.db.knex('pages')
+        .select('id', 'path', 'title', 'icon', 'locale')
+        .select(WIKI.db.knex.raw("COALESCE((config->>'viewCount')::int, 0) AS \"viewCount\""))
+        .where('siteId', args.siteId)
+        .where('isSearchableComputed', true)
+        .orderByRaw("COALESCE((config->>'viewCount')::int, 0) DESC")
+        .limit(limit * 2) // over-fetch for permission filtering
+
+      // Filter by access rights
+      const user = context.req.user
+      const filtered = user && _.get(user, 'permissions', []).includes('manage:system')
+        ? results
+        : results.filter(r => WIKI.auth.checkAccess(user, ['read:pages'], {
+            path: r.path, locale: r.locale, tags: []
+          }))
+
+      return filtered.slice(0, limit)
+    },
+
     async pages (obj, args, context, info) {
       let results = await WIKI.db.pages.query().column([
         'pages.id',

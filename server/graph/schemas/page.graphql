@@ -113,6 +113,11 @@ extend type Query {
     locale: String!
   ): [PageBacklinkItem]
 
+  popularPages(
+    siteId: UUID!
+    limit: Int
+  ): [PagePopularItem]
+
   pathFromAlias(
     siteId: UUID!
     alias: String!
@@ -380,6 +385,14 @@ type PageBacklinkItem {
   path: String
   title: String
   locale: String
+}
+
+type PagePopularItem {
+  id: UUID
+  path: String
+  title: String
+  icon: String
+  viewCount: Int
 }
 
 type PageConflictLatest {

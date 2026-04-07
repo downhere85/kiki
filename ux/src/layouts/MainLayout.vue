@@ -80,6 +80,22 @@ q-layout(view='hHh Lpr lff')
             locale-selector-menu(:offset='[-5, 5]')
         .col.relative-position
           nav-sidebar.absolute.fit
+        .sidebar-recent.flex-none(v-if='popularUnvisited.length > 0 && !editorStore.isActive')
+          .sidebar-recent-header
+            q-icon(name='ph ph-fire', size='12px', style='margin-right: 4px; opacity: 0.6')
+            | Popular
+          q-list(dense)
+            q-item.sidebar-recent-item(
+              v-for='page of popularUnvisited'
+              :key='page.id'
+              clickable
+              dense
+              :to='`/${page.path}`'
+              )
+              q-item-section(side)
+                q-icon(:name='page.icon || `ph ph-fire`', size='xs', color='deep-orange-4')
+              q-item-section
+                q-item-label.text-caption.text-white(lines='1', style='opacity: 0.8') {{ page.title }}
         .sidebar-recent.flex-none(v-if='pageStore.recentPages.length > 0 && !editorStore.isActive')
           .sidebar-recent-header Recent
           q-list(dense)
@@ -139,6 +155,7 @@ q-layout(view='hHh Lpr lff')
 </template>
 
 <script setup>
+import gql from 'graphql-tag'
 import { useMeta, useQuasar } from 'quasar'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -192,7 +209,8 @@ useMeta({
 // DATA
 
 const state = reactive({
-  showCommandPalette: false
+  showCommandPalette: false,
+  popularPages: []
 })
 
 // REFS
@@ -210,6 +228,13 @@ const isSidebarMini = computed(() => {
   return ['hide', 'hideExact'].includes(pageStore.navigationMode) || !pageStore.navigationId
 })
 
+const popularUnvisited = computed(() => {
+  const recentPaths = new Set(pageStore.recentPages.map(p => p.path))
+  return state.popularPages
+    .filter(p => !recentPaths.has(p.path))
+    .slice(0, 5)
+})
+
 // METHODS
 
 function openBookmarks () {
@@ -218,6 +243,29 @@ function openBookmarks () {
 
 function browsePages () {
   siteStore.$patch({ overlay: 'BrowsePages' })
+}
+
+async function fetchPopularPages () {
+  try {
+    const resp = await APOLLO_CLIENT.query({
+      query: gql`
+        query popularPages($siteId: UUID!) {
+          popularPages(siteId: $siteId, limit: 20) {
+            id
+            path
+            title
+            icon
+            viewCount
+          }
+        }
+      `,
+      variables: { siteId: siteStore.id },
+      fetchPolicy: 'network-only'
+    })
+    state.popularPages = resp.data?.popularPages ?? []
+  } catch {
+    state.popularPages = []
+  }
 }
 
 function handleGlobalKeyDown (ev) {
@@ -230,6 +278,7 @@ function handleGlobalKeyDown (ev) {
 onMounted(() => {
   if (!import.meta.env.SSR) {
     window.addEventListener('keydown', handleGlobalKeyDown)
+    fetchPopularPages()
   }
 })
 
