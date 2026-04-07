@@ -266,6 +266,7 @@ const state = reactive({
 const orderByOptions = computed(() => {
   return [
     { label: t('search.sortByRelevance'), value: 'relevancy', icon: 'ph ph-rows' },
+    { label: 'Most Viewed', value: 'viewCount', icon: 'ph ph-eye' },
     { label: t('search.sortByTitle'), value: 'title', icon: 'ph ph-text-h' },
     { label: t('search.sortByLastUpdated'), value: 'updatedAt', icon: 'ph ph-calendar' }
   ]

@@ -460,6 +460,7 @@ enum PageSearchSort {
   relevancy
   title
   updatedAt
+  viewCount
 }
 
 enum PageOrderBy {

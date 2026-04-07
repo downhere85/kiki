@@ -71,6 +71,7 @@ export default {
           'locale',
           'title',
           'description',
+          WIKI.db.knex.raw("COALESCE((config->>'viewCount')::int, 0) AS \"viewCount\""),
           'icon',
           'tags',
           'updatedAt',
@@ -114,7 +115,10 @@ export default {
               builder.whereRaw('query @@ ts')
             }
           })
-          .orderBy(args.orderBy || 'relevancy', args.orderByDirection || 'desc')
+          .orderBy(
+            (args.orderBy === 'viewCount') ? 'title' : (args.orderBy || 'relevancy'),
+            args.orderByDirection || 'desc'
+          )
 
         // -> Filter by user access rights
         const requestedLimit = args.limit || 25
@@ -123,7 +127,6 @@ export default {
 
         let filteredResults
         if (user && _.get(user, 'permissions', []).includes('manage:system')) {
-          // Admins see everything — no filtering needed
           filteredResults = results
         } else {
           filteredResults = results.filter(r => {
@@ -133,6 +136,12 @@ export default {
               tags: r.tags || []
             })
           })
+        }
+
+        // -> Sort by viewCount in JS (stored in JSONB, can't sort in SQL)
+        if (args.orderBy === 'viewCount') {
+          const dir = (args.orderByDirection || 'desc') === 'desc' ? -1 : 1
+          filteredResults.sort((a, b) => dir * ((a.viewCount || 0) - (b.viewCount || 0)))
         }
 
         const totalHits = filteredResults.length
