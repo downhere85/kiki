@@ -115,12 +115,32 @@ export default {
             }
           })
           .orderBy(args.orderBy || 'relevancy', args.orderByDirection || 'desc')
-          .offset(args.offset || 0)
-          .limit(args.limit || 25)
+
+        // -> Filter by user access rights
+        const requestedLimit = args.limit || 25
+        const requestedOffset = args.offset || 0
+        const user = context.req.user
+
+        let filteredResults
+        if (user && _.get(user, 'permissions', []).includes('manage:system')) {
+          // Admins see everything — no filtering needed
+          filteredResults = results
+        } else {
+          filteredResults = results.filter(r => {
+            return WIKI.auth.checkAccess(user, ['read:pages'], {
+              path: r.path,
+              locale: r.locale,
+              tags: r.tags || []
+            })
+          })
+        }
+
+        const totalHits = filteredResults.length
+        const paginatedResults = filteredResults.slice(requestedOffset, requestedOffset + requestedLimit)
 
         // -> Remove highlights without matches
         if (WIKI.config.search.termHighlighting && hasQuery) {
-          for (const r of results) {
+          for (const r of paginatedResults) {
             if (r.highlight?.indexOf('<mark>') < 0) {
               r.highlight = null
             }
@@ -128,8 +148,8 @@ export default {
         }
 
         return {
-          results,
-          totalHits: results?.length > 0 ? results[0].total : 0
+          results: paginatedResults,
+          totalHits
         }
       } catch (err) {
         WIKI.logger.warn(`Search Query Error: ${err.message}`)
