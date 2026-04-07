@@ -245,12 +245,7 @@ export const usePageStore = defineStore('page', {
     },
     recentPages: () => {
       try {
-        const pages = JSON.parse(localStorage.getItem('wiki_recent_pages') || '[]')
-        return pages.filter(p => {
-          const t = (p.title || '').toLowerCase()
-          const path = (p.path || '').toLowerCase()
-          return !t.includes('index') && !t.includes('overview') && !path.endsWith('/home')
-        })
+        return JSON.parse(localStorage.getItem('wiki_recent_pages') || '[]')
       } catch {
         return []
       }
