@@ -86,7 +86,7 @@ export default {
 
         // -> Add Highlighting if enabled
         if (WIKI.config.search.termHighlighting && hasQuery) {
-          searchCols.push(WIKI.db.knex.raw('ts_headline(?, "searchContent", query, \'MaxWords=5, MinWords=3, MaxFragments=5\') AS highlight', [dictName]))
+          searchCols.push(WIKI.db.knex.raw('ts_headline(?, "searchContent", query, \'MaxWords=35, MinWords=15, MaxFragments=3, StartSel=<mark>, StopSel=</mark>\') AS highlight', [dictName]))
         }
 
         const results = await WIKI.db.knex
@@ -121,7 +121,7 @@ export default {
         // -> Remove highlights without matches
         if (WIKI.config.search.termHighlighting && hasQuery) {
           for (const r of results) {
-            if (r.highlight?.indexOf('<b>') < 0) {
+            if (r.highlight?.indexOf('<mark>') < 0) {
               r.highlight = null
             }
           }

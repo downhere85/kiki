@@ -64,9 +64,14 @@ q-toolbar(
           :class='{ "searchpanel-item--active": idx === state.activeIndex }'
           )
           q-item-section(avatar)
-            q-icon(name='ph ph-file-text', size='xs', color='grey')
+            q-icon(:name='item.icon || `ph ph-file-text`', size='xs', color='grey')
           q-item-section
-            q-item-label {{ item.title }}
+            q-item-label.text-weight-medium {{ item.title }}
+            q-item-label.search-suggestion-desc(
+              v-if='item.description'
+              caption
+              lines='1'
+              ) {{ item.description }}
             q-item-label(caption) /{{ item.path }}
       q-separator.q-my-sm
     template(v-if='siteStore.tagsLoaded && siteStore.tags.length > 0')
@@ -163,11 +168,13 @@ const fetchSuggestions = debounce(async (query) => {
     const resp = await APOLLO_CLIENT.query({
       query: gql`
         query searchSuggestions ($query: String!, $siteId: UUID!) {
-          searchPages(query: $query, siteId: $siteId, limit: 5) {
+          searchPages(query: $query, siteId: $siteId, limit: 8) {
             results {
               id
               title
+              description
               path
+              icon
             }
           }
         }
@@ -179,7 +186,7 @@ const fetchSuggestions = debounce(async (query) => {
   } catch {
     state.suggestions = []
   }
-}, 300)
+}, 200)
 
 watch(() => siteStore.search, (val) => {
   state.activeIndex = -1
@@ -286,6 +293,11 @@ onMounted(() => {
 
 .search-kbdbadge {
   color: rgba(255,255,255,.5);
+}
+
+.search-suggestion-desc {
+  opacity: 0.7;
+  font-size: 0.75rem;
 }
 
 .header-search-input .q-field__control {

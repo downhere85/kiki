@@ -129,37 +129,45 @@ q-layout(view='hHh Lpr lff')
             template(v-slot:prepend)
               q-icon(name='ph ph-traffic-signal', size='xs')
       q-page(:style-fn='pageStyle')
-        .text-header.flex
+        .text-header.flex.items-center
           span {{t('search.results')}}
           q-space
           transition(name='slide-up', mode='out-in')
-            i18n-t(
-              v-if='!siteStore.searchIsLoading'
-              keypath='search.totalResults'
-              tag='span'
-              class='text-caption'
-              :plural='state.total'
-              )
+            .text-caption(v-if='!siteStore.searchIsLoading && state.total > 0')
               strong {{ state.total }}
-        .q-pa-lg(v-if='state.results.length < 1')
-          i18n-t(keypath='search.noResults', tag='span', v-if='siteStore.search && siteStore.searchLastQuery')
-            strong {{ siteStore.searchLastQuery }}
-          span(v-else): em {{ t('search.emptyQuery') }}
-        q-list(separator)
-          q-item(
+              |  results
+              span(v-if='siteStore.searchLastQuery')  for "{{ siteStore.searchLastQuery }}"
+        .q-pa-lg.text-center(v-if='state.results.length < 1 && !siteStore.searchIsLoading')
+          q-icon(name='ph ph-magnifying-glass', size='48px', color='grey-5').q-mb-md
+          div(v-if='siteStore.search && siteStore.searchLastQuery')
+            .text-h6.text-grey-7 No results found
+            .text-caption.text-grey-6.q-mt-sm No pages matched "{{ siteStore.searchLastQuery }}"
+          div(v-else)
+            .text-h6.text-grey-7 Enter a search query
+            .text-caption.text-grey-6.q-mt-sm Type in the search bar above to find pages
+          .q-mt-md.text-caption.text-grey-5
+            div Try using different keywords, or use search operators:
+            .q-mt-xs
+              code.q-mx-xs "exact phrase"
+              code.q-mx-xs keyword*
+              code.q-mx-xs foo|bar
+              code.q-mx-xs -exclude
+        q-list.search-results-list(separator)
+          q-item.search-result-item(
             v-for='item of state.results'
             clickable
             :to='`/` + item.path'
             )
             q-item-section(avatar)
-              q-avatar(color='primary' text-color='white' rounded :icon='item.icon')
+              q-avatar(color='primary' text-color='white' rounded :icon='item.icon || `ph ph-file-text`')
             q-item-section
-              q-item-label {{ item.title }}
-              q-item-label(v-if='item.description', caption) {{ item.description }}
-              q-item-label.text-highlight(v-if='item.highlight', caption)
-                span(v-html='item.highlight')
-            q-item-section(side)
-              .flex.layout-search-itemtags
+              q-item-label.text-weight-bold.search-result-title {{ item.title }}
+              .search-result-path.text-caption.text-grey /{{ item.path }}
+              .search-result-highlight(v-if='item.highlight', v-html='item.highlight')
+              q-item-label(v-else-if='item.description', caption) {{ item.description }}
+            q-item-section(side, top)
+              .text-caption.text-grey {{ humanizeDate(item.updatedAt) }}
+              .flex.layout-search-itemtags.q-mt-xs
                 q-chip(
                   v-for='tag of item.tags'
                   square
@@ -168,9 +176,23 @@ q-layout(view='hHh Lpr lff')
                   icon='ph ph-hash'
                   size='sm'
                   ) {{ tag }}
-              .flex
-                .text-caption.q-mr-sm.text-grey /{{ item.path }}
-                .text-caption {{ humanizeDate(item.updatedAt) }}
+        //- Pagination
+        .flex.justify-center.items-center.q-pa-md(v-if='totalPages > 1')
+          q-btn(
+            flat
+            round
+            icon='ph ph-caret-left'
+            :disable='!hasPrevPage'
+            @click='prevPage'
+            )
+          .text-caption.q-mx-md Page {{ state.currentPage }} of {{ totalPages }}
+          q-btn(
+            flat
+            round
+            icon='ph ph-caret-right'
+            :disable='!hasNextPage'
+            @click='nextPage'
+            )
 
       q-inner-loading(:showing='state.loading > 0')
   main-overlay-dialog
@@ -236,7 +258,9 @@ const state = reactive({
   selectedTags: [],
   filteredTags: [],
   results: [],
-  total: 0
+  total: 0,
+  currentPage: 1,
+  perPage: 25
 })
 
 const orderByOptions = computed(() => {
@@ -267,17 +291,22 @@ const publishStates = computed(() => {
 
 const tags = computed(() => siteStore.tags.map(t => t.tag))
 
+const totalPages = computed(() => Math.ceil(state.total / state.perPage))
+const hasNextPage = computed(() => state.currentPage < totalPages.value)
+const hasPrevPage = computed(() => state.currentPage > 1)
+
 // WATCHERS
 
 watch(() => route.query, async (newQueryObj) => {
   if (newQueryObj.q) {
     siteStore.search = newQueryObj.q.trim()
+    state.currentPage = 1
     syncTags()
     performSearch()
   }
 }, { immediate: true })
 
-watch(() => state.params, debounce(performSearch, 500), { deep: true })
+watch(() => state.params, debounce(() => { state.currentPage = 1; performSearch() }, 500), { deep: true })
 
 // METHODS
 
@@ -397,7 +426,9 @@ async function performSearch () {
         editor: state.params.filterEditor,
         publishState: state.params.filterPublishState || null,
         orderBy: state.params.orderBy,
-        orderByDirection: state.params.orderByDirection
+        orderByDirection: state.params.orderByDirection,
+        offset: (state.currentPage - 1) * state.perPage,
+        limit: state.perPage
       },
       fetchPolicy: 'network-only'
     })
@@ -415,6 +446,20 @@ async function performSearch () {
     })
   }
   siteStore.searchIsLoading = false
+}
+
+function nextPage () {
+  if (hasNextPage.value) {
+    state.currentPage++
+    performSearch()
+  }
+}
+
+function prevPage () {
+  if (hasPrevPage.value) {
+    state.currentPage--
+    performSearch()
+  }
 }
 
 function goBack () {
@@ -528,12 +573,43 @@ onUnmounted(() => {
     }
   }
 
-  .text-highlight {
-    font-style: italic;
+  .search-result-item {
+    padding: 12px 16px;
 
-    > b {
-      background-color: rgba($yellow-7, .5);
-      border-radius: 3px;
+    &:hover {
+      background-color: rgba(0,0,0,.02);
+    }
+  }
+
+  .search-result-title {
+    font-size: 1.05rem;
+  }
+
+  .search-result-path {
+    font-size: 0.75rem;
+    margin-top: 2px;
+  }
+
+  .search-result-highlight {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 6px;
+    line-height: 1.5;
+
+    mark {
+      background-color: rgba(255, 213, 79, 0.5);
+      border-radius: 2px;
+      padding: 0 2px;
+      font-weight: 600;
+    }
+
+    @at-root .body--dark & {
+      color: #aaa;
+
+      mark {
+        background-color: rgba(255, 213, 79, 0.3);
+        color: #fff;
+      }
     }
   }
 
